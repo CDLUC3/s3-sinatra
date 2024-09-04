@@ -21,4 +21,4 @@ phases:
     on-failure: CONTINUE
     commands:
     - zip s3-sinatra.zip app *.rb
-    - aws s3 cp s3://${S3PRIVBUCKET}/deploy/
+    - aws s3 cp s3-sinatra.zip s3://${S3PRIVBUCKET}/deploy/
