@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  pre_build:
+    on-failure: ABORT
+    commands:
+    - cp settings.xml ~/.m2/
+    - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain cdlib-uc3-mrt --domain-owner $AWS_ACCOUNT_ID --region $AWS_REGION --query authorizationToken --output text`
+    - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+
+    - COMMIT=`git rev-parse --short HEAD`
+    - TAG=`git describe --tags --exact-match 2> /dev/null || echo ''`
+    - |
+      if [[ "$MODE" == "OnPush" ]]
+      then
+        BRANCHTAG=`git describe --tags --exact-match 2> /dev/null || git symbolic-ref -q --short HEAD || git name-rev $(git rev-parse --short HEAD) | cut -d' ' -f2 || git rev-parse --short HEAD`
+      else
+        BRANCHTAG=$BRANCHNAME
+      fi
+    - DOCKTAG=$BRANCHTAG
+    - COMMITDATE=`git --no-pager log -1 --pretty='format:%cd' --date='format:%Y-%m-%d %H:%M:%S'`
+    - echo "Branchtag ${BRANCHTAG}; COMMITDATE=${COMMITDATE}; REPONAME=${REPONAME}; BRANCHNAME=${BRANCHNAME}"
+
+  post_build:
+    on-failure: CONTINUE
+    commands:
+    - zip s3-sinatra.zip app *.rb
+    - aws s3 cp s3://${S3PRIVBUCKET}/deploy/
