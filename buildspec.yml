@@ -4,10 +4,6 @@ phases:
   pre_build:
     on-failure: ABORT
     commands:
-    - cp settings.xml ~/.m2/
-    - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain cdlib-uc3-mrt --domain-owner $AWS_ACCOUNT_ID --region $AWS_REGION --query authorizationToken --output text`
-    - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ECR_REGISTRY}
-
     - COMMIT=`git rev-parse --short HEAD`
     - TAG=`git describe --tags --exact-match 2> /dev/null || echo ''`
     - |
