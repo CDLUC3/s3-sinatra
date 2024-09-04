@@ -6,6 +6,9 @@ require 'base64'
 # to take advantage of container reuse
 #$app ||= Rack::Builder.parse_file("#{__dir__}/app/config.ru").first
 $app ||= Rack::Builder.parse_file("#{__dir__}/app/config.ru")
+puts 'TBTB1'
+puts $app
+puts 'TBTB2'
 ENV['RACK_ENV'] ||= 'production'
 
 
