@@ -39,8 +39,6 @@ def handler(event:, context:)
     'SSM_CREDENTIALS_PATH' => event['stageVariables']['ssm_credentials_path'],
   }
 
-  puts env
-
   # Pass request headers to Rack if they are available
   headers.each_pair do |key, value|
     # Content-Type and Content-Length are handled specially per the Rack SPEC linked above.
