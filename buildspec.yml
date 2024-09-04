@@ -21,5 +21,10 @@ phases:
     on-failure: CONTINUE
     commands:
     - bundle install
-    - zip s3-sinatra.zip vendor app *.rb
+    - zip -r s3-sinatra.zip vendor app *.rb
     - aws s3 cp s3-sinatra.zip s3://${S3PRIVBUCKET}/deploy/
+    - |
+      aws lambda update-function-code \
+        --function-name SinatraLambda-uc3-mrt-ingest-wkspace-dev-regional-lambda \
+        --s3-bucket ${S3PRIVBUCKET} \
+        --s3-key deploy/s3-sinatra.zip --no-cli-pager
