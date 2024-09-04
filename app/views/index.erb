@@ -1,0 +1,26 @@
+<h1>Merritt - AWS Snowcone Bucket Service</h1>
+<div>
+<h2>Usage</h2>
+<p>See <a href="https://github.com/CDLUC3/mrt-doc/wiki/AWS-Snowcone-Bucket-Service">AWS Snowcone Bucket Service on the Merritt Wiki</a> for advice on utilizing this service.</p>
+
+<h2>Sample Object Listing</h2>
+<p>This page will display up to <%= @maxobj %> sample objects / top level prefixes to help identify the keys within the bucket.</p>
+
+<% if @top_objects %>
+  <h3>Top Level Objects</h2>
+  <ul>
+    <% @top_objects.each do |k| %>
+      <li><%= k %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @top_prefixes %>
+  <h3>Top Level Prefixes</h2>
+  <ul>
+    <% @top_prefixes.each do |k| %>
+      <li><%= k %></li>
+    <% end %>
+  </ul>
+<% end %>
+</div>
