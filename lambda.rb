@@ -6,9 +6,7 @@ require 'base64'
 # to take advantage of container reuse
 #$app ||= Rack::Builder.parse_file("#{__dir__}/app/config.ru").first
 $app ||= Rack::Builder.parse_file("#{__dir__}/app/config.ru")
-puts 'TBTB1'
-puts $app
-puts 'TBTB2'
+
 ENV['RACK_ENV'] ||= 'production'
 
 
@@ -32,7 +30,7 @@ def handler(event:, context:)
     'SERVER_NAME' => headers.fetch('Host', 'localhost'),
     'SERVER_PORT' => headers.fetch('X-Forwarded-Port', 443).to_s,
 
-    'rack.version' => Rack::VERSION,
+    # 'rack.version' => Rack::VERSION,
     'rack.url_scheme' => headers.fetch('CloudFront-Forwarded-Proto') { headers.fetch('X-Forwarded-Proto', 'https') },
     'rack.input' => StringIO.new(body),
     'rack.errors' => $stderr,
