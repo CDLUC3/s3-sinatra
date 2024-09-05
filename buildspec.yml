@@ -28,3 +28,8 @@ phases:
         --function-name SinatraLambda-uc3-mrt-ingest-wkspace-dev-regional-lambda \
         --s3-bucket ${S3PRIVBUCKET} \
         --s3-key deploy/s3-sinatra.zip --no-cli-pager
+    - |
+      aws lambda update-function-code \
+        --function-name SinatraLambda-default \
+        --s3-bucket ${S3PRIVBUCKET} \
+        --s3-key deploy/s3-sinatra.zip --no-cli-pager
