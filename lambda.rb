@@ -11,6 +11,11 @@ ENV['RACK_ENV'] ||= 'production'
 
 
 def handler(event:, context:)
+  puts 111
+  puts event
+  puts 222
+  puts context
+  puts 333
   # Check if the body is base64 encoded. If it is, try to decode it
   body = if event['isBase64Encoded']
     Base64.decode64 event['body']
