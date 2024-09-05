@@ -81,5 +81,5 @@ def handler(event:, context:)
   end
 
   # By default, the response serializer will call #to_json for us
-  response.to_json
+  response
 end
