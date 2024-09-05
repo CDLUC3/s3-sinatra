@@ -10,10 +10,10 @@ helpers do
   def protected!
     @auth ||=  Rack::Auth::Basic::Request.new(request.env)
     if not basic_auth_credentials_included?
-      headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+      response['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
       halt 401, "Unauthorized"
     elsif not authorized?
-      headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+      response['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
       halt 403, "Access denied\n"
     else
       return true
