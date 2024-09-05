@@ -11,6 +11,8 @@ ENV['RACK_ENV'] ||= 'production'
 
 
 def handler(event:, context:)
+  puts 111
+  puts event
   # Check if the body is base64 encoded. If it is, try to decode it
   body = if event['isBase64Encoded']
     Base64.decode64 event['body']
@@ -23,7 +25,7 @@ def handler(event:, context:)
 
   # Environment required by Rack (http://www.rubydoc.info/github/rack/rack/file/SPEC)
   env = {
-    'REQUEST_METHOD' => event.fetch('httpMethod'),
+    'REQUEST_METHOD' => event.fetch('httpMethod', 'GET'),
     'SCRIPT_NAME' => '',
     'PATH_INFO' => event.fetch('path', ''),
     'QUERY_STRING' => (event['queryStringParameters'] || {}).map { |k,v| "#{k}=#{v}" }.join('&'),
