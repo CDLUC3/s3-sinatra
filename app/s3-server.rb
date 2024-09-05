@@ -76,6 +76,12 @@ get "/" do
   erb :index
 end
 
+get "/validate" do
+  protected!
+  status 200
+  erb :validate
+end
+
 get '/*' do
   protected!
   key = params['splat'][0]
