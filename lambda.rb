@@ -35,8 +35,8 @@ def handler(event:, context:)
     'rack.input' => StringIO.new(body),
     'rack.errors' => $stderr,
     # Get S3 bucket name from api-gateway "stageVarialbes"
-    'BUCKET_NAME' => event['stageVariables']['bucket_name'],
-    'SSM_CREDENTIALS_PATH' => event['stageVariables']['ssm_credentials_path'],
+    'BUCKET_NAME' => event['stageVariables']['bucket_name'] || ENV.fetch('bucket_name', 'na'),
+    'SSM_CREDENTIALS_PATH' => event['stageVariables']['ssm_credentials_path'] || ENV.fetch('ssm_credentials_path', 'na'),
   }
 
   # Pass request headers to Rack if they are available
