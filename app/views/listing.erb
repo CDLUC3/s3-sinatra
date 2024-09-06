@@ -7,6 +7,18 @@
 </form>
 </div>
 
+<div id="listing">
+  <% if @obj %>
+  <h3>Object List</h2>
+  <ul>
+    <% @obj.each do |k| %>
+      <li><a href="<%= k[:url] %>"><%=k[:key]%></a></li>
+    <% end %>
+  </ul>
+  <% end %>
+
+</div>
+
 <div id="manifest">
 <h2>Manifest</h2>
 <textarea rows=15 cols=80><%=@data%></textarea>
