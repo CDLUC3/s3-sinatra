@@ -90,13 +90,14 @@ post "/listing" do
   maxobj = 1000
   keys = []
   @objlist = []
+  dns = "default.ingest-workspace.uc3dev.cdlib.net"
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
     k = s3obj.fetch(:key, "")
     next if k.empty?
-    url = "https://default.ingest-workspace.uc3dev.cdlib.net/#{k}"
-    url_auth = "https://\"foo:bar\"@default.ingest-workspace.uc3dev.cdlib.net/#{k}"
-    keys.append(url)
+    url = "https://#{dns}/#{k}"
+    url_auth = "https://\"#{@auth.credentials.join(':')}\"@#{dns}/#{k}"
+    keys.append(url_auth)
     @objlist.append({
       key: k,
       url: url
