@@ -76,10 +76,18 @@ get "/" do
   erb :index
 end
 
-get "/validate" do
+get "/listing" do
   protected!
   status 200
-  erb :validate
+  @data = ""
+  erb :listing
+end
+
+post "/listing" do
+  protected!
+  @data = "List of objects"
+  status 200
+  erb :listing
 end
 
 get '/*' do
