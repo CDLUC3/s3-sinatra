@@ -39,6 +39,7 @@ def handler(event:, context:)
     # Get S3 bucket name from api-gateway "stageVarialbes"
     'BUCKET_NAME' => ENV.fetch('bucket_name', 'na'),
     'SSM_CREDENTIALS_PATH' => ENV.fetch('ssm_credentials_path', 'na'),
+    'BASE_URL' => ENV.fetch('base_url', 'na')
   }
 
   # Pass request headers to Rack if they are available
