@@ -88,11 +88,11 @@ post "/listing" do
   @data = "List of objects"
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
   maxobj = 10000
-  obj = []
+  @obj = []
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |obj|
-    k = obj.fetch(:key, "")
-    obj.append("https://default.ingest-workspace.uc3dev.cdlib.net/#{k}") unless k.empty?
+    k = @obj.fetch(:key, "")
+    @obj.append("https://default.ingest-workspace.uc3dev.cdlib.net/#{k}") unless k.empty?
   end
   @data = @obj.join('\n')
 
