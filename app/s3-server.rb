@@ -91,7 +91,7 @@ post "/listing" do
   maxobj = 1000
   keys = []
   @objlist = []
-  dns = "default.ingest-workspace.uc3dev.cdlib.net"
+  dns = env.fetch('base_url', nil)
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
     k = s3obj.fetch(:key, "")
