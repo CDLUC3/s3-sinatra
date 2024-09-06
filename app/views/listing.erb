@@ -8,10 +8,10 @@
 </div>
 
 <div id="listing">
-  <% if @obj %>
+  <% if @objlist %>
   <h3>Object List</h2>
   <ul>
-    <% @obj.each do |k| %>
+    <% @objlist.each do |k| %>
       <li><a href="<%= k[:url] %>"><%=k[:key]%></a></li>
     <% end %>
   </ul>

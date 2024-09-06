@@ -87,16 +87,16 @@ post "/listing" do
   protected!
   @data = "List of objects"
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
-  maxobj = 10000
+  maxobj = 1000
   keys = []
-  @obj = []
+  @objlist = []
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
     k = s3obj.fetch(:key, "")
     next if k.empty?
     url = "https://default.ingest-workspace.uc3dev.cdlib.net/#{k}"
     keys.append(url)
-    @obj.append({
+    @objlist.append({
       key: k,
       url: url
     }) unless k.empty?
