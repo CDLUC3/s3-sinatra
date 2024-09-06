@@ -14,7 +14,8 @@ helpers do
       halt 401, "Unauthorized"
     elsif not authorized?
       response['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
-      halt 403, "Access denied\n"
+      halt 401, "Unauthorized"
+      #halt 403, "Access denied\n"
     else
       return true
     end
@@ -96,7 +97,7 @@ post "/listing" do
     k = s3obj.fetch(:key, "")
     next if k.empty?
     url = "https://#{dns}/#{k}"
-    url_auth = "https://\"#{@auth.credentials.join(':')}\"@#{dns}/#{k}"
+    url_auth = "https://#{@auth.credentials.join(':')}@#{dns}/#{k}"
     keys.append(url_auth)
     @objlist.append({
       key: k,
