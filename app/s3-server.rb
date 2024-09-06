@@ -95,13 +95,14 @@ post "/listing" do
     k = s3obj.fetch(:key, "")
     next if k.empty?
     url = "https://default.ingest-workspace.uc3dev.cdlib.net/#{k}"
+    url_auth = "https://\"foo:bar\"@default.ingest-workspace.uc3dev.cdlib.net/#{k}"
     keys.append(url)
     @objlist.append({
       key: k,
       url: url
     }) unless k.empty?
   end
-  @data = keys.join('\n')
+  @data = keys.join("\n")
 
   status 200
   erb :listing
