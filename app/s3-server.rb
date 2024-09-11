@@ -65,6 +65,7 @@ def list_keys(prefix = '/')
   maxobj = 1000
   keys = []
   @objlist = []
+  @prefixes = []
   dns = env.fetch('BASE_URL', nil)
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', prefix: prefix, max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
@@ -78,7 +79,6 @@ def list_keys(prefix = '/')
       url: url
     }) unless k.empty?
   end
-  @prefixes = []
   resp.to_h.fetch(:common_prefixes, prefix: prefix, []).each do |obj|
     k = obj.fetch(:prefix, "")
     @prefixes.append(k) unless k.empty?
