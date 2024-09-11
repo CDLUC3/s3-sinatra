@@ -81,7 +81,11 @@ def list_keys(prefix = '/')
   end
   resp.to_h.fetch(:common_prefixes, []).each do |obj|
     k = obj.fetch(:prefix, "")
-    @prefixes.append(k) unless k.empty?
+    url = "https://#{dns}/#{k}"
+    @prefixes.append({
+      key: k,
+      url: url
+    }) unless k.empty?
   end
   @data = keys.join("\n")
 
