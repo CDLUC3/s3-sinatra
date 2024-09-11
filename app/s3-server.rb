@@ -79,7 +79,7 @@ def list_keys(prefix = '/')
       url: url
     }) unless k.empty?
   end
-  resp.to_h.fetch(:common_prefixes, prefix: prefix, []).each do |obj|
+  resp.to_h.fetch(:common_prefixes, []).each do |obj|
     k = obj.fetch(:prefix, "")
     @prefixes.append(k) unless k.empty?
   end
