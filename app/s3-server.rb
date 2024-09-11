@@ -111,7 +111,7 @@ end
 
 post "/listing" do
   protected!
-  list_keys('/')
+  list_keys('')
 end
 
 
