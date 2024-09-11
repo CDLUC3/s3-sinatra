@@ -114,15 +114,14 @@ post "/listing" do
   list_keys('')
 end
 
+get '/*/' do
+  protected!
+  key = params['splat'][0]
+  list_keys("#{key}/")
+end
 
 get '/*' do
   protected!
   key = params['splat'][0]
   get_file(key)
-end
-
-get '/*/' do
-  protected!
-  key = params['splat'][0]
-  list_keys("#{key}/")
 end
