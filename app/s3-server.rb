@@ -59,7 +59,7 @@ helpers do
 
 end
 
-def list_keys(prefix: '', delimiter: '/', maxobj: 10)
+def list_keys(prefix: '', delimiter: nil, maxobj: 10)
   @data = "List of objects"
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
   keys = []
