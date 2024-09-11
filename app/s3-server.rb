@@ -59,6 +59,31 @@ helpers do
 
 end
 
+def list_keys(prefix = '/')
+  @data = "List of objects"
+  @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
+  maxobj = 1000
+  keys = []
+  @objlist = []
+  dns = env.fetch('BASE_URL', nil)
+  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', prefix: prefix, max_keys: maxobj)
+  resp.to_h.fetch(:contents, []).each do |s3obj|
+    k = s3obj.fetch(:key, "")
+    next if k.empty?
+    url = "https://#{dns}/#{k}"
+    url_auth = "https://#{@auth.credentials.join(':')}@#{dns}/#{k}"
+    keys.append(url_auth)
+    @objlist.append({
+      key: k,
+      url: url
+    }) unless k.empty?
+  end
+  @data = keys.join("\n")
+
+  status 200
+  erb :listing
+end
+
 get "/" do
   @maxobj = 100
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
@@ -89,30 +114,6 @@ post "/listing" do
   list_keys('/')
 end
 
-def list_keys(prefix = '/')
-  @data = "List of objects"
-  @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
-  maxobj = 1000
-  keys = []
-  @objlist = []
-  dns = env.fetch('BASE_URL', nil)
-  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', prefix: prefix, max_keys: maxobj)
-  resp.to_h.fetch(:contents, []).each do |s3obj|
-    k = s3obj.fetch(:key, "")
-    next if k.empty?
-    url = "https://#{dns}/#{k}"
-    url_auth = "https://#{@auth.credentials.join(':')}@#{dns}/#{k}"
-    keys.append(url_auth)
-    @objlist.append({
-      key: k,
-      url: url
-    }) unless k.empty?
-  end
-  @data = keys.join("\n")
-
-  status 200
-  erb :listing
-end
 
 get '/*' do
   protected!
