@@ -59,15 +59,14 @@ helpers do
 
 end
 
-def list_keys(prefix = '/')
+def list_keys(prefix: '', delimiter: '/', maxobj: 10)
   @data = "List of objects"
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
-  maxobj = 1000
   keys = []
   @objlist = []
   @prefixes = []
   dns = env.fetch('BASE_URL', nil)
-  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', prefix: prefix, max_keys: maxobj)
+  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: delimiter, prefix: prefix, max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
     k = s3obj.fetch(:key, "")
     next if k.empty?
@@ -120,13 +119,13 @@ end
 
 post "/listing" do
   protected!
-  list_keys('')
+  list_keys
 end
 
 get '/*/' do
   protected!
   key = params['splat'][0]
-  list_keys("#{key}/")
+  list_keys(prefix: "#{key}/", maxobj: 500, delimiter: nil)
 end
 
 get '/*' do
