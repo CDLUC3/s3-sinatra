@@ -6,7 +6,7 @@
 </div>
 <br>
 <div>
-<form method="POST">
+<form method="POST" action="/listing">
   <input type="submit" value="List"/>
 </form>
 </div>
@@ -21,6 +21,14 @@
   </ul>
   <% end %>
 
+  <% if @prefixes %>
+  <h3>Directories</h2>
+  <ul>
+    <% @prefixes.each do |k| %>
+      <li><a href="<%= k[:url] %>"><%=k[:key]%></a></li>
+    <% end %>
+  </ul>
+  <% end %>
 </div>
 
 <div id="manifest">

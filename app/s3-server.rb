@@ -78,6 +78,11 @@ def list_keys(prefix = '/')
       url: url
     }) unless k.empty?
   end
+  @prefixes = []
+  resp.to_h.fetch(:common_prefixes, prefix: prefix, []).each do |obj|
+    k = obj.fetch(:prefix, "")
+    @prefixes.append(k) unless k.empty?
+  end
   @data = keys.join("\n")
 
   status 200
