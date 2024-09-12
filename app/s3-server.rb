@@ -61,7 +61,8 @@ end
 
 def save_key(s3obj, credentials)
   k = s3obj.fetch(:key, "")
-  next if k.empty?
+  return if k.empty?
+
   url = credentials.nil? ? "https://#{dns}/#{k}" : "https://#{credentials.join(':')}@#{dns}/#{k}"
   @objlist.append({
     key: k,
@@ -70,23 +71,23 @@ def save_key(s3obj, credentials)
   @data.append(url)
 
   ka = k.split('/')
-  if ka.length > 1
-    prefix = ka[0]
-    rec = @prefixes.fetch(
-      prefix, 
-      {
-        key: prefix, 
-        count: 0, 
-        desc: prefix, 
-        url: "https://#{dns}/#{prefix}",
-        depth: 0
-      }
-    )
-    rec[:count] += 1
-    rec[:depth] = [ka.length, rec[:depth]].max_key
-    rec[:desc] = "#{prefix} (#{rec[:count]}, #{rec[:depth]})"
-    @prefixes[prefix] = rec
-  end
+  return unless ka.length > 1
+  
+  prefix = ka[0]
+  rec = @prefixes.fetch(
+    prefix, 
+    {
+      key: prefix, 
+      count: 0, 
+      desc: prefix, 
+      url: "https://#{dns}/#{prefix}",
+      depth: 0
+    }
+  )
+  rec[:count] += 1
+  rec[:depth] = [ka.length, rec[:depth]].max_key
+  rec[:desc] = "#{prefix} (#{rec[:count]}, #{rec[:depth]})"
+  @prefixes[prefix] = rec
 end
 
 def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credentials: nil)
