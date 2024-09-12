@@ -71,7 +71,7 @@ def save_key(s3obj, credentials, prefix)
   }) unless k.empty?
   @data.append(url)
 
-  ka = k[prefix..].split('/')
+  ka = k[prefix.length..].split('/')
   return unless ka.length > 1
   
   kprefix = ka[0]
