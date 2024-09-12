@@ -78,6 +78,7 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing)
       url: url
     }) unless k.empty?
   end
+  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', prefix: prefix, max_keys: maxobj) if delimiter.nil?
   resp.to_h.fetch(:common_prefixes, []).each do |obj|
     k = obj.fetch(:prefix, "")
     url = "https://#{dns}/#{k}"
