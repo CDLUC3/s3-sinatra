@@ -60,7 +60,6 @@ helpers do
 end
 
 def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credentials: nil)
-  @data = "List of objects"
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
   keys = []
   @objlist = []
@@ -100,7 +99,7 @@ end
 get "/listing" do
   protected!
   status 200
-  @data = ""
+  @data = []
   erb :listing
 end
 
