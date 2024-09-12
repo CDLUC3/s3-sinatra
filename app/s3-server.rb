@@ -94,7 +94,7 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing)
 end
 
 get "/" do
-  list_keys(delimiter: '/', erb: :index)
+  list_keys(delimiter: '/', erbname: :index)
 end
 
 get "/listing" do
