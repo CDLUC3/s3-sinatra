@@ -86,7 +86,7 @@ def save_key(s3obj, credentials)
     }
   )
   rec[:count] += 1
-  rec[:depth] = [ka.length, rec[:depth]].max_key
+  rec[:depth] = [ka.length, rec[:depth]].max
   rec[:desc] = "#{prefix} (#{rec[:count]}, #{rec[:depth]})"
   @prefixes[prefix] = rec
 end
