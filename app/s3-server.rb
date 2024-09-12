@@ -72,7 +72,6 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credent
     k = s3obj.fetch(:key, "")
     next if k.empty?
     url = credentials.nil? ? "https://#{dns}/#{k}" : "https://#{credentials.join(':')}@#{dns}/#{k}"
-    keys.append(url_auth)
     @objlist.append({
       key: k,
       url: url
