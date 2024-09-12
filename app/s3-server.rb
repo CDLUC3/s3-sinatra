@@ -59,7 +59,7 @@ helpers do
 
 end
 
-def list_keys(prefix: '', delimiter: nil, maxobj: 10)
+def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing)
   @data = "List of objects"
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
   keys = []
@@ -89,25 +89,11 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10)
   @data = keys.join("\n")
 
   status 200
-  erb :listing
+  erb erbname
 end
 
 get "/" do
-  @maxobj = 100
-  @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
-  @top_objects = []
-  @top_prefixes = []
-  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', max_keys: @maxobj)
-  resp.to_h.fetch(:contents, []).each do |obj|
-    k = obj.fetch(:key, "")
-    @top_objects.append(k) unless k.empty?
-  end
-  resp.to_h.fetch(:common_prefixes, []).each do |obj|
-    k = obj.fetch(:prefix, "")
-    @top_prefixes.append(k) unless k.empty?
-  end
-  status 200
-  erb :index
+  list_keys(delimiter: '/', erb: :index)
 end
 
 get "/listing" do
