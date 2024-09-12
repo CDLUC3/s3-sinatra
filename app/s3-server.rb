@@ -59,7 +59,7 @@ helpers do
 
 end
 
-def save_key(s3obj, credentials)
+def save_key(s3obj, credentials, prefix)
   k = s3obj.fetch(:key, "")
   return if k.empty?
 
@@ -71,24 +71,26 @@ def save_key(s3obj, credentials)
   }) unless k.empty?
   @data.append(url)
 
-  ka = k.split('/')
+  ka = k[prefix..].split('/')
   return unless ka.length > 1
   
-  prefix = ka[0]
+  kprefix = ka[0]
+  path = prefix.empty? ? kprefix : "#{prefix}/#{kprefix}"
+
   rec = @prefixes.fetch(
-    prefix, 
+    kprefix, 
     {
-      key: prefix, 
+      key: kprefix, 
       count: 0, 
-      desc: prefix, 
-      url: "https://#{dns}/#{prefix}",
+      desc: kprefix, 
+      url: "https://#{dns}/#{path}/",
       depth: 0
     }
   )
   rec[:count] += 1
   rec[:depth] = [ka.length, rec[:depth]].max
-  rec[:desc] = "#{prefix} (#{rec[:count]}, #{rec[:depth]})"
-  @prefixes[prefix] = rec
+  rec[:desc] = "#{kprefix} (#{rec[:count]}, #{rec[:depth]})"
+  @prefixes[kprefix] = rec
 end
 
 def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credentials: nil)
@@ -99,7 +101,7 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credent
   @data = []
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: delimiter, prefix: prefix, max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
-    save_key(s3obj, credentials)
+    save_key(s3obj, credentials, prefix)
   end
 
   status 200
