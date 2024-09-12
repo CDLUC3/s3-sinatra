@@ -84,7 +84,8 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credent
     url = "https://#{dns}/#{k}"
     @prefixes.append({
       key: k,
-      url: url
+      url: url,
+      desc: obj.to_s
     }) unless k.empty?
   end
 
