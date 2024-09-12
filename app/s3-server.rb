@@ -59,24 +59,25 @@ helpers do
 
 end
 
-def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing)
+def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credentials: nil)
   @data = "List of objects"
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
   keys = []
   @objlist = []
   @prefixes = []
+  @data = []
   dns = env.fetch('BASE_URL', nil)
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: delimiter, prefix: prefix, max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
     k = s3obj.fetch(:key, "")
     next if k.empty?
-    url = "https://#{dns}/#{k}"
-    url_auth = "https://#{@auth.credentials.join(':')}@#{dns}/#{k}"
+    url = credentials.nil? ? "https://#{dns}/#{k}" : "https://#{credentials.join(':')}@#{dns}/#{k}"
     keys.append(url_auth)
     @objlist.append({
       key: k,
       url: url
     }) unless k.empty?
+    @data.append(url)
   end
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', prefix: prefix, max_keys: maxobj) if delimiter.nil?
   resp.to_h.fetch(:common_prefixes, []).each do |obj|
@@ -87,7 +88,6 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing)
       url: url
     }) unless k.empty?
   end
-  @data = keys.join("\n")
 
   status 200
   erb erbname
@@ -106,13 +106,13 @@ end
 
 post "/listing" do
   protected!
-  list_keys
+  list_keys(credentials: @auth.credentials, maxobj: 500, delimiter: nil)
 end
 
 get '/*/' do
   protected!
   key = params['splat'][0]
-  list_keys(prefix: "#{key}/", maxobj: 500, delimiter: nil)
+  list_keys(credentials: @auth.credentials, prefix: "#{key}/", maxobj: 500, delimiter: nil)
 end
 
 get '/*' do
