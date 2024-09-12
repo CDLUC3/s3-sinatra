@@ -63,6 +63,7 @@ def save_key(s3obj, credentials)
   k = s3obj.fetch(:key, "")
   return if k.empty?
 
+  dns = env.fetch('BASE_URL', nil)
   url = credentials.nil? ? "https://#{dns}/#{k}" : "https://#{credentials.join(':')}@#{dns}/#{k}"
   @objlist.append({
     key: k,
@@ -96,7 +97,6 @@ def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credent
   @objlist = []
   @prefixes = {}
   @data = []
-  dns = env.fetch('BASE_URL', nil)
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: delimiter, prefix: prefix, max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
     save_key(s3obj, credentials)
