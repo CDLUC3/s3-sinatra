@@ -24,7 +24,7 @@
   <% if @prefixes %>
   <h3>Directories</h2>
   <ul>
-    <% @prefixes.each do |k| %>
+    <% @prefixes.values.each do |k| %>
       <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
     <% end %>
   </ul>

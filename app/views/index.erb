@@ -16,7 +16,7 @@
 <% if @prefixes %>
   <h3>Top Level Prefixes</h2>
   <ul>
-    <% @prefixes.each do |k| %>
+    <% @prefixes.values.each do |k| %>
       <li><%= k[:key] %></li>
     <% end %>
   </ul>

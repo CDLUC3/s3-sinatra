@@ -59,33 +59,46 @@ helpers do
 
 end
 
+def save_key(s3obj, credentials)
+  k = s3obj.fetch(:key, "")
+  next if k.empty?
+  url = credentials.nil? ? "https://#{dns}/#{k}" : "https://#{credentials.join(':')}@#{dns}/#{k}"
+  @objlist.append({
+    key: k,
+    url: url
+  }) unless k.empty?
+  @data.append(url)
+
+  ka = k.split('/')
+  if ka.length > 1
+    prefix = ka[0]
+    rec = @prefixes.fetch(
+      prefix, 
+      {
+        key: prefix, 
+        count: 0, 
+        desc: prefix, 
+        url: "https://#{dns}/#{prefix}",
+        depth: 0
+      }
+    )
+    rec[:count] += 1
+    rec[:depth] = [ka.length, rec[:depth]].max_key
+    rec[:desc] = "#{prefix} (#{rec[:count]}, #{rec[:depth]})"
+    @prefixes[prefix] = rec
+  end
+end
+
 def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credentials: nil)
   @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
   keys = []
   @objlist = []
-  @prefixes = []
+  @prefixes = {}
   @data = []
   dns = env.fetch('BASE_URL', nil)
   resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: delimiter, prefix: prefix, max_keys: maxobj)
   resp.to_h.fetch(:contents, []).each do |s3obj|
-    k = s3obj.fetch(:key, "")
-    next if k.empty?
-    url = credentials.nil? ? "https://#{dns}/#{k}" : "https://#{credentials.join(':')}@#{dns}/#{k}"
-    @objlist.append({
-      key: k,
-      url: url
-    }) unless k.empty?
-    @data.append(url)
-  end
-  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: '/', prefix: prefix, max_keys: maxobj) if delimiter.nil?
-  resp.to_h.fetch(:common_prefixes, []).each do |obj|
-    k = obj.fetch(:prefix, "")
-    url = "https://#{dns}/#{k}"
-    @prefixes.append({
-      key: k,
-      url: url,
-      desc: obj.to_s
-    }) unless k.empty?
+    save_key(s3obj, credentials)
   end
 
   status 200
