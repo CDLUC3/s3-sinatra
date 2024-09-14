@@ -12,19 +12,19 @@
 </div>
 
 <div id="listing">
-  <% if @objlist %>
+  <% if @listing.objlist %>
   <h3>Object List</h2>
   <ul>
-    <% @objlist.each do |k| %>
+    <% @listing.objlist.each do |k| %>
       <li><a href="<%= k[:url] %>"><%=k[:key]%></a></li>
     <% end %>
   </ul>
   <% end %>
 
-  <% if @prefixes %>
+  <% if @listing.prefixes %>
   <h3>Directories</h2>
   <ul>
-    <% @prefixes.values.each do |k| %>
+    <% @listing.prefixes.each do |k| %>
       <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
     <% end %>
   </ul>
@@ -33,6 +33,6 @@
 
 <div id="manifest">
 <h2>Manifest</h2>
-<textarea rows=15 cols=120><%=@data.join("\n")%></textarea>
+<textarea rows=15 cols=120><%=@listing.data.join("\n")%></textarea>
 </div>
 </div>

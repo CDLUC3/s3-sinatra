@@ -4,19 +4,19 @@
 <h2>Sample Object Listing</h2>
 <p>This page will display sample objects / top level prefixes to help identify the keys within the bucket.</p>
 
-<% if @objlist %>
+<% if @listing.topobjlist %>
   <h3>Top Level Objects</h2>
   <ul>
-    <% @objlist.each do |k| %>
+    <% @listing.topobjlist.each do |k| %>
       <li><%= k[:key] %></li>
     <% end %>
   </ul>
 <% end %>
 
-<% if @prefixes %>
+<% if @listing.prefixes %>
   <h3>Top Level Prefixes</h2>
   <ul>
-    <% @prefixes.values.each do |k| %>
+    <% @listing.prefixes.each do |k| %>
       <li><%= k[:key] %></li>
     <% end %>
   </ul>

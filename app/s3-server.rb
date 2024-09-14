@@ -2,8 +2,7 @@ require 'sinatra'
 require 'sinatra/base'
 require 'aws-sdk-s3'
 require 'aws-sdk-ssm'
-
-
+require_relative 'lib/listing.rb'
 
 helpers do
 
@@ -59,75 +58,49 @@ helpers do
 
 end
 
-def save_key(s3obj, credentials, prefix)
-  k = s3obj.fetch(:key, "")
-  return if k.empty?
-
-  dns = env.fetch('BASE_URL', nil)
-  url = credentials.nil? ? "https://#{dns}/#{k}" : "https://#{credentials.join(':')}@#{dns}/#{k}"
-  @objlist.append({
-    key: k,
-    url: url
-  }) unless k.empty?
-  @data.append(url)
-
-  ka = k[prefix.length..].split('/')
-  return unless ka.length > 1
-  
-  kprefix = ka[0]
-  path = prefix.empty? ? kprefix : "#{prefix}/#{kprefix}"
-
-  rec = @prefixes.fetch(
-    kprefix, 
-    {
-      key: kprefix, 
-      count: 0, 
-      desc: kprefix, 
-      url: "https://#{dns}/#{path}/",
-      depth: 0
-    }
-  )
-  rec[:count] += 1
-  rec[:depth] = [ka.length, rec[:depth]].max
-  rec[:desc] = "#{kprefix} (#{rec[:count]}, #{rec[:depth]})"
-  @prefixes[kprefix] = rec
-end
-
-def list_keys(prefix: '', delimiter: nil, maxobj: 10, erbname: :listing, credentials: nil)
-  @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
-  keys = []
-  @objlist = []
-  @prefixes = {}
-  @data = []
-  resp = @s3_client.list_objects(bucket: env.fetch('BUCKET_NAME', nil), delimiter: delimiter, prefix: prefix, max_keys: maxobj)
-  resp.to_h.fetch(:contents, []).each do |s3obj|
-    save_key(s3obj, credentials, prefix)
-  end
-
-  status 200
-  erb erbname
+def listing
+  Listing.new(
+    region: ENV.fetch('AWS_REGION', nil), 
+    bucket: env.fetch('BUCKET_NAME', nil), 
+    dns: env.fetch('BASE_URL', nil)),
+    maxobj: 30,
+    maxpre: 30
 end
 
 get "/" do
-  list_keys(delimiter: '/', erbname: :index)
+  @listing = listing
+  @listing.list_keys(delimiter: '/')
+
+  status 200
+  erb :index
 end
 
 get "/listing" do
   protected!
+  @listing = listing
+
   status 200
-  @data = []
   erb :listing
 end
 
 post "/listing" do
   protected!
-  list_keys(credentials: @auth.credentials, maxobj: 500, delimiter: nil)
+  @listing = listing
+  @listing.list_keys(credentials: @auth.credentials, delimiter: nil)
+
+  status 200
+  erb :listing
 end
 
 get '/*/' do
   protected!
   key = params['splat'][0]
-  list_keys(credentials: @auth.credentials, prefix: "#{key}/", maxobj: 500, delimiter: nil)
+
+  @listing = listing
+  @listing.list_keys(credentials: @auth.credentials, prefix: "#{key}/", delimiter: nil)
+
+  status 200
+  erb :listing
 end
 
 get '/*' do
