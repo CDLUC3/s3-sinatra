@@ -65,6 +65,7 @@ def listing
     dns: env.fetch('BASE_URL', nil)),
     maxobj: 30,
     maxpre: 30
+  )
 end
 
 get "/" do
