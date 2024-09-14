@@ -62,7 +62,7 @@ def listing
   Listing.new(
     region: ENV.fetch('AWS_REGION', nil), 
     bucket: env.fetch('BUCKET_NAME', nil), 
-    dns: env.fetch('BASE_URL', nil)),
+    dns: env.fetch('BASE_URL', nil),
     maxobj: 30,
     maxpre: 30
   )
