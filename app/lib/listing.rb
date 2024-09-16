@@ -1,4 +1,5 @@
 require 'aws-sdk-s3'
+require_relative 'keymap.rb'
 
 class Listing
   MAXLIST = 200_000
