@@ -1,7 +1,7 @@
 class Keymap
   def initialize(prefix = '', depth = 0, dns: '')
     @prefix = prefix
-    @prefixpath = prefix.empty? : '/' : "/#{prefix}/"
+    @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @keys = {}
     @dns = dns
