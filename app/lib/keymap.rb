@@ -139,7 +139,7 @@ class Keymap
       prefix: @prefix,
       depth: @depth,
       title: '', 
-      recs: {}
+      recs: {},
       batchrecs: {}
     }
 
