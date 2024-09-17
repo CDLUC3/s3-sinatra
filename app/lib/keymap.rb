@@ -126,8 +126,8 @@ class Keymap
 
     other = {}
     if @depth == 0
-      rpt[:title] = "#{@prefix}/object.checkm"
-      rpt[:recs]["#{@prefix}/object.checkm"] = @allkeys.length
+      rpt[:title] = "#{@prefixpath}/object.checkm"
+      rpt[:recs]["#{@prefixpath}/object.checkm"] = @allkeys.length
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
       other = @allkeys.clone

@@ -93,7 +93,7 @@ get '/*/' do
   protected!
   key = params['splat'][0]
 
-  @listing = listing(prefix: key)
+  @listing = listing(prefix: key, depth: 1)
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -104,24 +104,12 @@ get '/*/object.checkm' do
   protected!
   key = params['splat'][0]
 
-  @listing = listing(prefix: key)
+  @listing = listing(prefix: key, depth: 0)
   @listing.list_keys(delimiter: nil)
 
   status 200
   content_type 'text/plain'
   erb :object, layout: nil
-end
-
-get '/*/batch.checkm' do
-  protected!
-  key = params['splat'][0]
-
-  @listing = listing(prefix: key, depth: 1)
-  @listing.list_keys(delimiter: nil)
-
-  status 200
-  content_type 'text/plain'
-  erb :batch, layout: nil
 end
 
 get '/*/batch*.checkm' do
