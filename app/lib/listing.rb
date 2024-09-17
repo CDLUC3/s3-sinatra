@@ -11,7 +11,8 @@ class Listing
     maxobj: 20, 
     maxpre: 20,
     prefix: '',
-    depth: 0
+    depth: 0,
+    credentials: nil
   )
     @bucket = bucket
     @dns = dns
@@ -20,14 +21,14 @@ class Listing
     @s3_client = Aws::S3::Client.new(region: region)
     @prefix = prefix
     @depth = depth
-    @keymap = Keymap.new(@prefix, @depth, dns: @dns)
+    @keymap = Keymap.new(@prefix, @depth, dns: @dns, credentials: credentials)
   end
 
-  def list_keys(delimiter: nil, credentials: nil)
+  def list_keys(prefix: '', delimiter: nil)
     opt = {
       bucket: @bucket, 
       delimiter: delimiter, 
-      prefix: @prefix
+      prefix: prefix
     }
     loop do
       resp = @s3_client.list_objects_v2(opt)

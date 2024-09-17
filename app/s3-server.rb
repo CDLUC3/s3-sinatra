@@ -66,7 +66,8 @@ def listing(prefix = '', depth = 0)
     maxobj: 30,
     maxpre: 30,
     prefix: prefix,
-    depth: depth
+    depth: depth,
+    credentials: @auth.credentials
   )
 end
 
@@ -89,7 +90,7 @@ end
 post "/listing" do
   protected!
   @listing = listing
-  @listing.list_keys(credentials: @auth.credentials, delimiter: nil)
+  @listing.list_keys(delimiter: nil)
 
   status 200
   erb :listing
@@ -100,7 +101,7 @@ get '/*/' do
   key = params['splat'][0]
 
   @listing = listing
-  @listing.list_keys(credentials: @auth.credentials, prefix: "#{key}/", delimiter: nil)
+  @listing.list_keys(prefix: "#{key}/", delimiter: nil)
 
   status 200
   erb :listing
