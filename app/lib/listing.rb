@@ -24,6 +24,11 @@ class Listing
     @keymap = Keymap.new(@prefix, @depth, dns: @dns, credentials: credentials)
   end
 
+  def parent
+    p = File.dirname(@prefix)
+    p == '.' ? '' : p
+  end
+
   def list_keys(prefix: '', delimiter: nil)
     opt = {
       bucket: @bucket, 
