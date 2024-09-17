@@ -108,7 +108,8 @@ get '/*/object.checkm' do
   @listing.list_keys(delimiter: nil)
 
   status 200
-  erb :object, content_type: txt
+  content_type: :txt
+  erb :object
 end
 
 get '/*' do
