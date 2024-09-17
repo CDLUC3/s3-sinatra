@@ -11,21 +11,29 @@
 </form>
 </div>
 
-<div id="listing">
-  <% if @listing.objlist %>
-  <h3>Object List</h2>
+<div id="batch">
+  <h2>Batch Manifests</h2>
   <ul>
-    <% @listing.objlist.each do |k| %>
-      <li><a href="<%= k[:url] %>"><%=k[:key]%></a></li>
+    <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
+  </ul>
+</div>
+
+
+<div id="listing">
+  <% if @listing.prefixes %>
+  <h2>Directories</h2>
+  <ul>
+    <% @listing.prefixes.each do |k| %>
+      <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
     <% end %>
   </ul>
   <% end %>
 
-  <% if @listing.prefixes %>
-  <h3>Directories</h2>
+  <% if @listing.topobjlist %>
+  <h2>Object List</h2>
   <ul>
-    <% @listing.prefixes.each do |k| %>
-      <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
+    <% @listing.topobjlist.each do |k| %>
+      <li><a href="<%= k[:url] %>"><%=k[:key]%></a></li>
     <% end %>
   </ul>
   <% end %>

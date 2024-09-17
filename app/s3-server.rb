@@ -58,13 +58,15 @@ helpers do
 
 end
 
-def listing
+def listing(prefix = '', depth = 0)
   Listing.new(
     region: ENV.fetch('AWS_REGION', nil), 
     bucket: env.fetch('BUCKET_NAME', nil), 
     dns: env.fetch('BASE_URL', nil),
     maxobj: 30,
-    maxpre: 30
+    maxpre: 30,
+    prefix: prefix,
+    depth: depth
   )
 end
 
