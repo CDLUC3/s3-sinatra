@@ -48,9 +48,13 @@ class Keymap
 
   def add_node(k)
     k.strip!
+    return if k == @prefix
     return unless k.start_with?(@prefix)
-    @topdirs.append(k.chop) if k =~ /^[^\/]+\/$/
+
+    k = @prefix.empty? ? k : k[@prefix.length+1..]
+    @topdirs.append(k) if k =~ /^[^\/]+\/$/
     return if k =~ /\/$/
+    return if k.empty?
 
     kdepth = k.split('/').length
     rdepth = -1
@@ -61,7 +65,7 @@ class Keymap
       @topkeys.append(k)
     end
     if p == @prefix
-      @topkeys.append(k[@prefix.length+1..])
+      @topkeys.append(k)
     end
     @allkeys.append(k)
 
