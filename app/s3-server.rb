@@ -67,7 +67,7 @@ def listing(prefix: '', depth: 0)
     maxpre: 30,
     prefix: prefix,
     depth: depth,
-    credentials: @auth.nil? ? nil : @auth.credentials
+    credentials: @authorized? ? @auth.credentials : nil
   )
 end
 
