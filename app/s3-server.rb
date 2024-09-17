@@ -112,6 +112,18 @@ get '/*/object.checkm' do
   erb :object, layout: nil
 end
 
+get '/*/batch.checkm' do
+  protected!
+  key = params['splat'][0]
+
+  @listing = listing(prefix: key)
+  @listing.list_keys(delimiter: nil)
+
+  status 200
+  content_type 'text/plain'
+  erb :batch, layout: nil
+end
+
 get '/*' do
   protected!
   key = params['splat'][0]
