@@ -47,6 +47,17 @@ class Listing
     @keymap.topdirs[0..@maxpre-1]
   end
 
+  def reports
+    arr = []
+    arr.append(
+      {
+        url: @keymap.report_data[:title]
+        desc: @keymap.report_data[:title]
+      }
+    )
+    arr
+  end
+
   #url = credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{credentials.join(':')}@#{@dns}/#{k}"
   
 end

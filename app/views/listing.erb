@@ -12,9 +12,12 @@
 </div>
 
 <div id="batch">
+  <% if @listing.reports %>
   <h2>Batch Manifests</h2>
   <ul>
+    <% @listing.reports.each do |k| %>
     <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
+    <% end %>
   </ul>
 </div>
 
