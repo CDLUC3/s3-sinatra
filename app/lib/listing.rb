@@ -53,6 +53,10 @@ class Listing
     @keymap.topdirs[0..@maxpre-1]
   end
 
+  def allkeys
+    @keymap.allkeys
+  end
+
   def reports
     arr = []
     arr.append(
