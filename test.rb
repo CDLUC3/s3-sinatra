@@ -5,7 +5,7 @@ require_relative 'app/lib/listing.rb'
 
 puts 'DIRS'
 @listing.prefixes.each do |k|
-  puts "\t#{k[:key]}/ depth:#{k[:depth]}; count:#{k[:count]}"
+  puts "\t#{k[:key]}; depth: #{k[:mindepth]}/#{k[:maxdepth]}; count:#{k[:fkeys].length}"
 end
 puts
 puts 'OBJS'

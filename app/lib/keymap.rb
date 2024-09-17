@@ -13,7 +13,11 @@ class Keymap
   end
 
   def topdirs
-    @topdirs
+    arr = []
+    @topdirs.each do |k|
+      arr.append(@keys[k])
+    end
+    arr
   end
 
   def load(file = '/dev/null')
@@ -27,10 +31,8 @@ class Keymap
   def add_node(k)
     k.strip!
     return unless k.start_with?(@prefix)
-    if k =~ /\/$/
-      @topdirs.append(k) if k.split('/').length == 1
-      return
-    end
+    @topdirs.append(k.chop) if k =~ /^[^\/]+\/$/
+    return if k =~ /\/$/
 
     kdepth = k.split('/').length
     rdepth = -1
@@ -50,7 +52,17 @@ class Keymap
       is_top = p == '.' || p == @prefix
       pdepth = is_top ? 0 : kdepth - p.split('/').length
       pdepth = is_top ? 0 : p.split('/').length
-      @keys[p] = @keys.fetch(p, {fkeys: [], mindepth: kdepth, maxdepth: kdepth, depth: pdepth, rdepth: is_top ? 0 : rdepth})
+      @keys[p] = @keys.fetch(
+        p, 
+        {
+          key: p,
+          fkeys: [], 
+          mindepth: kdepth, 
+          maxdepth: kdepth, 
+          depth: pdepth, 
+          rdepth: is_top ? 0 : rdepth
+        }
+      )
       rec = @keys[p]
       rec[:fkeys].append(k[p.length+1..])
       rec[:mindepth] = [rec[:mindepth], kdepth].min
