@@ -106,13 +106,15 @@ get '/*/object.checkm' do
 
   @listing = listing(prefix: key, depth: 0)
   @listing.list_keys(delimiter: nil)
+  #data = @listing.report(request.path)
+  data = "foo #{request.path}"
 
   status 200
   content_type 'text/plain'
-  erb :object, layout: nil
+  render text: data
 end
 
-get '/*/batch*.checkm' do
+get '/*/batch.depth*.checkm' do
   protected!
   key = params['splat'][0]
   depth = params['splat'][1].to_i
