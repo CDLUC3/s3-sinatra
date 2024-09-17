@@ -140,6 +140,7 @@ class Keymap
       depth: @depth,
       title: '', 
       recs: {}
+      batchrecs: {}
     }
 
     other = {}
