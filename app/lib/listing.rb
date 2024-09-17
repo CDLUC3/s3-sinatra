@@ -65,6 +65,9 @@ class Listing
     @keymap.otherkeys.join("\n")
   end
 
+  def report_data
+    @keymap.report_data
+  end
 
   def reports
     arr = []
