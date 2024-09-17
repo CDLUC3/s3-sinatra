@@ -38,6 +38,10 @@ class Keymap
     arr
   end
 
+  def allkeys
+    @allkeys
+  end
+
   def load(file = '/dev/null')
     File.open(file) do |filerec|
       filerec.each do |line|

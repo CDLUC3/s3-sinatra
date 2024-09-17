@@ -100,6 +100,17 @@ get '/*/' do
   erb :listing
 end
 
+get '/*/object.checkm' do
+  protected!
+  key = params['splat'][0]
+
+  @listing = listing(prefix: key)
+  @listing.list_keys(delimiter: nil)
+
+  status 200
+  erb :object
+end
+
 get '/*' do
   protected!
   key = params['splat'][0]
