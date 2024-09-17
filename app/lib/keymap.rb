@@ -98,8 +98,3 @@ class Keymap
     rpt
   end
 end
-
-km = Keymap.new
-args = Keymap.args(ARGV)
-km.load(file: args[:file], prefix: args[:prefix])
-km.report(args[:prefix], args[:depth])
