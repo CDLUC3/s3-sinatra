@@ -39,7 +39,12 @@ class Keymap
   end
 
   def allkeys
-    @allkeys
+    arr = []
+    @allkeys.each do |k|
+        url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
+        arr.append(url)
+    end
+    arr
   end
 
   def load(file = '/dev/null')

@@ -67,7 +67,5 @@ class Listing
     ) unless @keymap.empty?
     arr
   end
-
-  #url = credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{credentials.join(':')}@#{@dns}/#{k}"
   
 end
