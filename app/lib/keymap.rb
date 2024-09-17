@@ -17,7 +17,7 @@ class Keymap
     arr = []
     @topkeys.each do |k|
       rec = @keys[k]
-      rec[:url] = "#{@dns}/#{@prefix}/#{@key}"
+      rec[:url] = "#{@dns}/#{@prefix}/#{k}"
       rec[:desc] = k
       arr.append(rec)
     end
@@ -28,7 +28,7 @@ class Keymap
     arr = []
     @topdirs.each do |k|
       rec = @keys[k]
-      rec[:url] = "#{@dns}/#{@prefix}/#{@key}"
+      rec[:url] = "#{@dns}/#{@prefix}/#{k}"
       rec[:desc] = "#{rec[:key]}/ (Depth: #{rec[:mindepth]};/#{rec[:maxdepth]}; Count: #{rec[:fkeys].length})"
       arr.append(rec)
     end

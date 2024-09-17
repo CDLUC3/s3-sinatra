@@ -20,7 +20,7 @@ class Listing
     @s3_client = Aws::S3::Client.new(region: region)
     @prefix = prefix
     @depth = depth
-    @keymap = Keymap.new(@prefix, @depth)
+    @keymap = Keymap.new(@prefix, @depth, dns: @dns)
   end
 
   def list_keys(delimiter: nil, credentials: nil)
