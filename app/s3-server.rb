@@ -58,7 +58,7 @@ helpers do
 
 end
 
-def listing(prefix = '', depth = 0)
+def listing(prefix: '', depth: 0)
   Listing.new(
     region: ENV.fetch('AWS_REGION', nil), 
     bucket: env.fetch('BUCKET_NAME', nil), 
@@ -93,8 +93,8 @@ get '/*/' do
   protected!
   key = params['splat'][0]
 
-  @listing = listing
-  @listing.list_keys(prefix: "#{key}", delimiter: nil)
+  @listing = listing(prefix: key)
+  @listing.list_keys(delimiter: nil)
 
   status 200
   erb :listing

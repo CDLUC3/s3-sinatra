@@ -1,6 +1,7 @@
 require_relative 'app/lib/listing.rb'
 
-@listing = Listing.new(region: 'us-west-2', bucket: ARGV[0], maxpre: 30)
+prefix = ARGV.length > 1 ? ARGV[1] : ''
+@listing = Listing.new(region: 'us-west-2', bucket: ARGV[0], maxpre: 30, prefix: prefix)
 @listing.list_keys
 
 puts 'DIRS'
