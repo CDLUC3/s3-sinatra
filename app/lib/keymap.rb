@@ -7,6 +7,7 @@ class Keymap
     @dns = dns
     @credentials = credentials
     @allkeys = []
+    @other = {}
     @topkeys = []
     @topdirs = []
   end
@@ -143,24 +144,24 @@ class Keymap
       batchrecs: {}
     }
 
-    other = {}
+    @other = {}
     if @depth == 0
       rpt[:title] = "#{@prefixpath}/object.checkm"
       rpt[:recs]["#{@prefixpath}/object.checkm"] = @allkeys.length
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
-      other = @allkeys.clone
+      @other = @allkeys.clone
       @keys.keys.sort.each do |k|
         rec = @keys[k]
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
         rpt[:recs]["#{k}/object.checkm"] = rec[:fkeys].length
         rpt[:batchrecs]["#{@prefixpath}#{k}/object.checkm"] = rec[:fkeys].length
         rec[:fkeys].each do |dk|
-          other.delete("#{k}/#{dk}")
+          @other.delete("#{k}/#{dk}")
         end
       end
     end
-    unless other.empty?
+    unless @other.empty?
       rpt[:recs]["#{@prefix}/batch-other.depth#{@depth}.checkm"] = other.length
     end
     rpt
