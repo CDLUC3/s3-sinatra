@@ -116,7 +116,7 @@ get '/*/batch.checkm' do
   protected!
   key = params['splat'][0]
 
-  @listing = listing(prefix: key)
+  @listing = listing(prefix: key, depth: 1)
   @listing.list_keys(delimiter: nil)
 
   status 200
