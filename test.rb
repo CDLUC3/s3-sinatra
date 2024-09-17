@@ -10,5 +10,5 @@ end
 puts
 puts 'OBJS'
 @listing.topobjlist.each do |k|
-  puts "\t#{k[:key]}"
+  puts "\t#{k[:desc]} (#{k[:url]})"
 end

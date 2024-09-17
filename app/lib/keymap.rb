@@ -16,9 +16,10 @@ class Keymap
   def topkeys
     arr = []
     @topkeys.each do |k|
-      rec = @keys[k]
-      rec[:url] = "#{@dns}/#{@prefix}/#{k}"
-      rec[:desc] = k
+      rec = {
+        url: "#{@dns}/#{@prefix}/#{k}",
+        desc: k
+      }
       arr.append(rec)
     end
     arr
