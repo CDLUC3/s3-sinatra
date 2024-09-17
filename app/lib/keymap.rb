@@ -47,6 +47,24 @@ class Keymap
     arr
   end
 
+  def otherkeys
+    arr = []
+    @other.each do |k|
+        url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
+        arr.append(url)
+    end
+    arr
+  end
+
+  def batchkeys
+    arr = []
+    report_data[:batchrecs].each do |k|
+        url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
+        arr.append(url)
+    end
+    arr
+  end
+
   def load(file = '/dev/null')
     File.open(file) do |filerec|
       filerec.each do |line|
@@ -135,6 +153,7 @@ class Keymap
         rec = @keys[k]
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
         rpt[:recs]["#{k}/object.checkm"] = rec[:fkeys].length
+        rpt[:batchrecs]["#{@prefixpath}#{k}/object.checkm"] = rec[:fkeys].length
         rec[:fkeys].each do |dk|
           other.delete("#{k}/#{dk}")
         end

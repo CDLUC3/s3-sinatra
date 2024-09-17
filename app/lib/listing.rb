@@ -58,11 +58,11 @@ class Listing
   end
 
   def batch_data
-    'batch'
+    @keymap.batchkeys.join("\n")
   end
 
   def other_data
-    'other'
+    @keymap.otherkeys.join("\n")
   end
 
 
