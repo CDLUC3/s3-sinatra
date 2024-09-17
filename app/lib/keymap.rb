@@ -8,6 +8,10 @@ class Keymap
     @topdirs = []
   end
 
+  def empty?
+    @keys.empty?
+  end
+
   def topkeys
     arr = []
     @topkeys.each do |k|
@@ -19,7 +23,10 @@ class Keymap
   def topdirs
     arr = []
     @topdirs.each do |k|
-      arr.append(@keys[k])
+      rec = @keys[k]
+      rec[:url] = 'tbd'
+      rec[:desc] = "#{rec[:key]}; Depth: #{rec[:mindepth]};/#{rec[:maxdepth]}; Count: #{rec[:fkeys].length}"
+      arr.append(rec)
     end
     arr
   end

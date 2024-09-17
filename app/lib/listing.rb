@@ -54,7 +54,7 @@ class Listing
         url: @keymap.report_data[:title],
         desc: @keymap.report_data[:title]
       }
-    )
+    ) unless @keymap.empty?
     arr
   end
 
