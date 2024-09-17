@@ -109,7 +109,7 @@ get '/*/object.checkm' do
 
   status 200
   content_type 'text/plain'
-  erb :object
+  erb :object, layout: nil
 end
 
 get '/*' do
