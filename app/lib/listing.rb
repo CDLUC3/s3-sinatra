@@ -65,7 +65,7 @@ class Listing
         desc: @keymap.report_data[:title]
       }
     ) unless @keymap.empty?
-    @keymap.report_data.recs.each do |k,v|
+    @keymap.report_data[:recs].each do |k,v|
       arr.append(
         {
           url: "/#{k}",
