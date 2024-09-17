@@ -61,7 +61,7 @@ class Listing
     arr = []
     arr.append(
       {
-        url: @keymap.report_data[:title],
+        url: "/#{@keymap.report_data[:title]}",
         desc: @keymap.report_data[:title]
       }
     ) unless @keymap.empty?
