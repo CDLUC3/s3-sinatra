@@ -66,8 +66,7 @@ def listing(prefix: '', depth: 0)
     maxobj: 30,
     maxpre: 30,
     prefix: prefix,
-    depth: depth,
-    credentials: authorized? ? @auth.credentials : nil
+    depth: depth
   )
 end
 
@@ -81,8 +80,9 @@ end
 
 get "/listing" do
   protected!
-  @listing = listing
 
+  @listing = listing
+  @listing[:credentials] = @auth.credentials
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -91,9 +91,11 @@ end
 
 get '/*/' do
   protected!
+
   key = params['splat'][0]
 
   @listing = listing(prefix: key, depth: 1)
+  @listing[:credentials] = @auth.credentials
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -102,9 +104,11 @@ end
 
 get '/*/object.checkm' do
   protected!
+
   key = params['splat'][0]
 
   @listing = listing(prefix: key, depth: 0)
+  @listing[:credentials] = @auth.credentials
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -114,10 +118,12 @@ end
 
 get '/*/batch.depth*.checkm' do
   protected!
+
   key = params['splat'][0]
   depth = params['splat'][1].to_i
 
   @listing = listing(prefix: key, depth: depth)
+  @listing[:credentials] = @auth.credentials
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -127,10 +133,12 @@ end
 
 get '/*/batch-other.depth*.checkm' do
   protected!
+
   key = params['splat'][0]
   depth = params['splat'][1].to_i
 
   @listing = listing(prefix: key, depth: depth)
+  @listing[:credentials] = @auth.credentials
   @listing.list_keys(delimiter: nil)
 
   status 200
