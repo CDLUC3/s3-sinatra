@@ -57,7 +57,7 @@ class Listing
     @keymap.allkeys.join("\n")
   end
 
-  def object_data
+  def batch_data
     'batch'
   end
 
