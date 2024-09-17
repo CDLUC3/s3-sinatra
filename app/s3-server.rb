@@ -94,7 +94,7 @@ get '/*/' do
   key = params['splat'][0]
 
   @listing = listing
-  @listing.list_keys(prefix: "#{key}/", delimiter: nil)
+  @listing.list_keys(prefix: "#{key}", delimiter: nil)
 
   status 200
   erb :listing
