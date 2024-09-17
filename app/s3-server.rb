@@ -83,13 +83,6 @@ get "/listing" do
   protected!
   @listing = listing
 
-  status 200
-  erb :listing
-end
-
-post "/listing" do
-  protected!
-  @listing = listing
   @listing.list_keys(delimiter: nil)
 
   status 200
