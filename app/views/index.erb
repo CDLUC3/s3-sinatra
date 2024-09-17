@@ -8,7 +8,7 @@
   <h3>Top Level Objects</h2>
   <ul>
     <% @listing.topobjlist.each do |k| %>
-      <li><%= k[:key] %></li>
+      <li><%= k[:desc] %></li>
     <% end %>
   </ul>
 <% end %>
@@ -17,7 +17,7 @@
   <h3>Top Level Prefixes</h2>
   <ul>
     <% @listing.prefixes.each do |k| %>
-      <li><%= k[:key] %></li>
+      <li><%= k[:desc] %></li>
     <% end %>
   </ul>
 <% end %>
