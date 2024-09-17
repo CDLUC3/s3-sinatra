@@ -162,7 +162,7 @@ class Keymap
       end
     end
     unless @other.empty?
-      rpt[:recs]["#{@prefix}/batch-other.depth#{@depth}.checkm"] = other.length
+      rpt[:recs]["#{@prefix}/batch-other.depth#{@depth}.checkm"] = @other.length
     end
     rpt
   end
