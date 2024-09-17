@@ -57,6 +57,15 @@ class Listing
     @keymap.allkeys.join("\n")
   end
 
+  def object_data
+    'batch'
+  end
+
+  def other_data
+    'other'
+  end
+
+
   def reports
     arr = []
     arr.append(

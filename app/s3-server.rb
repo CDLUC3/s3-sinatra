@@ -106,12 +106,10 @@ get '/*/object.checkm' do
 
   @listing = listing(prefix: key, depth: 0)
   @listing.list_keys(delimiter: nil)
-  #data = @listing.object_data
-  data = "foo #{request.path}"
 
   status 200
   content_type 'text/plain'
-  data
+  @listing.object_data
 end
 
 get '/*/batch.depth*.checkm' do
@@ -124,7 +122,20 @@ get '/*/batch.depth*.checkm' do
 
   status 200
   content_type 'text/plain'
-  erb :batch, layout: nil
+  @listing.batch_data
+end
+
+get '/*/batch-other.depth*.checkm' do
+  protected!
+  key = params['splat'][0]
+  depth = params['splat'][1].to_i
+
+  @listing = listing(prefix: key, depth: depth)
+  @listing.list_keys(delimiter: nil)
+
+  status 200
+  content_type 'text/plain'
+  @listing.other_data
 end
 
 get '/*' do
