@@ -124,6 +124,19 @@ get '/*/batch.checkm' do
   erb :batch, layout: nil
 end
 
+get '/*/batch*.checkm' do
+  protected!
+  key = params['splat'][0]
+  depth = params['splat'][1].to_i
+
+  @listing = listing(prefix: key, depth: depth)
+  @listing.list_keys(delimiter: nil)
+
+  status 200
+  content_type 'text/plain'
+  erb :batch, layout: nil
+end
+
 get '/*' do
   protected!
   key = params['splat'][0]

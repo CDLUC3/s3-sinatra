@@ -29,11 +29,11 @@ class Listing
     p == '.' ? '' : p
   end
 
-  def list_keys(prefix: '', delimiter: nil)
+  def list_keys(delimiter: nil)
     opt = {
       bucket: @bucket, 
       delimiter: delimiter, 
-      prefix: prefix
+      prefix: @prefix
     }
     loop do
       resp = @s3_client.list_objects_v2(opt)
@@ -55,6 +55,10 @@ class Listing
 
   def allkeys
     @keymap.allkeys
+  end
+
+  def report_data
+    @keymap.report_data
   end
 
   def reports

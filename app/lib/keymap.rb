@@ -118,6 +118,8 @@ class Keymap
 
   def report_data
     rpt = {
+      prefix: @prefix,
+      depth: @depth,
       title: '', 
       recs: {}
     }
