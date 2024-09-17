@@ -106,12 +106,12 @@ get '/*/object.checkm' do
 
   @listing = listing(prefix: key, depth: 0)
   @listing.list_keys(delimiter: nil)
-  #data = @listing.report(request.path)
+  #data = @listing.object_data
   data = "foo #{request.path}"
 
   status 200
   content_type 'text/plain'
-  render text: data
+  data
 end
 
 get '/*/batch.depth*.checkm' do

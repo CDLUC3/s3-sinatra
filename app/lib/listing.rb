@@ -53,12 +53,8 @@ class Listing
     @keymap.topdirs[0..@maxpre-1]
   end
 
-  def allkeys
-    @keymap.allkeys
-  end
-
-  def report_data
-    @keymap.report_data
+  def object_data
+    @keymap.allkeys.join("\n")
   end
 
   def reports
