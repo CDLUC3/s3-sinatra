@@ -9,7 +9,11 @@ class Keymap
   end
 
   def topkeys
-    @topkeys
+    arr = []
+    @topkeys.each do |k|
+      arr.append({key: k})
+    end
+    arr
   end
 
   def topdirs
