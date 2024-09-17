@@ -37,7 +37,7 @@
   <h2>Object List</h2>
   <ul>
     <% @listing.topobjlist.each do |k| %>
-      <li><a href="<%= k[:url] %>"><%=k[:key]%></a></li>
+      <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
     <% end %>
   </ul>
   <% end %>
