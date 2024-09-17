@@ -1,6 +1,7 @@
 class Keymap
   def initialize(prefix = '', depth = 0, dns: '')
     @prefix = prefix
+    @prefixpath = prefix.empty? : '/' : "/#{prefix}/"
     @depth = depth
     @keys = {}
     @dns = dns
@@ -17,7 +18,7 @@ class Keymap
     arr = []
     @topkeys.each do |k|
       rec = {
-        url: "#{@dns}/#{@prefix}/#{k}",
+        url: "#{@prefixpath}#{k}",
         desc: k
       }
       arr.append(rec)
@@ -29,7 +30,7 @@ class Keymap
     arr = []
     @topdirs.each do |k|
       rec = @keys[k]
-      rec[:url] = "#{@dns}/#{@prefix}/#{k}"
+      rec[:url] = "#{@prefixpath}#{k}"
       rec[:desc] = "#{rec[:key]}/ (Depth: #{rec[:mindepth]};/#{rec[:maxdepth]}; Count: #{rec[:fkeys].length})"
       arr.append(rec)
     end
