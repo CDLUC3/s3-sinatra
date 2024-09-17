@@ -52,7 +52,7 @@ class Keymap
     return unless k.start_with?(@prefix)
 
     k = @prefix.empty? ? k : k[@prefix.length+1..]
-    @topdirs.append(k) if k =~ /^[^\/]+\/$/
+    @topdirs.append(k.chop) if k =~ /^[^\/]+\/$/
     return if k =~ /\/$/
     return if k.empty?
 
