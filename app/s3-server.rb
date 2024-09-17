@@ -58,7 +58,7 @@ helpers do
 
 end
 
-def listing(prefix: '', depth: 0)
+def listing(prefix: '', depth: 0, credentials: nil)
   Listing.new(
     region: ENV.fetch('AWS_REGION', nil), 
     bucket: env.fetch('BUCKET_NAME', nil), 
@@ -66,7 +66,8 @@ def listing(prefix: '', depth: 0)
     maxobj: 30,
     maxpre: 30,
     prefix: prefix,
-    depth: depth
+    depth: depth,
+    credentials: credentials
   )
 end
 
@@ -81,8 +82,7 @@ end
 get "/listing" do
   protected!
 
-  @listing = listing
-  @listing[:credentials] = @auth.credentials
+  @listing = listing(credentials: @auth.credentials)
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -94,8 +94,7 @@ get '/*/' do
 
   key = params['splat'][0]
 
-  @listing = listing(prefix: key, depth: 1)
-  @listing[:credentials] = @auth.credentials
+  @listing = listing(prefix: key, depth: 1, credentials: @auth.credentials)
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -107,8 +106,7 @@ get '/*/object.checkm' do
 
   key = params['splat'][0]
 
-  @listing = listing(prefix: key, depth: 0)
-  @listing[:credentials] = @auth.credentials
+  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -122,8 +120,7 @@ get '/*/batch.depth*.checkm' do
   key = params['splat'][0]
   depth = params['splat'][1].to_i
 
-  @listing = listing(prefix: key, depth: depth)
-  @listing[:credentials] = @auth.credentials
+  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys(delimiter: nil)
 
   status 200
@@ -137,8 +134,7 @@ get '/*/batch-other.depth*.checkm' do
   key = params['splat'][0]
   depth = params['splat'][1].to_i
 
-  @listing = listing(prefix: key, depth: depth)
-  @listing[:credentials] = @auth.credentials
+  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys(delimiter: nil)
 
   status 200
