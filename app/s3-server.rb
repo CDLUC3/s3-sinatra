@@ -90,18 +90,6 @@ get "/listing" do
   erb :listing
 end
 
-get '/*/' do
-  protected!
-
-  key = params['splat'][0]
-
-  @listing = listing(prefix: key, depth: 1, credentials: @auth.credentials, mode: :directory)
-  @listing.list_keys
-
-  status 200
-  erb :listing
-end
-
 get '/*/object.checkm' do
   protected!
 
@@ -194,6 +182,18 @@ get '/batch-other.depth*.checkm' do
   status 200
   content_type 'text/plain'
   @listing.other_data
+end
+
+get '/*/' do
+  protected!
+
+  key = params['splat'][0]
+
+  @listing = listing(prefix: key, depth: 1, credentials: @auth.credentials, mode: :directory)
+  @listing.list_keys
+
+  status 200
+  erb :listing
 end
 
 get '/*' do
