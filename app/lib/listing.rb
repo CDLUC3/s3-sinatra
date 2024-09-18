@@ -58,19 +58,26 @@ class Listing
   end
 
   def checkm_header
-    %{
-#%checkm_0.7
+%{#%checkm_0.7
 #%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-ingest-manifest
 #%prefix | mrt: | http://merritt.cdlib.org/terms#
 #%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
 #%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:mimeType
-    }
+}
   end
 
+  def batch_checkm_header
+%{#%checkm_0.7
+#%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-batch-manifest
+#%prefix | mrt: | http://merritt.cdlib.org/terms#
+#%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
+#%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:primaryIdentifier | mrt:localIdentifier | mrt:creator | mrt:title | mrt:date
+}
+  end
+    
   def checkm_footer
-   %{
-#%eof
-    }
+%{#%eof
+}
   end
 
   def manifest_urls(arr, pre)
@@ -78,7 +85,15 @@ class Listing
     arr.each do |k|
       marr.append("#{k} | | | | | #{k[pre.length..]}")
     end
-    marr.join('\n')
+    marr.join("\n")
+  end
+
+  def batch_manifest_urls(arr, pre)
+    marr = []
+    arr.each do |k|
+      marr.append("#{k} | | | | | #{k[pre.length..].gsub(/\//, '_')} | | | | | ")
+    end
+    marr.join("\n")
   end
 
   def object_data
@@ -86,11 +101,11 @@ class Listing
   end
 
   def batch_data
-    @keymap.batchkeys.join("\n")
+    batch_checkm_header + batch_manifest_urls(@keymap.batchkeys) + checkm_footer
   end
 
   def other_data
-    @keymap.otherkeys.join("\n")
+    checkm_header + manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + checkm_footer
   end
 
   def component_data
