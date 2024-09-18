@@ -42,7 +42,7 @@ class Keymap
   def allkeys
     arr = []
     @allkeys.each do |k|
-        url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
+        url = @credentials.nil? ? "https://#{@dns}#{prefixpath}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{prefixpath}#{k}"
         arr.append(url)
     end
     arr
