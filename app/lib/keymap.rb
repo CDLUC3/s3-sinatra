@@ -1,5 +1,5 @@
 class Keymap
-  def initialize(prefix = '', depth = 0, dns: '', credentials: nil)
+  def initialize(prefix = '', depth = 0, dns: 'foo.bar', credentials: nil)
     @prefix = prefix
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
@@ -51,7 +51,7 @@ class Keymap
   def otherkeys
     arr = []
     @other.each do |k|
-        url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
+        url = @credentials.nil? ? "https://#{@dns}#{@prefixpath}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{@prefixpath}#{k}"
         arr.append(url)
     end
     arr
@@ -60,7 +60,7 @@ class Keymap
   def batchkeys
     arr = []
     component_data[:batchrecs].keys.each do |k|
-        url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
+        url = @credentials.nil? ? "https://#{@dns}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{k}"
         arr.append(url)
     end
     arr
