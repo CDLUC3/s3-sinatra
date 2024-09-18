@@ -58,7 +58,7 @@ helpers do
 
 end
 
-def listing(prefix: '', depth: 0, credentials: nil)
+def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
   Listing.new(
     region: ENV.fetch('AWS_REGION', nil), 
     bucket: env.fetch('BUCKET_NAME', nil), 
@@ -67,7 +67,8 @@ def listing(prefix: '', depth: 0, credentials: nil)
     maxpre: 30,
     prefix: prefix,
     depth: depth,
-    credentials: credentials
+    credentials: credentials,
+    mode: mode
   )
 end
 
