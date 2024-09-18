@@ -59,7 +59,7 @@ class Keymap
 
   def batchkeys
     arr = []
-    report_data[:batchrecs].each do |k|
+    component_data[:batchrecs].each do |k|
         url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
         arr.append(url)
     end
@@ -124,7 +124,7 @@ class Keymap
   end
 
   def report
-    rpt = report_data
+    rpt = component_data
     puts rpt[:title]
     puts '--------------'
     count = 0
@@ -135,7 +135,7 @@ class Keymap
     puts sprintf("%6d %s", count, 'TOTAL')
   end
 
-  def report_data
+  def component_data
     rpt = {
       prefix: @prefix,
       depth: @depth,

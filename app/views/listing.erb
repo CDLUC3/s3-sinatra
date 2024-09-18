@@ -11,20 +11,30 @@
 <br>
 
 <pre>
-  <%= @listing.report_data %>
+  <%= @listing.component_data %>
 </pre>
 
-<div id="batch">
-  <% if @listing.reports %>
-  <h2>Batch Manifests</h2>
+<div id="manifest">
+  <% if @listing.manifest_options %>
+  <h2>Manifest Options</h2>
   <ul>
-    <% @listing.reports.each do |k| %>
+    <% @listing.manifest_options.each do |k| %>
     <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
     <% end %>
   </ul>
   <% end %>
 </div>
 
+<div id="components">
+  <% if @listing.components %>
+  <h2>Manifest Components</h2>
+  <ul>
+    <% @listing.components.each do |k| %>
+    <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
+    <% end %>
+  </ul>
+  <% end %>
+</div>
 
 <div id="listing">
   <% if @listing.prefixes %>

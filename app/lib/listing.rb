@@ -12,7 +12,8 @@ class Listing
     maxpre: 20,
     prefix: '',
     depth: 0,
-    credentials: nil
+    credentials: nil,
+    mode: :component
   )
     @bucket = bucket
     @dns = dns
@@ -20,7 +21,9 @@ class Listing
     @maxpre = maxpre
     @s3_client = Aws::S3::Client.new(region: region)
     @prefix = prefix
+    @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
+    @mode = mode
     @keymap = Keymap.new(@prefix, @depth, dns: @dns, credentials: credentials)
   end
 
@@ -64,13 +67,26 @@ class Listing
     @keymap.otherkeys.join("\n")
   end
 
-  def report_data
-    @keymap.report_data
+  def component_data
+    @keymap.component_data
   end
 
-  def reports
+  def manifest_options
     arr = []
-    @keymap.report_data[:recs].each do |k,v|
+    return arr if @mode == :component
+    %w[object.checkm batch.depth1 batch.depth2 batch.depth-1 batch.depth-2].each do |k|
+      arr.append({
+        url: "#{@prefixpath}/#{k}",
+        desc: "#{k}"
+      })
+    end
+    arr
+  end
+
+  def components
+    arr = []
+    return arr if @mode == :directory
+    @keymap.component_data[:recs].each do |k,v|
       arr.append(
         {
           url: "#{k}",
@@ -80,5 +96,5 @@ class Listing
     end
     arr
   end
-  
+
 end
