@@ -66,8 +66,6 @@ class Listing
 #%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:mimeType
     }
   end
-https://raw.githubusercontent.com/CDLUC3/mrt-doc/main/sampleFiles/call911.jpg | md5 | 47d321056e60944a06973793c7b5841e | 87112 |  | call911.jpg
-https://raw.githubusercontent.com/CDLUC3/mrt-doc/main/sampleFiles/call911.txt | md5 | 77fe42b1055bbabe5164822823218f0a | 46 |  | call911.txt
 
   def checkm_footer
    %{
@@ -75,8 +73,16 @@ https://raw.githubusercontent.com/CDLUC3/mrt-doc/main/sampleFiles/call911.txt | 
     }
   end
 
+  def manifest_urls(arr, pre)
+    marr = []
+    arr.each do |k|
+      marr.append("#{k} | | | | | #{k[pre.length..]}", @keymap.url_prefix)
+    end
+    marr.join('\n')
+  end
+
   def object_data
-    checkm_header + @keymap.allkeys.join("\n") + checkm_footer
+    checkm_header + manifest_urls(@keymap.allkeys) + checkm_footer
   end
 
   def batch_data

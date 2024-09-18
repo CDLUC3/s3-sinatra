@@ -42,8 +42,7 @@ class Keymap
   def allkeys
     arr = []
     @allkeys.each do |k|
-        url = @credentials.nil? ? "https://#{@dns}#{@prefixpath}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{@prefixpath}#{k}"
-        arr.append(url)
+        arr.append("#{url_prefix}#{k}")
     end
     arr
   end
@@ -52,10 +51,13 @@ class Keymap
     arr = []
     component_data
     @other.each do |k|
-        url = @credentials.nil? ? "https://#{@dns}#{@prefixpath}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{@prefixpath}#{k}"
-        arr.append(url)
+        arr.append("#{url_prefix}#{k}")
     end
     arr
+  end
+
+  def url_prefix
+    @credentials.nil? ? "https://#{@dns}#{@prefixpath}" : "https://#{@credentials.join(':')}@#{@dns}#{@prefixpath}"
   end
 
   def batchkeys
