@@ -70,16 +70,10 @@ class Listing
 
   def reports
     arr = []
-    arr.append(
-      {
-        url: @keymap.report_data[:title],
-        desc: @keymap.report_data[:title]
-      }
-    ) unless @keymap.empty?
     @keymap.report_data[:recs].each do |k,v|
       arr.append(
         {
-          url: "/#{k}",
+          url: "#{k}",
           desc: "#{k} (#{v})"
         }
       )
