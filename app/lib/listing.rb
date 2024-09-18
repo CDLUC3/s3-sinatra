@@ -76,7 +76,8 @@ class Listing
   end
     
   def checkm_footer
-%{#%eof
+%{
+#%eof
 }
   end
 
@@ -101,7 +102,7 @@ class Listing
   end
 
   def batch_data
-    batch_checkm_header + batch_manifest_urls(@keymap.batchkeys) + checkm_footer
+    batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix) + checkm_footer
   end
 
   def other_data
