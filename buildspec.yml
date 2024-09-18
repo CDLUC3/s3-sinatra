@@ -28,3 +28,8 @@ phases:
         --function-name SinatraLambda-default \
         --s3-bucket ${S3PRIVBUCKET} \
         --s3-key deploy/s3-sinatra-lb.zip --no-cli-pager
+    - |
+      aws lambda update-function-code \
+        --function-name SinatraLambda-demo \
+        --s3-bucket ${S3PRIVBUCKET} \
+        --s3-key deploy/s3-sinatra-lb.zip --no-cli-pager
