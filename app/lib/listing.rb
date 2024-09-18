@@ -62,7 +62,7 @@ class Listing
   end
 
   def batch_data
-    @keymap.batchkeys.keys.join("\n")
+    @keymap.batchkeys.join("\n")
   end
 
   def other_data
