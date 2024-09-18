@@ -67,7 +67,7 @@ class Listing
   end
 
   def batchobject_checkm_header
-    %{#%checkm_0.7
+%{#%checkm_0.7
 #%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-single-file-batch-manifest
 #%prefix | mrt: | http://merritt.cdlib.org/terms#
 #%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
@@ -139,10 +139,10 @@ class Listing
       })
     end
     karr = []
-    for i in 1..@keymap.maxdepth
+    for i in 1..@keymap.maxdepth - 1
       karr.append("batch.depth#{i}")
     end
-    for i in 1..@keymap.maxdepth
+    for i in 1..@keymap.maxdepth - 1
       karr.append("batch.depth-#{i}")
     end
     karr.each do |k|
