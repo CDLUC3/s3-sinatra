@@ -115,6 +115,19 @@ get '/*/object.checkm' do
   @listing.object_data
 end
 
+get '/object.checkm' do
+  protected!
+
+  key = ''
+
+  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
+  @listing.list_keys
+
+  status 200
+  content_type 'text/plain'
+  @listing.object_data
+end
+
 get '/*/batch.depth*.checkm' do
   protected!
 
@@ -142,11 +155,38 @@ get '/*/batch.depth*' do
   erb :listing
 end
 
+get '/batch.depth*' do
+  protected!
+
+  key = ''
+  depth = params['splat'][0].to_i
+
+  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
+  @listing.list_keys
+
+  status 200
+  erb :listing
+end
+
 get '/*/batch-other.depth*.checkm' do
   protected!
 
   key = params['splat'][0]
   depth = params['splat'][1].to_i
+
+  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
+  @listing.list_keys
+
+  status 200
+  content_type 'text/plain'
+  @listing.other_data
+end
+
+get '/batch-other.depth*.checkm' do
+  protected!
+
+  key = ''
+  depth = params['splat'][0].to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys
