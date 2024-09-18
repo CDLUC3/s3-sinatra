@@ -165,7 +165,7 @@ get %r[/batch.depth(-?\d+).checkm] do |d|
 
   status 200
   content_type 'text/plain'
-  @listing.other_data
+  @listing.batch_data
 end
 
 get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
