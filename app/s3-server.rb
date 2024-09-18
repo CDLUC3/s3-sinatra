@@ -116,11 +116,11 @@ get '/object.checkm' do
   @listing.object_data
 end
 
-get '/*/batch.depth*.checkm' do
+get '/*/batch.depth(-?\d).checkm' do |d|
   protected!
 
   key = params['splat'][0]
-  depth = params['splat'][1].to_i
+  depth = d.to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys
@@ -130,11 +130,11 @@ get '/*/batch.depth*.checkm' do
   @listing.batch_data
 end
 
-get '/*/batch.depth*/' do
+get '/*/batch.depth(-?\d)' do |d|
   protected!
 
   key = params['splat'][0]
-  depth = params['splat'][1].to_i
+  depth = d.to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys
@@ -143,11 +143,11 @@ get '/*/batch.depth*/' do
   erb :listing
 end
 
-get '/batch.depth*/' do
+get '/batch.depth(-?\d)' do |d|
   protected!
 
   key = ''
-  depth = params['splat'][0].to_i
+  depth = d.to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys
@@ -156,11 +156,11 @@ get '/batch.depth*/' do
   erb :listing
 end
 
-get '/*/batch-other.depth*.checkm' do
+get '/*/batch-other.depth(-?\d).checkm' do |d|
   protected!
 
   key = params['splat'][0]
-  depth = params['splat'][1].to_i
+  depth = d.to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys
@@ -170,11 +170,11 @@ get '/*/batch-other.depth*.checkm' do
   @listing.other_data
 end
 
-get '/batch-other.depth*.checkm' do
+get '/batch-other.depth(-?\d).checkm' do |d|
   protected!
 
   key = ''
-  depth = params['splat'][0].to_i
+  depth = d.to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
   @listing.list_keys
