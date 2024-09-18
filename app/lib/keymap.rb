@@ -50,6 +50,7 @@ class Keymap
 
   def otherkeys
     arr = []
+    component_data
     @other.each do |k|
         url = @credentials.nil? ? "https://#{@dns}#{@prefixpath}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{@prefixpath}#{k}"
         arr.append(url)
