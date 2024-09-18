@@ -116,7 +116,7 @@ get '/object.checkm' do
   @listing.object_data
 end
 
-get '/*/batch.depth(-?\d).checkm' do |d|
+get %r[/*/batch.depth(-?\d).checkm] do |d|
   protected!
 
   key = params['splat'][0]
@@ -130,7 +130,7 @@ get '/*/batch.depth(-?\d).checkm' do |d|
   @listing.batch_data
 end
 
-get '/*/batch.depth(-?\d)' do |d|
+get %r[/*/batch.depth(-?\d)] do |d|
   protected!
 
   key = params['splat'][0]
@@ -143,7 +143,7 @@ get '/*/batch.depth(-?\d)' do |d|
   erb :listing
 end
 
-get '/batch.depth(-?\d)' do |d|
+get %r[/batch.depth(-?\d)] do |d|
   protected!
 
   key = ''
@@ -156,7 +156,7 @@ get '/batch.depth(-?\d)' do |d|
   erb :listing
 end
 
-get '/*/batch-other.depth(-?\d).checkm' do |d|
+get %r[/*/batch-other.depth(-?\d).checkm] do |d|
   protected!
 
   key = params['splat'][0]
@@ -170,7 +170,7 @@ get '/*/batch-other.depth(-?\d).checkm' do |d|
   @listing.other_data
 end
 
-get '/batch-other.depth(-?\d).checkm' do |d|
+get %r[/batch-other.depth(-?\d).checkm] do |d|
   protected!
 
   key = ''
