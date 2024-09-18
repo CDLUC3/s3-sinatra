@@ -76,7 +76,7 @@ class Listing
     return arr if @mode == :component
     %w[object.checkm batch.depth1 batch.depth2 batch.depth-1 batch.depth-2].each do |k|
       arr.append({
-        url: "#{@prefixpath}/#{k}",
+        url: "#{@prefixpath}#{k}",
         desc: "#{k}"
       })
     end
