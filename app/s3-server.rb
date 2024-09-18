@@ -83,7 +83,7 @@ end
 get "/listing" do
   protected!
 
-  @listing = listing(credentials: @auth.credentials)
+  @listing = listing(credentials: @auth.credentials, mode: :directory)
   @listing.list_keys
 
   status 200
