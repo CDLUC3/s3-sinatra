@@ -72,7 +72,7 @@ class Listing
 #%prefix | mrt: | http://merritt.cdlib.org/terms#
 #%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
 #%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:primaryIdentifier | mrt:localIdentifier | mrt:creator | mrt:title | mrt:date
-    }
+}
   end
     
   def batch_checkm_header
