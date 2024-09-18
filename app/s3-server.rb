@@ -116,7 +116,7 @@ get '/object.checkm' do
   @listing.object_data
 end
 
-get %r[^/(.*)/batch.depth(-?\d+).checkm$] do |key, d|
+get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
   protected!
 
   depth = d.to_i
@@ -129,7 +129,7 @@ get %r[^/(.*)/batch.depth(-?\d+).checkm$] do |key, d|
   @listing.batch_data
 end
 
-get %r[^/(.*)/batch.depth(-?\d+)$] do |key, d|
+get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
   protected!
 
   depth = d.to_i
@@ -141,7 +141,7 @@ get %r[^/(.*)/batch.depth(-?\d+)$] do |key, d|
   erb :listing
 end
 
-get %r[^/batch.depth(-?\d+)$] do |d|
+get %r[/batch.depth(-?\d+)] do |d|
   protected!
 
   key = ''
@@ -154,7 +154,7 @@ get %r[^/batch.depth(-?\d+)$] do |d|
   erb :listing
 end
 
-get %r[^/batch.depth(-?\d+).checkm$] do |d|
+get %r[/batch.depth(-?\d+).checkm] do |d|
   protected!
 
   depth = d.to_i
@@ -167,7 +167,7 @@ get %r[^/batch.depth(-?\d+).checkm$] do |d|
   @listing.other_data
 end
 
-get %r[^/(.*)/batch-other.depth(-?\d+).checkm$] do |key, d|
+get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
   protected!
 
   depth = d.to_i
@@ -180,7 +180,7 @@ get %r[^/(.*)/batch-other.depth(-?\d+).checkm$] do |key, d|
   @listing.other_data
 end
 
-get %r[^/batch-other.depth(-?\d+).checkm$] do |d|
+get %r[/batch-other.depth(-?\d+).checkm] do |d|
   protected!
 
   key = ''
