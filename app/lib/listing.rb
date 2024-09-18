@@ -57,8 +57,26 @@ class Listing
     @keymap.topdirs[0..@maxpre-1]
   end
 
+  def checkm_header
+    %{
+#%checkm_0.7
+#%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-ingest-manifest
+#%prefix | mrt: | http://merritt.cdlib.org/terms#
+#%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
+#%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:mimeType
+    }
+  end
+https://raw.githubusercontent.com/CDLUC3/mrt-doc/main/sampleFiles/call911.jpg | md5 | 47d321056e60944a06973793c7b5841e | 87112 |  | call911.jpg
+https://raw.githubusercontent.com/CDLUC3/mrt-doc/main/sampleFiles/call911.txt | md5 | 77fe42b1055bbabe5164822823218f0a | 46 |  | call911.txt
+
+  def checkm_footer
+   %{
+#%eof
+    }
+  end
+
   def object_data
-    @keymap.allkeys.join("\n")
+    checkm_header + @keymap.allkeys.join("\n") + checkm_footer
   end
 
   def batch_data

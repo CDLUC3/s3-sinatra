@@ -10,10 +10,6 @@
 </div>
 <br>
 
-<pre>
-  <%= @listing.component_data %>
-</pre>
-
 <div id="manifest">
   <% unless @listing.manifest_options.empty? %>
   <h2>Manifest Options</h2>
@@ -22,7 +18,7 @@
     <li>
       <a href="<%= k[:url] %>"><%=k[:desc]%></a>
       <% if k.key?(:download) %>
-      (<a href="<%= k[:download] %>">download</a>)
+      (<a href="<%= k[:download] %>">checkm</a>)
       <% end %>
     </li>
     <% end %>
