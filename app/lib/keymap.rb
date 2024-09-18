@@ -42,7 +42,7 @@ class Keymap
   def allkeys
     arr = []
     @allkeys.each do |k|
-        url = @credentials.nil? ? "https://#{@dns}#{prefixpath}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{prefixpath}#{k}"
+        url = @credentials.nil? ? "https://#{@dns}#{@prefixpath}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{@prefixpath}#{k}"
         arr.append(url)
     end
     arr
@@ -147,7 +147,7 @@ class Keymap
     @other = {}
     if @depth == 0
       rpt[:title] = "#{@prefixpath}object.checkm"
-      rpt[:recs]["#{@prefixpath}object.checkm"] = @allkeys.length
+      rpt[:recs]["object.checkm"] = @allkeys.length
       rpt[:batchrecs]["#{@prefixpath}object.checkm"] = @allkeys.length
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
@@ -163,7 +163,7 @@ class Keymap
       end
     end
     unless @other.empty?
-      rpt[:recs]["#{@prefix}/batch-other.depth#{@depth}.checkm"] = @other.length
+      rpt[:recs]["batch-other.depth#{@depth}.checkm"] = @other.length
       rpt[:batchrecs]["#{@prefixpath}batch-other.depth#{@depth}.checkm"] = @other.length
     end
     rpt

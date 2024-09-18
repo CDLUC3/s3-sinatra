@@ -126,7 +126,6 @@ get '/*/batch.depth*.checkm' do
   status 200
   content_type 'text/plain'
   @listing.batch_data
-  "batch key:#{key}; depth: #{depth}"
 end
 
 get '/*/batch-other.depth*.checkm' do
@@ -141,7 +140,6 @@ get '/*/batch-other.depth*.checkm' do
   status 200
   content_type 'text/plain'
   @listing.other_data
-  "other key:#{key}; depth: #{depth}"
 end
 
 get '/*' do
