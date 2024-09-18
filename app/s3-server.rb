@@ -73,7 +73,7 @@ end
 
 get "/" do
   @listing = listing
-  @listing.list_keys(delimiter: '/')
+  @listing.list_keys
 
   status 200
   erb :index
@@ -83,7 +83,7 @@ get "/listing" do
   protected!
 
   @listing = listing(credentials: @auth.credentials)
-  @listing.list_keys(delimiter: nil)
+  @listing.list_keys
 
   status 200
   erb :listing
@@ -95,7 +95,7 @@ get '/*/' do
   key = params['splat'][0]
 
   @listing = listing(prefix: key, depth: 1, credentials: @auth.credentials)
-  @listing.list_keys(delimiter: nil)
+  @listing.list_keys
 
   status 200
   erb :listing
@@ -107,7 +107,7 @@ get '/*/object.checkm' do
   key = params['splat'][0]
 
   @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
-  @listing.list_keys(delimiter: nil)
+  @listing.list_keys
 
   status 200
   content_type 'text/plain'
@@ -121,7 +121,7 @@ get '/*/batch.depth*.checkm' do
   depth = params['splat'][1].to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys(delimiter: nil)
+  @listing.list_keys
 
   status 200
   content_type 'text/plain'
@@ -135,7 +135,7 @@ get '/*/batch-other.depth*.checkm' do
   depth = params['splat'][1].to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys(delimiter: nil)
+  @listing.list_keys
 
   status 200
   content_type 'text/plain'

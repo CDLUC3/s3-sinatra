@@ -29,10 +29,9 @@ class Listing
     p == '.' ? '' : p
   end
 
-  def list_keys(delimiter: nil)
+  def list_keys
     opt = {
       bucket: @bucket, 
-      delimiter: delimiter, 
       prefix: @prefix
     }
     loop do
@@ -73,7 +72,7 @@ class Listing
     arr = []
     arr.append(
       {
-        url: "/#{@keymap.report_data[:title]}",
+        url: @keymap.report_data[:title],
         desc: @keymap.report_data[:title]
       }
     ) unless @keymap.empty?
