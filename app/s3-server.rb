@@ -73,7 +73,7 @@ def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
 end
 
 get "/" do
-  @listing = listing
+  @listing = listing(mode: :directory)
   @listing.list_keys
 
   status 200
