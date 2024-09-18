@@ -103,6 +103,19 @@ get '/*/object.checkm' do
   @listing.object_data
 end
 
+get '/*/batchobject.checkm' do
+  protected!
+
+  key = params['splat'][0]
+
+  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
+  @listing.list_keys
+
+  status 200
+  content_type 'text/plain'
+  @listing.batchobject_data
+end
+
 get '/object.checkm' do
   protected!
 
@@ -114,6 +127,19 @@ get '/object.checkm' do
   status 200
   content_type 'text/plain'
   @listing.object_data
+end
+
+get '/batchobject.checkm' do
+  protected!
+
+  key = ''
+
+  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
+  @listing.list_keys
+
+  status 200
+  content_type 'text/plain'
+  @listing.batchobject_data
 end
 
 get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|

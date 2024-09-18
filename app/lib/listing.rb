@@ -66,6 +66,15 @@ class Listing
 }
   end
 
+  def batchobject_checkm_header
+    %{#%checkm_0.7
+#%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-single-file-batch-manifest
+#%prefix | mrt: | http://merritt.cdlib.org/terms#
+#%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
+#%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:primaryIdentifier | mrt:localIdentifier | mrt:creator | mrt:title | mrt:date
+    }
+  end
+    
   def batch_checkm_header
 %{#%checkm_0.7
 #%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-batch-manifest
@@ -84,21 +93,28 @@ class Listing
   def manifest_urls(arr, pre)
     marr = []
     arr.each do |k|
-      marr.append("#{k} | | | | | #{k[pre.length..]}")
+      f = k[pre.length..]
+      marr.append("#{k} | | | | | #{f}")
     end
     marr.join("\n")
   end
 
-  def batch_manifest_urls(arr, pre)
+  def batch_manifest_urls(arr, pre, flatten: true)
     marr = []
     arr.each do |k|
-      marr.append("#{k} | | | | | #{k[pre.length..].gsub(/\//, '_')} | | | | | ")
+      f = k[pre.length..]
+      f.gsub!(/\//, '_') if flatten
+      marr.append("#{k} | | | | | #{f} | | | | | ")
     end
     marr.join("\n")
   end
 
   def object_data
     checkm_header + manifest_urls(@keymap.allkeys, @keymap.url_prefix) + checkm_footer
+  end
+
+  def batchobject_data
+    batchobject_checkm_header + batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false) + checkm_footer
   end
 
   def batch_data
@@ -116,13 +132,20 @@ class Listing
   def manifest_options
     arr = []
     return arr if @mode == :component
-    %w[object.checkm].each do |k|
+    %w[object.checkm batchobject.checkm].each do |k|
       arr.append({
         url: "#{@prefixpath}#{k}",
         desc: "#{k}"
       })
     end
-    %w[batch.depth1 batch.depth2 batch.depth-1 batch.depth-2].each do |k|
+    karr = []
+    for i in 1..@keymap.maxdepth
+      karr.append("batch.depth#{i}")
+    end
+    for i in 1..@keymap.maxdepth
+      karr.append("batch.depth-#{i}")
+    end
+    karr.each do |k|
       arr.append({
         url: "#{@prefixpath}#{k}",
         desc: "#{k}",

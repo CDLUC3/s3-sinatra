@@ -12,6 +12,20 @@ class Keymap
     @topdirs = []
   end
 
+  def topkey
+    return @prefix if @keys.key?(@prefix)
+    return '.' if @keys.key?('.')
+    nil
+  end
+
+  def maxdepth
+    topkey.nil? ? 0 : @keys[topkey][:maxdepth]
+  end
+
+  def mindepth
+    topkey.nil? ? 0 : @keys[topkey][:mindepth]
+  end
+
   def empty?
     @keys.empty?
   end
