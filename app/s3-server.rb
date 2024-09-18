@@ -142,7 +142,7 @@ get '/*/batch.depth*.checkm' do
   @listing.batch_data
 end
 
-get '/*/batch.depth*' do
+get '/*/batch.depth*/' do
   protected!
 
   key = params['splat'][0]
@@ -155,7 +155,7 @@ get '/*/batch.depth*' do
   erb :listing
 end
 
-get '/batch.depth*' do
+get '/batch.depth*/' do
   protected!
 
   key = ''
