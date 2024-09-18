@@ -66,7 +66,7 @@ class Listing
   end
 
   def other_data
-    @keymap.otherkeys.keys.join("\n")
+    @keymap.otherkeys.join("\n")
   end
 
   def component_data

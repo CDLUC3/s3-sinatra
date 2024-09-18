@@ -59,7 +59,7 @@ class Keymap
 
   def batchkeys
     arr = []
-    component_data[:batchrecs].each do |k|
+    component_data[:batchrecs].keys.each do |k|
         url = @credentials.nil? ? "https://#{@dns}/#{k}" : "https://#{@credentials.join(':')}@#{@dns}/#{k}"
         arr.append(url)
     end
