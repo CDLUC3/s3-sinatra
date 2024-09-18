@@ -15,7 +15,7 @@
 </pre>
 
 <div id="manifest">
-  <% if @listing.manifest_options %>
+  <% unless @listing.manifest_options.empty? %>
   <h2>Manifest Options</h2>
   <ul>
     <% @listing.manifest_options.each do |k| %>
@@ -26,7 +26,7 @@
 </div>
 
 <div id="components">
-  <% if @listing.components %>
+  <% unless @listing.components.empty? %>
   <h2>Manifest Components</h2>
   <ul>
     <% @listing.components.each do |k| %>
@@ -37,7 +37,7 @@
 </div>
 
 <div id="listing">
-  <% if @listing.prefixes %>
+  <% unless @listing.prefixes.empty? %>
   <h2>Directories</h2>
   <ul>
     <% @listing.prefixes.each do |k| %>
@@ -46,7 +46,7 @@
   </ul>
   <% end %>
 
-  <% if @listing.topobjlist %>
+  <% unless @listing.topobjlist.empty? %>
   <h2>Object List</h2>
   <ul>
     <% @listing.topobjlist.each do |k| %>

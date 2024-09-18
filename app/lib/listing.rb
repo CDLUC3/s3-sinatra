@@ -48,10 +48,12 @@ class Listing
   end
 
   def topobjlist
+    return [] if @mode == :component
     @keymap.topkeys[0..@maxobj-1]
   end
 
   def prefixes
+    return [] if @mode == :component
     @keymap.topdirs[0..@maxpre-1]
   end
 
