@@ -157,6 +157,7 @@ end
 get %r[/batch.depth(-?\d+).checkm] do |d|
   protected!
 
+  key = ''
   depth = d.to_i
 
   @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
