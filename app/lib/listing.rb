@@ -76,13 +76,13 @@ class Listing
   def manifest_urls(arr, pre)
     marr = []
     arr.each do |k|
-      marr.append("#{k} | | | | | #{k[pre.length..]}", @keymap.url_prefix)
+      marr.append("#{k} | | | | | #{k[pre.length..]}")
     end
     marr.join('\n')
   end
 
   def object_data
-    checkm_header + manifest_urls(@keymap.allkeys) + checkm_footer
+    checkm_header + manifest_urls(@keymap.allkeys, @keymap.url_prefix) + checkm_footer
   end
 
   def batch_data
