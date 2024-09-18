@@ -19,7 +19,12 @@
   <h2>Manifest Options</h2>
   <ul>
     <% @listing.manifest_options.each do |k| %>
-    <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
+    <li>
+      <a href="<%= k[:url] %>"><%=k[:desc]%></a>
+      <% if k.key?(:download) %>
+      <a href="<%= k[:download] %>">&darr;</a>
+      <% end %>
+    </li>
     <% end %>
   </ul>
   <% end %>
