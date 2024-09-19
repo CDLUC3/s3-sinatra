@@ -117,6 +117,19 @@ class Listing
     batchobject_checkm_header + batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false) + checkm_footer
   end
 
+  def batchobject_yaml
+    arr = []
+    @keymap.allkeys.each do |k|
+      arr.append("#{k[@keymap.urlprefix.length..]}:")
+      arr.append("  primary_id:")
+      arr.append("  local_id:")
+      arr.append("  erc_what:")
+      arr.append("  erc_who:")
+      arr.append("  erc_when:")
+    end
+    arr.join("\n")
+  end
+
   def batch_data
     batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix) + checkm_footer
   end
@@ -132,7 +145,7 @@ class Listing
   def manifest_options
     arr = []
     return arr if @mode == :component
-    %w[object.checkm batchobject.checkm].each do |k|
+    %w[object.checkm batchobject.checkm batchobject.yaml].each do |k|
       arr.append({
         url: "#{@prefixpath}#{k}",
         desc: "#{k}"

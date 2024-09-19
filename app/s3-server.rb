@@ -72,6 +72,11 @@ def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
   )
 end
 
+def make_auth_listing(prefix: '', depth: 0, mode: :component)
+  @listing = listing(prefix: prefix, depth: depth, credentials: @auth.credentials, mode: mode)
+  @listing.list_keys
+end
+
 get "/" do
   @listing = listing(mode: :directory)
   @listing.list_keys
@@ -83,8 +88,7 @@ end
 get "/listing" do
   protected!
 
-  @listing = listing(credentials: @auth.credentials, mode: :directory)
-  @listing.list_keys
+  make_auth_listing(mode: :directory)
 
   status 200
   erb :listing
@@ -93,10 +97,7 @@ end
 get '/*/object.checkm' do
   protected!
 
-  key = params['splat'][0]
-
-  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: params['splat'][0], depth: 0)
 
   status 200
   content_type 'text/plain'
@@ -106,23 +107,27 @@ end
 get '/*/batchobject.checkm' do
   protected!
 
-  key = params['splat'][0]
-
-  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: params['splat'][0], depth: 0)
 
   status 200
   content_type 'text/plain'
   @listing.batchobject_data
 end
 
+get '/*/batchobject.yaml' do
+  protected!
+
+  make_auth_listing(prefix: params['splat'][0], depth: 0)
+
+  status 200
+  content_type 'text/yaml'
+  @listing.batchobject_yaml
+end
+
 get '/object.checkm' do
   protected!
 
-  key = ''
-
-  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: '', depth: 0)
 
   status 200
   content_type 'text/plain'
@@ -132,23 +137,27 @@ end
 get '/batchobject.checkm' do
   protected!
 
-  key = ''
-
-  @listing = listing(prefix: key, depth: 0, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: '', depth: 0)
 
   status 200
   content_type 'text/plain'
   @listing.batchobject_data
 end
 
+get '/batchobject.yaml' do
+  protected!
+
+  make_auth_listing(prefix: '', depth: 0)
+
+  status 200
+  content_type 'text/yaml'
+  @listing.batchobject_yaml
+end
+
 get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
   protected!
 
-  depth = d.to_i
-
-  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: key, depth: d.to_i)
 
   status 200
   content_type 'text/plain'
@@ -158,10 +167,7 @@ end
 get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
   protected!
 
-  depth = d.to_i
-
-  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: key, depth: d.to_i)
 
   status 200
   erb :listing
@@ -170,11 +176,7 @@ end
 get %r[/batch.depth(-?\d+)] do |d|
   protected!
 
-  key = ''
-  depth = d.to_i
-
-  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
   erb :listing
@@ -183,11 +185,7 @@ end
 get %r[/batch.depth(-?\d+).checkm] do |d|
   protected!
 
-  key = ''
-  depth = d.to_i
-
-  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
   content_type 'text/plain'
@@ -197,10 +195,7 @@ end
 get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
   protected!
 
-  depth = d.to_i
-
-  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: key, depth: d.to_i)
 
   status 200
   content_type 'text/plain'
@@ -210,11 +205,7 @@ end
 get %r[/batch-other.depth(-?\d+).checkm] do |d|
   protected!
 
-  key = ''
-  depth = d.to_i
-
-  @listing = listing(prefix: key, depth: depth, credentials: @auth.credentials)
-  @listing.list_keys
+  make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
   content_type 'text/plain'
@@ -224,10 +215,7 @@ end
 get '/*/' do
   protected!
 
-  key = params['splat'][0]
-
-  @listing = listing(prefix: key, depth: 1, credentials: @auth.credentials, mode: :directory)
-  @listing.list_keys
+  make_auth_listing(prefix: params['splat'][0], depth: 1, mode: :directory)
 
   status 200
   erb :listing
