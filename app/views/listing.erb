@@ -16,7 +16,11 @@
   <ul>
     <% @listing.manifest_options.each do |k| %>
     <li>
+      <% if k.key?(:url) %>
       <a href="<%= k[:url] %>"><%=k[:desc]%></a>
+      <% else %>
+      <span><%=k[:desc]%></span>
+      <% end %>
       <% if k.key?(:download) %>
       (<a href="<%= k[:download] %>">checkm</a>, <a href="<%= k[:yaml] %>">yaml</a>)
       <% end %>
