@@ -119,8 +119,10 @@ class Listing
 
   def batchobject_yaml
     arr = []
+    arr.append("# Save to #{@prefix}/merritt.metadata.yaml")
+    arr.append("# Not yet implemented...")
     @keymap.allkeys.each do |k|
-      arr.append("#{k[@keymap.urlprefix.length..]}:")
+      arr.append("#{k[@keymap.url_prefix.length..]}:")
       arr.append("  primary_id:")
       arr.append("  local_id:")
       arr.append("  erc_what:")
