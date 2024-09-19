@@ -18,7 +18,7 @@
     <li>
       <a href="<%= k[:url] %>"><%=k[:desc]%></a>
       <% if k.key?(:download) %>
-      (<a href="<%= k[:download] %>">checkm</a>)
+      (<a href="<%= k[:download] %>">checkm</a>, <a href="<%= k[:yaml] %>">yaml</a>)
       <% end %>
     </li>
     <% end %>

@@ -136,6 +136,21 @@ class Listing
     batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix) + checkm_footer
   end
 
+  def batch_yaml
+    arr = []
+    arr.append("# Save to #{@prefix}/merritt.metadata.yaml")
+    arr.append("# Not yet implemented...")
+    @keymap.batchkeys.each do |k|
+      arr.append("#{k[@keymap.url_prefix.length..]}:")
+      arr.append("  primary_id:")
+      arr.append("  local_id:")
+      arr.append("  erc_what:")
+      arr.append("  erc_who:")
+      arr.append("  erc_when:")
+    end
+    arr.join("\n")
+  end
+
   def other_data
     checkm_header + manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + checkm_footer
   end
@@ -147,10 +162,18 @@ class Listing
   def manifest_options
     arr = []
     return arr if @mode == :component
-    %w[object.checkm batchobject.checkm batchobject.yaml].each do |k|
+    %w[object.checkm].each do |k|
       arr.append({
         url: "#{@prefixpath}#{k}",
         desc: "#{k}"
+      })
+    end
+    %w[batchobject].each do |k|
+      arr.append({
+        url: "#{@prefixpath}#{k}",
+        desc: "#{k}",
+        download: "#{@prefixpath}#{k}.checkm",
+        yaml: "#{@prefixpath}#{k}.yaml"
       })
     end
     karr = []
@@ -164,7 +187,8 @@ class Listing
       arr.append({
         url: "#{@prefixpath}#{k}",
         desc: "#{k}",
-        download: "#{@prefixpath}#{k}.checkm"
+        download: "#{@prefixpath}#{k}.checkm",
+        yaml: "#{@prefixpath}#{k}.yaml"
       })
     end
     arr
