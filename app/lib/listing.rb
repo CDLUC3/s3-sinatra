@@ -170,7 +170,7 @@ class Listing
     end
     %w[batchobject].each do |k|
       arr.append({
-        url: "#{@prefixpath}#{k}",
+        url: "",
         desc: "#{k}",
         download: "#{@prefixpath}#{k}.checkm",
         yaml: "#{@prefixpath}#{k}.yaml"
