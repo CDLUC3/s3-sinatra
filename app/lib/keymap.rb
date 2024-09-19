@@ -9,7 +9,7 @@ class Keymap
     @allkeys = []
     @other = {}
     @topkeys = []
-    @topdirs = []
+    @topdirs = {}
   end
 
   def topkey
@@ -44,7 +44,7 @@ class Keymap
 
   def topdirs
     arr = []
-    @topdirs.each do |k|
+    @topdirs.keys.each do |k|
       rec = @keys[k]
       rec[:url] = "#{@prefixpath}#{k}/"
       rec[:desc] = "#{rec[:key]}/ (Depth: #{rec[:mindepth]};/#{rec[:maxdepth]}; Count: #{rec[:fkeys].length})"
@@ -97,7 +97,7 @@ class Keymap
     return unless k.start_with?(@prefix)
 
     k = @prefix.empty? ? k : k[@prefix.length+1..]
-    @topdirs.append(k.chop) if k =~ /^[^\/]+\/$/
+    @topdirs[k.chop] = 1 if k =~ /^[^\/]+\/$/
     return if k =~ /\/$/
     return if k.empty?
 
@@ -135,7 +135,9 @@ class Keymap
       rec[:mindepth] = [rec[:mindepth], kdepth].min
       rec[:maxdepth] = [rec[:maxdepth], kdepth].max
       break if p == '.' || p == @prefix
-      p = File.dirname(p)
+      pp = File.dirname(p)
+      @topdirs[p] = 1 if pp == '.'
+      p = pp
       rdepth -= 1
     end
   end
