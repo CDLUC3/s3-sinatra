@@ -122,7 +122,7 @@ class Listing
     csv_string = CSV.generate do |csv|
       csv << %w[key primary_id local_id erc_what erc_who erc_when]
       @keymap.allkeys.each do |k|
-        csv << %w[k[@keymap.url_prefix.length..] '' '' '' '' '']
+        csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
     csv_string
@@ -136,7 +136,7 @@ class Listing
     csv_string = CSV.generate do |csv|
       csv << %w[key primary_id local_id erc_what erc_who erc_when]
       @keymap.batchkeys.each do |k|
-        csv << %w[k[@keymap.url_prefix.length..] '' '' '' '' '']
+        csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
     csv_string
