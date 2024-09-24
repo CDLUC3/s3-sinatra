@@ -1,4 +1,5 @@
 require 'aws-sdk-s3'
+require 'csv'
 require_relative 'keymap.rb'
 
 class Listing
@@ -117,38 +118,28 @@ class Listing
     batchobject_checkm_header + batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false) + checkm_footer
   end
 
-  def batchobject_yaml
-    arr = []
-    arr.append("# Save to #{@prefix}/merritt.metadata.yaml")
-    arr.append("# Not yet implemented...")
-    @keymap.allkeys.each do |k|
-      arr.append("#{k[@keymap.url_prefix.length..]}:")
-      arr.append("  primary_id:")
-      arr.append("  local_id:")
-      arr.append("  erc_what:")
-      arr.append("  erc_who:")
-      arr.append("  erc_when:")
+  def batchobject_csv
+    csv_string = CSV.generate do |csv|
+      csv << %w[key primary_id local_id erc_what erc_who erc_when]
+      @keymap.allkeys.each do |k|
+        csv << %w[k[@keymap.url_prefix.length..] '' '' '' '' '']
+      end
     end
-    arr.join("\n")
+    csv_string
   end
 
   def batch_data
     batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix) + checkm_footer
   end
 
-  def batch_yaml
-    arr = []
-    arr.append("# Save to #{@prefix}/merritt.metadata.yaml")
-    arr.append("# Not yet implemented...")
-    @keymap.batchkeys.each do |k|
-      arr.append("#{k[@keymap.url_prefix.length..]}:")
-      arr.append("  primary_id:")
-      arr.append("  local_id:")
-      arr.append("  erc_what:")
-      arr.append("  erc_who:")
-      arr.append("  erc_when:")
+  def batch_csv
+    csv_string = CSV.generate do |csv|
+      csv << %w[key primary_id local_id erc_what erc_who erc_when]
+      @keymap.batchkeys.each do |k|
+        csv << %w[k[@keymap.url_prefix.length..] '' '' '' '' '']
+      end
     end
-    arr.join("\n")
+    csv_string
   end
 
   def other_data
@@ -172,7 +163,7 @@ class Listing
       arr.append({
         desc: "#{k}",
         download: "#{@prefixpath}#{k}.checkm",
-        yaml: "#{@prefixpath}#{k}.yaml"
+        csv: "#{@prefixpath}#{k}.csv"
       })
     end
     karr = []
@@ -187,7 +178,7 @@ class Listing
         url: "#{@prefixpath}#{k}",
         desc: "#{k}",
         download: "#{@prefixpath}#{k}.checkm",
-        yaml: "#{@prefixpath}#{k}.yaml"
+        csv: "#{@prefixpath}#{k}.csv"
       })
     end
     arr

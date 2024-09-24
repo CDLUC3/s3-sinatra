@@ -21,6 +21,7 @@ GEM
     aws-sigv4 (1.9.1)
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.2.0)
+    csv (3.3.0)
     diff-lcs (1.5.1)
     jmespath (1.6.2)
     json (2.7.2)
@@ -65,6 +66,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-s3
   aws-sdk-ssm
+  csv
   json
   rack
   rack-contrib

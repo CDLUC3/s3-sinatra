@@ -114,14 +114,14 @@ get '/*/batchobject.checkm' do
   @listing.batchobject_data
 end
 
-get '/*/batchobject.yaml' do
+get '/*/batchobject.csv' do
   protected!
 
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
   status 200
-  content_type 'text/yaml'
-  @listing.batchobject_yaml
+  content_type 'text/csv'
+  @listing.batchobject_csv
 end
 
 get '/object.checkm' do
@@ -144,14 +144,14 @@ get '/batchobject.checkm' do
   @listing.batchobject_data
 end
 
-get '/batchobject.yaml' do
+get '/batchobject.csv' do
   protected!
 
   make_auth_listing(prefix: '', depth: 0)
 
   status 200
-  content_type 'text/yaml'
-  @listing.batchobject_yaml
+  content_type 'text/csv'
+  @listing.batchobject_csv
 end
 
 get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
@@ -164,14 +164,14 @@ get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
   @listing.batch_data
 end
 
-get %r[/(.*)/batch.depth(-?\d+).yaml] do |key, d|
+get %r[/(.*)/batch.depth(-?\d+).csv] do |key, d|
   protected!
 
   make_auth_listing(prefix: key, depth: d.to_i)
 
   status 200
   content_type 'text/plain'
-  @listing.batch_yaml
+  @listing.batch_csv
 end
 
 get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
@@ -202,14 +202,14 @@ get %r[/batch.depth(-?\d+).checkm] do |d|
   @listing.batch_data
 end
 
-get %r[/batch.depth(-?\d+).yaml] do |d|
+get %r[/batch.depth(-?\d+).csv] do |d|
   protected!
 
   make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
   content_type 'text/plain'
-  @listing.batch_yaml
+  @listing.batch_csv
 end
 
 get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
