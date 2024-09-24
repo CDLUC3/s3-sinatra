@@ -106,6 +106,7 @@ class Listing
     if metadata
       s = metadata.read
       CSV.parse(metadata.read, headers: :first_row) do |row|
+        s += "row: #{row};"
         mm[row[0]] = {
           primary_id: row[1],
           local_id: row[2],
@@ -115,7 +116,7 @@ class Listing
         }
       end
     end
-    s = mm.to_s
+    s += mm.to_s
     marr = []
     arr.each do |k|
       f = k[pre.length..]
