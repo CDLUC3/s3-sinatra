@@ -116,11 +116,9 @@ class Listing
       end
     end
     marr = []
-    s = ""
     arr.each do |k|
       f = k[pre.length..]
       mrec = mm.fetch(f, {})
-      s+="#{f}: #{mrec.to_s}; "
       rec = [
         k,
         '', #hash alg
@@ -136,7 +134,7 @@ class Listing
       ]
       marr.append(rec.join('|'))
     end
-    marr.join("\n") + 'TB' + s
+    marr.join("\n")
   end
 
   def object_data
