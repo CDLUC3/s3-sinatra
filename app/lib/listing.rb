@@ -116,14 +116,13 @@ class Listing
     marr = []
     arr.each do |k|
       f = k[pre.length..]
-      f.gsub!(/\//, '_') if flatten
       rec = [
         k,
         '', #hash alg
         '', #hash val
         '', #file size
         '', #file mod
-        f,
+        f.gsub!(/\//, '_') if flatten,
         mm.fetch(f, {}).fetch(:primary_id, ''),
         mm.fetch(f, {}).fetch(:local_id, ''),
         mm.fetch(f, {}).fetch(:erc_what, ''),
