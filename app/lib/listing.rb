@@ -102,7 +102,6 @@ class Listing
 
   def batch_manifest_urls(arr, pre, flatten: true, metadata: nil)
     mm = {}
-    s = 'na'
     if metadata
       csv  = CSV.parse(metadata.read)
       csv.shift
@@ -116,10 +115,11 @@ class Listing
         }
       end
     end
-    s += mm.to_s
     marr = []
     arr.each do |k|
       f = k[pre.length..]
+      mrec = mm.fetch(f, {})
+      s+="#{f}: #{mrec.to_s}; "
       rec = [
         k,
         '', #hash alg
@@ -127,11 +127,11 @@ class Listing
         '', #file size
         '', #file mod
         flatten ? f.gsub!(/\//, '_') : f,
-        mm.fetch(f, {}).fetch(:primary_id, ''),
-        mm.fetch(f, {}).fetch(:local_id, ''),
-        mm.fetch(f, {}).fetch(:erc_what, ''),
-        mm.fetch(f, {}).fetch(:erc_who, ''),
-        mm.fetch(f, {}).fetch(:erc_when, '')
+        mrec.fetch(:primary_id, ''),
+        mrec.fetch(:local_id, ''),
+        mrec.fetch(:erc_what, ''),
+        mrec.fetch(:erc_who, ''),
+        mrec.fetch(:erc_when, '')
       ]
       marr.append(rec.join('|'))
     end
