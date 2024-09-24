@@ -100,12 +100,37 @@ class Listing
     marr.join("\n")
   end
 
-  def batch_manifest_urls(arr, pre, flatten: true)
+  def batch_manifest_urls(arr, pre, flatten: true, metadata: nil)
+    mm = {}
+    if metadata
+      CSV.parse(metadata, headers: :first_row) do |row|
+        mm[row[0]] = {
+          primary_id: row[1],
+          local_id: row[2],
+          erc_what: row[3],
+          erc_who: row[4],
+          erc_when: row[5]
+        }
+      end
+    end
     marr = []
     arr.each do |k|
       f = k[pre.length..]
       f.gsub!(/\//, '_') if flatten
-      marr.append("#{k} | | | | | #{f} | | | | | ")
+      rec = [
+        k,
+        '', #hash alg
+        '', #hash val
+        '', #file size
+        '', #file mod
+        f,
+        mm.fetch(k, {}).fetch(:primary_id, ''),
+        mm.fetch(k, {}).fetch(:local_id, ''),
+        mm.fetch(k, {}).fetch(:erc_what, ''),
+        mm.fetch(k, {}).fetch(:erc_who, ''),
+        mm.fetch(k, {}).fetch(:erc_when, '')
+      ]
+      marr.append(rec.join('|'))
     end
     marr.join("\n")
   end
@@ -114,8 +139,8 @@ class Listing
     checkm_header + manifest_urls(@keymap.allkeys, @keymap.url_prefix) + checkm_footer
   end
 
-  def batchobject_data
-    batchobject_checkm_header + batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false) + checkm_footer
+  def batchobject_data(metadata)
+    batchobject_checkm_header + batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) + checkm_footer
   end
 
   def batchobject_csv
@@ -128,8 +153,8 @@ class Listing
     csv_string
   end
 
-  def batch_data
-    batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix) + checkm_footer
+  def batch_data(metadata)
+    batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) + checkm_footer
   end
 
   def batch_csv
@@ -142,7 +167,7 @@ class Listing
     csv_string
   end
 
-  def other_data
+  def other_data(metadata)
     checkm_header + manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + checkm_footer
   end
 

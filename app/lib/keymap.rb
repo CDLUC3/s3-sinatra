@@ -91,9 +91,13 @@ class Keymap
     end
   end
 
+  def self.metadata
+    "merritt.metadata.csv"
+  end
+
   def add_node(k)
     k.strip!
-    return if File.basename(k) == 'merritt.metadata.csv'
+    return if File.basename(k) == Keymap.metadata
     return if k == @prefix
     return unless k.start_with?(@prefix)
 
