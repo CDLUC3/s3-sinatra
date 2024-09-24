@@ -39,6 +39,17 @@ helpers do
     nil
   end
 
+  def file_exists(key)
+    @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
+    bucket_name = env.fetch('BUCKET_NAME', nil)
+    begin
+      @s3_client.head_object({bucket: bucket_name, key: key})
+    rescue Aws::S3::Errors::NotFound
+      false
+    end
+    true
+  end
+
   def get_file(key)
     @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
     @presigner = Aws::S3::Presigner.new(client: @s3_client)
@@ -117,6 +128,8 @@ end
 get '/*/batchobject.csv' do
   protected!
 
+  return get_file(request.path_info) if file_exists(request.path_info)
+
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
   status 200
@@ -147,6 +160,8 @@ end
 get '/batchobject.csv' do
   protected!
 
+  return get_file(request.path_info) if file_exists(request.path_info)
+
   make_auth_listing(prefix: '', depth: 0)
 
   status 200
@@ -167,10 +182,12 @@ end
 get %r[/(.*)/batch.depth(-?\d+).csv] do |key, d|
   protected!
 
+  return get_file(request.path_info) if file_exists(request.path_info)
+
   make_auth_listing(prefix: key, depth: d.to_i)
 
   status 200
-  content_type 'text/plain'
+  content_type 'text/csv'
   @listing.batch_csv
 end
 
@@ -205,10 +222,12 @@ end
 get %r[/batch.depth(-?\d+).csv] do |d|
   protected!
 
+  return get_file(request.path_info) if file_exists(request.path_info)
+
   make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
-  content_type 'text/plain'
+  content_type 'text/csv'
   @listing.batch_csv
 end
 

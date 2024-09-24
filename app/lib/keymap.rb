@@ -93,6 +93,7 @@ class Keymap
 
   def add_node(k)
     k.strip!
+    return if File.basename(k) == 'merritt.metadata.csv'
     return if k == @prefix
     return unless k.start_with?(@prefix)
 
