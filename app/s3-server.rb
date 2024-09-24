@@ -44,10 +44,10 @@ helpers do
     bucket_name = env.fetch('BUCKET_NAME', nil)
     begin
       @s3_client.head_object({bucket: bucket_name, key: key})
+      return true
     rescue Aws::S3::Errors::NotFound
-      false
+      return false
     end
-    true
   end
 
   def get_file(key)
