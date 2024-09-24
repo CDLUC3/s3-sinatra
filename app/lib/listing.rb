@@ -122,7 +122,7 @@ class Listing
         '', #hash val
         '', #file size
         '', #file mod
-        f.gsub!(/\//, '_') if flatten,
+        flatten ? f.gsub!(/\//, '_') : f,
         mm.fetch(f, {}).fetch(:primary_id, ''),
         mm.fetch(f, {}).fetch(:local_id, ''),
         mm.fetch(f, {}).fetch(:erc_what, ''),
