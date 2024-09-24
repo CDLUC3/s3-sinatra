@@ -115,6 +115,7 @@ class Listing
         }
       end
     end
+    s = mm.to_s
     marr = []
     arr.each do |k|
       f = k[pre.length..]
