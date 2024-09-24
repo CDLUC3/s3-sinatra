@@ -104,7 +104,7 @@ class Listing
     mm = {}
     s = 'na'
     if metadata
-      csv  = CSV.read(metadata.read)
+      csv  = CSV.parse(metadata.read)
       csv.shift
       csv.each do |row|
         mm[row[0]] = {
