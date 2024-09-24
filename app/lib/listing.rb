@@ -124,11 +124,11 @@ class Listing
         '', #file size
         '', #file mod
         f,
-        mm.fetch(k, {}).fetch(:primary_id, ''),
-        mm.fetch(k, {}).fetch(:local_id, ''),
-        mm.fetch(k, {}).fetch(:erc_what, ''),
-        mm.fetch(k, {}).fetch(:erc_who, ''),
-        mm.fetch(k, {}).fetch(:erc_when, '')
+        mm.fetch(f, {}).fetch(:primary_id, ''),
+        mm.fetch(f, {}).fetch(:local_id, ''),
+        mm.fetch(f, {}).fetch(:erc_what, ''),
+        mm.fetch(f, {}).fetch(:erc_who, ''),
+        mm.fetch(f, {}).fetch(:erc_when, '')
       ]
       marr.append(rec.join('|'))
     end

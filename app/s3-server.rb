@@ -233,8 +233,7 @@ get %r[/batch.depth(-?\d+).csv] do |d|
   status 200
   content_type 'text/csv'
 
-  key = MERRITT_METADATA
-  metadata = file_exists(key)
+  metadata = file_exists(MERRITT_METADATA)
   return metadata if metadata
 
   make_auth_listing(prefix: '', depth: d.to_i)
