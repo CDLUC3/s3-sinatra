@@ -128,7 +128,7 @@ end
 get '/*/batchobject.csv' do
   protected!
 
-  key = "/#{params['splat'][0]}/merritt.metadata.csv"
+  key = "#{params['splat'][0]}/merritt.metadata.csv"
   return get_file(key) if file_exists(key)
 
   make_auth_listing(prefix: params['splat'][0], depth: 0)
@@ -161,7 +161,7 @@ end
 get '/batchobject.csv' do
   protected!
 
-  key = "/merritt.metadata.csv"
+  key = "merritt.metadata.csv"
   return get_file(key) if file_exists(key)
 
   make_auth_listing(prefix: '', depth: 0)
@@ -184,7 +184,7 @@ end
 get %r[/(.*)/batch.depth(-?\d+).csv] do |key, d|
   protected!
 
-  mk = "/#{key}/merritt.metadata.csv"
+  mk = "#{key}/merritt.metadata.csv"
   return get_file(mk) if file_exists(mk)
 
   make_auth_listing(prefix: key, depth: d.to_i)
@@ -225,7 +225,7 @@ end
 get %r[/batch.depth(-?\d+).csv] do |d|
   protected!
 
-  key = "/merritt.metadata.csv"
+  key = "merritt.metadata.csv"
   return get_file(key) if file_exists(key)
 
   make_auth_listing(prefix: '', depth: d.to_i)
