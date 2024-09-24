@@ -105,7 +105,7 @@ class Listing
     s = 'na'
     if metadata
       s = metadata.read
-      CSV.parse(metadata.read, headers: :first_row) do |row|
+      CSV.parse(metadata.read) do |row|
         s += "row: #{row};"
         mm[row[0]] = {
           primary_id: row[1],
