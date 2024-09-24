@@ -102,7 +102,9 @@ class Listing
 
   def batch_manifest_urls(arr, pre, flatten: true, metadata: nil)
     mm = {}
+    s = 'na'
     if metadata
+      s = metadata.read
       CSV.parse(metadata, headers: :first_row) do |row|
         mm[row[0]] = {
           primary_id: row[1],
@@ -131,7 +133,7 @@ class Listing
       ]
       marr.append(rec.join('|'))
     end
-    marr.join("\n") + 'TB' + metadata.read
+    marr.join("\n") + 'TB' + s
   end
 
   def object_data
