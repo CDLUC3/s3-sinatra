@@ -131,7 +131,7 @@ class Listing
       ]
       marr.append(rec.join('|'))
     end
-    marr.join("\n") + 'TB' + metadata
+    marr.join("\n") + 'TB' + metadata.to_s
   end
 
   def object_data
