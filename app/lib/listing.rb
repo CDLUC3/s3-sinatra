@@ -116,6 +116,7 @@ class Listing
       end
     end
     marr = []
+    s = ""
     arr.each do |k|
       f = k[pre.length..]
       mrec = mm.fetch(f, {})
