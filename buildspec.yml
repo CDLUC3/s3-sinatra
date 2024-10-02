@@ -25,11 +25,11 @@ phases:
     - aws s3 cp s3-sinatra-lb.zip s3://${S3PRIVBUCKET}/deploy/
     - |
       aws lambda update-function-code \
-        --function-name SinatraLambda-default \
+        --function-name SinatraLambda-robbins \
         --s3-bucket ${S3PRIVBUCKET} \
         --s3-key deploy/s3-sinatra-lb.zip --no-cli-pager
     - |
       aws lambda update-function-code \
-        --function-name SinatraLambda-demo \
+        --function-name SinatraLambda-ucsfglantz \
         --s3-bucket ${S3PRIVBUCKET} \
         --s3-key deploy/s3-sinatra-lb.zip --no-cli-pager
