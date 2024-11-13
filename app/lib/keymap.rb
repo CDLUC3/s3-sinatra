@@ -46,6 +46,7 @@ class Keymap
     arr = []
     @topdirs.keys.each do |k|
       rec = @keys[k]
+      next if rec.nil?
       rec[:url] = "#{@prefixpath}#{k}/"
       rec[:desc] = "#{rec[:key]}/ (Depth: #{rec[:mindepth]};/#{rec[:maxdepth]}; Count: #{rec[:fkeys].length})"
       arr.append(rec)
