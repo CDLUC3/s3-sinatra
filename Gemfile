@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 ruby '~> 3.2'
 
-gem 'sinatra', '4.0.0'
+gem 'sinatra'
 gem 'json'
 gem 'rack'
 gem 'rack-contrib'

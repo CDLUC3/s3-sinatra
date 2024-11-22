@@ -74,7 +74,7 @@ DEPENDENCIES
   rack-test
   rspec
   rubysl-base64
-  sinatra (= 4.0.0)
+  sinatra
 
 RUBY VERSION
    ruby 3.2.4p170
