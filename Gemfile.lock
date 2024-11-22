@@ -31,7 +31,7 @@ GEM
     rack (3.1.8)
     rack-contrib (2.5.0)
       rack (< 4)
-    rack-protection (4.1.1)
+    rack-protection (4.1.0)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
@@ -54,11 +54,11 @@ GEM
     rspec-support (3.13.1)
     ruby2_keywords (0.0.5)
     rubysl-base64 (2.0.0)
-    sinatra (4.1.1)
+    sinatra (4.1.0)
       logger (>= 1.6.0)
       mustermann (~> 3.0)
       rack (>= 3.0.0, < 4)
-      rack-protection (= 4.1.1)
+      rack-protection (= 4.1.0)
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
     tilt (2.4.0)
@@ -77,7 +77,7 @@ DEPENDENCIES
   rack-test
   rspec
   rubysl-base64
-  sinatra
+  sinatra (= 4.1.0)
 
 RUBY VERSION
    ruby 3.2.4p170
