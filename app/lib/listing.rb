@@ -42,6 +42,7 @@ class Listing
     loop do
       resp = @s3_client.list_objects_v2(opt)
       resp.to_h.fetch(:contents, []).each do |s3obj|
+        puts s3obj.fetch(:key, '')
         @keymap.add_node(s3obj.fetch(:key, ''))
       end
       puts "#{@keymap.length}: #{Time.now}"
