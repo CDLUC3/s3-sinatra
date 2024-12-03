@@ -180,7 +180,9 @@ end
 get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
   protected!
 
+  puts "pre1"
   make_auth_listing(prefix: key, depth: d.to_i)
+  puts "aft1"
 
   status 200
   content_type 'text/plain'
