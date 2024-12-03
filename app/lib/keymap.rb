@@ -181,7 +181,7 @@ class Keymap
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
       @other = @allkeys.clone
-      puts "keys #{@keys.length}"
+      puts "keys #{@keys.length}; #{@allkeys.length}"
       @keys.keys.sort.each do |k|
         puts k
         rec = @keys[k]
