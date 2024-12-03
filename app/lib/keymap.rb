@@ -2,7 +2,7 @@
 
 class Keymap
   def initialize(prefix = '', depth = 0, dns: 'foo.bar', credentials: nil)
-    @prefix = prefix
+    @prefix = prefix.to_sym
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @keys = {}
@@ -51,7 +51,7 @@ class Keymap
   def topdirs
     arr = []
     @topdirs.keys.each do |k|
-      rec = @keys[k]
+      rec = @keys[k.to_sym]
       next if rec.nil?
       rec[:url] = "#{@prefixpath}#{k}/"
       rec[:desc] = "#{rec[:key]}/ (Depth: #{rec[:mindepth]};/#{rec[:maxdepth]}; Count: #{rec[:fkeys].length})"
@@ -131,10 +131,10 @@ class Keymap
       is_top = p == '.' || p == @prefix
       pdepth = is_top ? 0 : kdepth - p.split('/').length
       pdepth = is_top ? 0 : p.split('/').length
-      @keys[p] = @keys.fetch(
+      @keys[p.to_sym] = @keys.fetch(
         p, 
         {
-          key: p,
+          key: p.to_sym,
           fkeys: [], 
           mindepth: kdepth, 
           maxdepth: kdepth, 
@@ -142,7 +142,7 @@ class Keymap
           rdepth: is_top ? 0 : rdepth
         }
       )
-      rec = @keys[p]
+      rec = @keys[p.to_sym]
       rec[:fkeys].append(k[p.length+1..])
       rec[:mindepth] = [rec[:mindepth], kdepth].min
       rec[:maxdepth] = [rec[:maxdepth], kdepth].max
@@ -184,7 +184,7 @@ class Keymap
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
       @other = @allkeys.clone
       @keys.keys.sort.each do |k|
-        rec = @keys[k]
+        rec = @keys[k.to_sym]
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
         rpt[:recs]["#{k}/object.checkm"] = rec[:fkeys].length
         rpt[:batchrecs]["#{@prefixpath}#{k}/object.checkm"] = rec[:fkeys].length

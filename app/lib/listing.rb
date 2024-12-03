@@ -21,7 +21,7 @@ class Listing
     @maxobj = maxobj
     @maxpre = maxpre
     @s3_client = Aws::S3::Client.new(region: region)
-    @prefix = prefix
+    @prefix = prefix.to_sym
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @mode = mode
