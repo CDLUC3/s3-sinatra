@@ -3,7 +3,7 @@ require 'csv'
 require_relative 'keymap.rb'
 
 class Listing
-  MAXLIST = 200_000
+  MAXLIST = 50_000
 
   def initialize(
     region: 'us-west-2', 
@@ -36,7 +36,8 @@ class Listing
   def list_keys
     opt = {
       bucket: @bucket, 
-      prefix: @prefix
+      prefix: @prefix,
+      max_keys: MAXLIST
     }
     loop do
       resp = @s3_client.list_objects_v2(opt)
