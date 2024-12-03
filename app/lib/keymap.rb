@@ -149,7 +149,6 @@ class Keymap
       @topdirs[p] = 1 if pp == '.'
       p = pp
       rdepth -= 1
-      break if rdepth < -20 # temp debug
     end
   end
 
