@@ -183,6 +183,7 @@ class Keymap
       @other = @allkeys.clone
       puts "keys #{@keys.length}"
       @keys.keys.sort.each do |k|
+        puts k
         rec = @keys[k]
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
         rpt[:recs]["#{k}/object.checkm"] = rec[:fkeys].length
@@ -190,6 +191,7 @@ class Keymap
         rec[:fkeys].each do |dk|
           @other.delete("#{k}/#{dk}")
         end
+        puts "end #{k}"
       end
       puts "done"
     end
