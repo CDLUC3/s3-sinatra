@@ -87,10 +87,7 @@ end
 
 def make_auth_listing(prefix: '', depth: 0, mode: :component)
   @listing = listing(prefix: prefix, depth: depth, credentials: @auth.credentials, mode: mode)
-  puts "authpre"
   @listing.list_keys
-  puts "authaft"
-  puts "Rendering.... #{@listing.components}"
 end
 
 get "/" do
@@ -181,9 +178,7 @@ end
 get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
   protected!
 
-  puts "pre1"
   make_auth_listing(prefix: key, depth: d.to_i)
-  puts "aft1"
 
   status 200
   content_type 'text/plain'
@@ -207,9 +202,7 @@ end
 get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
   protected!
 
-  puts "pre2"
   make_auth_listing(prefix: key, depth: d.to_i)
-  puts "aft2"
 
   status 200
   erb :listing2

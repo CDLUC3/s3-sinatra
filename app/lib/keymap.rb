@@ -1,3 +1,5 @@
+frozen_string_literal: true
+
 class Keymap
   def initialize(prefix = '', depth = 0, dns: 'foo.bar', credentials: nil)
     @prefix = prefix
@@ -181,21 +183,15 @@ class Keymap
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
       @other = @allkeys.clone
-      puts "keys #{@keys.length}; #{@allkeys.length}"
       @keys.keys.sort.each do |k|
-        puts k
         rec = @keys[k]
-        puts rec[:fkeys].length
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
         rpt[:recs]["#{k}/object.checkm"] = rec[:fkeys].length
         rpt[:batchrecs]["#{@prefixpath}#{k}/object.checkm"] = rec[:fkeys].length
         rec[:fkeys].each do |dk|
-          puts "delete #{k}/#{dk}"
           @other.delete("#{k}/#{dk}")
         end
-        puts "end #{k}"
       end
-      puts "done"
     end
     unless @other.empty?
       rpt[:recs]["batch-other.depth#{@depth}.checkm"] = @other.length

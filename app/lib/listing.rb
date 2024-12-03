@@ -2,6 +2,8 @@ require 'aws-sdk-s3'
 require 'csv'
 require_relative 'keymap.rb'
 
+frozen_string_literal: true
+
 class Listing
   def initialize(
     region: 'us-west-2', 
@@ -36,7 +38,6 @@ class Listing
       bucket: @bucket, 
       prefix: @prefix
     }
-    puts "pre"
     loop do
       resp = @s3_client.list_objects_v2(opt)
       resp.to_h.fetch(:contents, []).each do |s3obj|
@@ -45,7 +46,6 @@ class Listing
       break unless resp.is_truncated
       opt[:continuation_token] = resp.next_continuation_token
     end
-    puts "aft"
   end
 
   def topobjlist
