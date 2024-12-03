@@ -203,18 +203,19 @@ get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
   protected!
 
   make_auth_listing(prefix: key, depth: d.to_i)
+  puts "Rendering... #{@listing.components.to_h.to_s}"
 
   status 200
-  erb :listing
+  erb :listing2
 end
 
 get %r[/batch.depth(-?\d+)] do |d|
   protected!
 
   make_auth_listing(prefix: '', depth: d.to_i)
+  puts "Rendering... #{@listing.components.to_h.to_s}"
 
   status 200
-  puts "Rendering... #{@listing.components.to_h.to_s}"
   erb :listing2
 end
 
