@@ -181,6 +181,7 @@ class Keymap
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
       @other = @allkeys.clone
+      puts "keys #{@keys.length}"
       @keys.keys.sort.each do |k|
         rec = @keys[k]
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
@@ -190,6 +191,7 @@ class Keymap
           @other.delete("#{k}/#{dk}")
         end
       end
+      puts "done"
     end
     unless @other.empty?
       rpt[:recs]["batch-other.depth#{@depth}.checkm"] = @other.length
