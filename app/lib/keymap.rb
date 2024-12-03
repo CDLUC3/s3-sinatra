@@ -2,7 +2,7 @@
 
 class Keymap
   def initialize(prefix = '', depth = 0, dns: 'foo.bar', credentials: nil)
-    @prefix = prefix.to_sym
+    @prefix = prefix
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @keys = {}
@@ -15,8 +15,8 @@ class Keymap
   end
 
   def topkey
-    return @prefix if @keys.key?(@prefix)
-    return '.' if @keys.key?('.')
+    return @prefix.to_sym if @keys.key?(@prefix.to_sym)
+    return '.'.to_sym if @keys.key?('.'.to_sym)
     nil
   end
 
