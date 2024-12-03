@@ -2,7 +2,7 @@ require 'aws-sdk-s3'
 require 'csv'
 require_relative 'keymap.rb'
 
-frozen_string_literal: true
+# frozen_string_literal: true
 
 class Listing
   def initialize(

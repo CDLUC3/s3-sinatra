@@ -1,4 +1,4 @@
-frozen_string_literal: true
+# frozen_string_literal: true
 
 class Keymap
   def initialize(prefix = '', depth = 0, dns: 'foo.bar', credentials: nil)
