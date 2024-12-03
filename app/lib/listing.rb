@@ -38,14 +38,9 @@ class Listing
     }
     loop do
       resp = @s3_client.list_objects_v2(opt)
-      rcount = 0
-      lastkey = ''
       resp.to_h.fetch(:contents, []).each do |s3obj|
         @keymap.add_node(s3obj.fetch(:key, ''))
-        rcount += 1
-        lastkey = s3obj.fetch(:key, '')
       end
-      puts "#{rcount}; #{lastkey}; #{@keymap.length}: #{Time.now}"
       break unless resp.is_truncated
       opt[:continuation_token] = resp.next_continuation_token
     end

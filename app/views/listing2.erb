@@ -1,0 +1,23 @@
+<h1>Merritt - Ingest Workspace Service</h1>
+
+<div id="body">
+<div id="menu">
+  <a href="/">Home</a>
+  <span> / <a href="/listing">Main Listing</a></span>
+  <% unless @listing.parent.empty? %>
+  <span> / <a href="/<%= @listing.parent %>/"><%= @listing.parent %></a></span>
+  <% end %>
+</div>
+<br>
+
+<div id="components">
+  <% unless @listing.components.empty? %>
+  <h2>Manifest Components</h2>
+  <ul>
+    <% @listing.components.each do |k| %>
+    <li><a href="<%= k[:url] %>"><%=k[:desc]%></a></li>
+    <% end %>
+  </ul>
+  <% end %>
+</div>
+
