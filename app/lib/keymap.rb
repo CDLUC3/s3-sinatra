@@ -185,10 +185,12 @@ class Keymap
       @keys.keys.sort.each do |k|
         puts k
         rec = @keys[k]
+        puts rec[:fkeys].length
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
         rpt[:recs]["#{k}/object.checkm"] = rec[:fkeys].length
         rpt[:batchrecs]["#{@prefixpath}#{k}/object.checkm"] = rec[:fkeys].length
         rec[:fkeys].each do |dk|
+          puts "delete #{k}/#{dk}"
           @other.delete("#{k}/#{dk}")
         end
         puts "end #{k}"
