@@ -91,7 +91,7 @@ def make_auth_listing(prefix: '', depth: 0, mode: :component)
 end
 
 get "/" do
-  @listing = listing(mode: :directory)
+  @listing = listing(mode: :directory, prefix: 'ZZZ')
   @listing.list_keys
 
   status 200
