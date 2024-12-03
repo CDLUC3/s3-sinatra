@@ -18,6 +18,10 @@ class Keymap
     nil
   end
 
+  def length
+    @keys.length
+  end
+
   def maxdepth
     topkey.nil? ? 0 : @keys[topkey][:maxdepth]
   end
