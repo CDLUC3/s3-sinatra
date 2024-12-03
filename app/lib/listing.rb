@@ -44,6 +44,7 @@ class Listing
       resp.to_h.fetch(:contents, []).each do |s3obj|
         @keymap.add_node(s3obj.fetch(:key, ''))
       end
+      puts "#{@keymap.length}: #{Time.now}"
       break unless resp.is_truncated
       opt[:continuation_token] = resp.next_continuation_token
     end
