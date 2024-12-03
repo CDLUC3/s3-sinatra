@@ -63,7 +63,7 @@ class Keymap
   def allkeys
     arr = []
     @allkeys.each do |k|
-        arr.append("#{url_prefix}#{k}")
+        arr.append("#{url_prefix}#{k.to_s}")
     end
     arr
   end
@@ -72,7 +72,7 @@ class Keymap
     arr = []
     component_data
     @other.each do |k|
-        arr.append("#{url_prefix}#{k}")
+        arr.append("#{url_prefix}#{k.to_s}")
     end
     arr
   end
@@ -119,12 +119,12 @@ class Keymap
 
     # special handling for top level keys
     if p == '.'
-      @topkeys.append(k)
+      @topkeys.append(k.to_sym)
     end
     if p == @prefix
-      @topkeys.append(k)
+      @topkeys.append(k.to_sym)
     end
-    @allkeys.append(k)
+    @allkeys.append(k.to_sym)
 
     # iterate over parent keys
     loop do
@@ -132,7 +132,7 @@ class Keymap
       pdepth = is_top ? 0 : kdepth - p.split('/').length
       pdepth = is_top ? 0 : p.split('/').length
       @keys[p.to_sym] = @keys.fetch(
-        p, 
+        p.to_sym, 
         {
           key: p.to_sym,
           fkeys: [], 
@@ -184,12 +184,12 @@ class Keymap
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
       @other = @allkeys.clone
       @keys.keys.sort.each do |k|
-        rec = @keys[k.to_sym]
+        rec = @keys[k]
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
-        rpt[:recs]["#{k}/object.checkm"] = rec[:fkeys].length
+        rpt[:recs]["#{k.to_s}/object.checkm"] = rec[:fkeys].length
         rpt[:batchrecs]["#{@prefixpath}#{k}/object.checkm"] = rec[:fkeys].length
         rec[:fkeys].each do |dk|
-          @other.delete("#{k}/#{dk}")
+          @other.delete("#{k.to_s}/#{dk}".to_sym)
         end
       end
     end
