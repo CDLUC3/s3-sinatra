@@ -3,7 +3,7 @@ require 'csv'
 require_relative 'keymap.rb'
 
 class Listing
-  MAXLIST = 50_000
+  MAXLIST = 5_000
 
   def initialize(
     region: 'us-west-2', 
