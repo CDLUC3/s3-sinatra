@@ -214,7 +214,7 @@ get %r[/batch.depth(-?\d+)] do |d|
   make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
-  puts "Rendering... #{@listing.components.length}"
+  puts "Rendering... #{@listing.components.to_h.to_s}"
   erb :listing2
 end
 
