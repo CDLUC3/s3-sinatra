@@ -93,7 +93,7 @@ helpers do
       key: key
     )
     if url
-      response.headers['Location'] = "#{url}&content-disposition=inline"
+      response.headers['Location'] = url
       status 303
       "success: redirecting"
     end
