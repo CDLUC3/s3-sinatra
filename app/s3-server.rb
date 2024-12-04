@@ -96,7 +96,7 @@ def return_string(s, type: 'text/plain; charset=utf-8')
   if s.length >= 1_000_000
     content_type 'text/plain'
     status 400
-    "TEXT TOO LONG for #{request.url}: #{s.length}"
+    "TEXT TOO LONG for #{request.path}: #{s.length}"
   else
     content_type type
     status 400
@@ -141,9 +141,9 @@ end
 get '/*/batchobject.csv' do
   protected!
 
-
   metadata = file_exists("#{params['splat'][0]}/#{MERRITT_METADATA}")
   return return_string(metadata, type: 'text/csv; charset=utf-8') if metadata
+
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
   return_string(@listing.batchobject_csv, type: 'text/csv; charset=utf-8')
