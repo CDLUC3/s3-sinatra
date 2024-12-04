@@ -90,6 +90,7 @@ helpers do
     url, headers = @presigner.presigned_request(:get_object, bucket: bucket_name, key: key)
     if url
       response.headers['Location'] = url
+      response.headers['Content-Disposition'] = 'inline'
       status 303
       "success: redirecting"
     end
@@ -123,6 +124,7 @@ def return_string(s, type: 'text/plain; charset=utf-8')
     generate_file("#{Listing::GENERATED_PATH}#{request.path}", s)
   else
     content_type type
+    headers 'Content-Disposition' => "inline"
     status 200
     s
   end
