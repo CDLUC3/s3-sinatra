@@ -120,12 +120,10 @@ def return_string(s, type: 'text/plain; charset=utf-8')
   s = s.encode("UTF-8")
 
   if s.length >= 1_000_000
-    disposition :inline
     generate_file("#{Listing::GENERATED_PATH}#{request.path}", s)
   else
-    disposition :inline
     content_type type
-    status 400
+    status 200
     s
   end
 end
