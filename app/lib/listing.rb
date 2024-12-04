@@ -138,11 +138,11 @@ class Listing
   end
 
   def object_data
-    checkm_header + manifest_urls(@keymap.allkeys, @keymap.url_prefix) + checkm_footer
+    (checkm_header + manifest_urls(@keymap.allkeys, @keymap.url_prefix) + checkm_footer).encode("UTF-8")
   end
 
   def batchobject_data(metadata)
-    batchobject_checkm_header + batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) + checkm_footer
+    )batchobject_checkm_header + batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) + checkm_footer).encode("UTF-8")
   end
 
   def batchobject_csv
@@ -152,11 +152,11 @@ class Listing
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string
+    csv_string.encode("UTF-8")
   end
 
   def batch_data(metadata)
-    batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) + checkm_footer
+    (batch_checkm_header + batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) + checkm_footer).encode("UTF-8")
   end
 
   def batch_csv
@@ -166,11 +166,11 @@ class Listing
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string
+    csv_string.encode("UTF-8")
   end
 
   def other_data(metadata)
-    checkm_header + manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + checkm_footer
+    (checkm_header + manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + checkm_footer).encode("UTF-8")
   end
 
   def component_data
