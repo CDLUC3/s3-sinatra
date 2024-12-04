@@ -138,6 +138,7 @@ class Listing
   end
 
   def return_string(s)
+    puts "STRING LENGTH: #{s.length}"
     if s.length >= 6_000_000
       status 400
       return "TEXT TOO LONG: #{s.length}"
