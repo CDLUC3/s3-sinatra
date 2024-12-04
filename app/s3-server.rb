@@ -5,8 +5,8 @@ require 'aws-sdk-ssm'
 require_relative 'lib/listing.rb'
 
 MERRITT_METADATA = Keymap.metadata
-CSV = "text/plain; charset=utf-8"
-TXT = "text/plain; charset=utf-8"
+TYPE_CSV = "text/plain; charset=utf-8"
+TYPE_TXT = "text/plain; charset=utf-8"
 
 helpers do
 
@@ -124,7 +124,7 @@ def make_auth_listing(prefix: '', depth: 0, mode: :component)
   @listing.list_keys
 end
 
-def return_string(s, type: TXT)
+def return_string(s, type: TYPE_TXT)
   s = s.encode("UTF-8")
 
   if s.length >= 1_000_000
@@ -179,7 +179,7 @@ get '/*/batchobject.csv' do
 
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
-  return_string(@listing.batchobject_csv, type: CSV)
+  return_string(@listing.batchobject_csv, type: TYPE_CSV)
 end
 
 get '/object.checkm' do
@@ -202,11 +202,11 @@ get '/batchobject.csv' do
   protected!
 
   metadata = file_exists(MERRITT_METADATA)
-  return return_string(metadata, type: CSV) if metadata
+  return return_string(metadata, type: TYPE_CSV) if metadata
 
   make_auth_listing(prefix: '', depth: 0)
 
-  return_string(@listing.batchobject_csv, type: CSV)
+  return_string(@listing.batchobject_csv, type: TYPE_CSV)
 end
 
 get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
@@ -221,11 +221,11 @@ get %r[/(.*)/batch.depth(-?\d+).csv] do |key, d|
   protected!
 
   metadata = file_exists("#{key}/#{MERRITT_METADATA}")
-  return return_string(metadata, type: CSV) if metadata
+  return return_string(metadata, type: TYPE_CSV) if metadata
 
   make_auth_listing(prefix: key, depth: d.to_i)
 
-  return_string(@listing.batch_csv, CSV)
+  return_string(@listing.batch_csv, type: TYPE_CSV)
 end
 
 get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
@@ -258,11 +258,11 @@ get %r[/batch.depth(-?\d+).csv] do |d|
   protected!
 
   metadata = file_exists(MERRITT_METADATA)
-  return return_string(metadata, type: CSV) if metadata
+  return return_string(metadata, type: TYPE_CSV) if metadata
 
   make_auth_listing(prefix: '', depth: d.to_i)
 
-  return_string(@listing.batch_csv, type: CSV)
+  return_string(@listing.batch_csv, type: TYPE_CSV)
 end
 
 get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
