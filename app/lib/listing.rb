@@ -142,7 +142,7 @@ class Listing
     s = s.encode("UTF-8")
     puts "ENC STRING LENGTH: #{s.length}"
 
-    s.length >= 1_000_000 ? "TEXT TOO LONG: #{s.length}" : s
+    s.length >= 1_000_000 ? "TEXT TOO LONG for #{request.url}: #{s.length}" : s
   end
 
   def object_data
