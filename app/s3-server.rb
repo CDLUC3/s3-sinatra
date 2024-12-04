@@ -87,7 +87,7 @@ helpers do
     rescue Aws::S3::Errors::NotFound
       halt 404, "Object \"#{key}\" not found in S3 bucket \"#{bucket_name}\"\n"
     end
-    url, headers = @presigner.presigned_request(
+    url, headers = @presigner.presigned_url(
       :get_object, 
       bucket: bucket_name, 
       key: key,
