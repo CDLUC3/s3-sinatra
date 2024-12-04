@@ -43,7 +43,7 @@ class Listing
       resp = @s3_client.list_objects_v2(opt)
       resp.to_h.fetch(:contents, []).each do |s3obj|
         key = s3obj.fetch(:key, '')
-        next if key == GENERATED_PATH
+        next if key.start_with(GENERATED_PATH)
         @keymap.add_node(key)
       end
       break unless resp.is_truncated
