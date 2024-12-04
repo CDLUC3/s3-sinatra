@@ -90,7 +90,8 @@ helpers do
     url, headers = @presigner.presigned_request(
       :get_object, 
       bucket: bucket_name, 
-      key: key
+      key: key,
+      response_content_disposition: 'inline'
     )
     if url
       response.headers['Location'] = url
