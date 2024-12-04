@@ -139,11 +139,13 @@ class Listing
 
   def return_string(s)
     puts "STRING LENGTH: #{s.length}"
-    if s.length >= 5_000_000
+    s = s.encode("UTF-8")
+    puts "ENC STRING LENGTH: #{s.length}"
+    if s.length >= 6_000_000
       return "TEXT TOO LONG: #{s.length}"
     end
 
-    return s.encode("UTF-8")
+    s
   end
 
   def object_data
