@@ -141,11 +141,8 @@ class Listing
     puts "STRING LENGTH: #{s.length}"
     s = s.encode("UTF-8")
     puts "ENC STRING LENGTH: #{s.length}"
-    if s.length >= 6_000_000
-      return "TEXT TOO LONG: #{s.length}"
-    end
 
-    s
+    s.length >= 6_000_000 ? "TEXT TOO LONG: #{s.length}" : s
   end
 
   def object_data
