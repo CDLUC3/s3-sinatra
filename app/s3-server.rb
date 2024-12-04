@@ -120,7 +120,7 @@ def return_string(s, type: 'text/plain; charset=utf-8')
   s = s.encode("UTF-8")
 
   if s.length >= 1_000_000
-    generate_file("/ingest-workspace-generated#{request.path}", s)
+    generate_file("ingest-workspace-generated#{request.path}", s)
   else
     content_type type
     status 400
