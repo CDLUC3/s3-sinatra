@@ -90,6 +90,21 @@ def make_auth_listing(prefix: '', depth: 0, mode: :component)
   @listing.list_keys
 end
 
+def return_string(s, type: 'text/plain; charset=utf-8')
+  s = s.encode("UTF-8")
+
+  if s.length >= 1_000_000
+    content_type 'text/plain'
+    status 400
+    "TEXT TOO LONG for #{request.url}: #{s.length}"
+  else
+    content_type type
+    status 400
+    s
+  end
+end
+
+
 get "/" do
   @listing = listing(mode: :directory, prefix: 'ZZZ')
   @listing.list_keys
@@ -112,9 +127,7 @@ get '/*/object.checkm' do
 
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
-  status 200
-  content_type 'text/plain'
-  @listing.object_data
+  return_string(@listing.object_data)
 end
 
 get '/*/batchobject.checkm' do
@@ -122,23 +135,18 @@ get '/*/batchobject.checkm' do
 
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
-  status 200
-  content_type 'text/plain'
-  @listing.batchobject_data(file_exists("#{params['splat'][0]}/#{MERRITT_METADATA}"))
+  return_string(@listing.batchobject_data(file_exists("#{params['splat'][0]}/#{MERRITT_METADATA}")))
 end
 
 get '/*/batchobject.csv' do
   protected!
 
-  status 200
-  content_type 'text/csv; charset=utf-8'
 
   metadata = file_exists("#{params['splat'][0]}/#{MERRITT_METADATA}")
-  return metadata if metadata
-
+  return return_string(metadata, type: 'text/csv; charset=utf-8') if metadata
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
-  @listing.batchobject_csv
+  return_string(@listing.batchobject_csv, type: 'text/csv; charset=utf-8')
 end
 
 get '/object.checkm' do
@@ -146,9 +154,7 @@ get '/object.checkm' do
 
   make_auth_listing(prefix: '', depth: 0)
 
-  status 200
-  content_type 'text/plain'
-  @listing.object_data
+  return_string(@listing.object_data)
 end
 
 get '/batchobject.checkm' do
@@ -156,23 +162,18 @@ get '/batchobject.checkm' do
 
   make_auth_listing(prefix: '', depth: 0)
 
-  status 200
-  content_type 'text/plain'
-  @listing.batchobject_data(file_exists("#{MERRITT_METADATA}"))
+  return_string(@listing.batchobject_data(file_exists("#{MERRITT_METADATA}")))
 end
 
 get '/batchobject.csv' do
   protected!
 
-  status 200
-  content_type 'text/csv; charset=utf-8'
-
   metadata = file_exists(MERRITT_METADATA)
-  return metadata if metadata
+  return return_string(metadata, type: 'text/csv; charset=utf-8') if metadata
 
   make_auth_listing(prefix: '', depth: 0)
 
-  @listing.batchobject_csv
+  return_string(@listing.batchobject_csv, type: 'text/csv; charset=utf-8')
 end
 
 get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
@@ -180,23 +181,18 @@ get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
 
   make_auth_listing(prefix: key, depth: d.to_i)
 
-  status 200
-  content_type 'text/plain'
-  @listing.batch_data(file_exists("#{key}/#{MERRITT_METADATA}"))
+  return_string(@listing.batch_data(file_exists("#{key}/#{MERRITT_METADATA}")))
 end
 
 get %r[/(.*)/batch.depth(-?\d+).csv] do |key, d|
   protected!
 
-  status 200
-  content_type 'text/csv; charset=utf-8'
-
   metadata = file_exists("#{key}/#{MERRITT_METADATA}")
-  return metadata if metadata
+  return return_string(metadata, type: 'text/csv; charset=utf-8') if metadata
 
   make_auth_listing(prefix: key, depth: d.to_i)
 
-  @listing.batch_csv
+  return_string(@listing.batch_csv, type: 'text/csv; charset=utf-8')
 end
 
 get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
@@ -222,23 +218,18 @@ get %r[/batch.depth(-?\d+).checkm] do |d|
 
   make_auth_listing(prefix: '', depth: d.to_i)
 
-  status 200
-  content_type 'text/plain'
-  @listing.batch_data(file_exists(MERRITT_METADATA))
+  return_string(@listing.batch_data(file_exists(MERRITT_METADATA)))
 end
 
 get %r[/batch.depth(-?\d+).csv] do |d|
   protected!
 
-  status 200
-  content_type 'text/csv; charset=utf-8'
-
   metadata = file_exists(MERRITT_METADATA)
-  return metadata if metadata
+  return return_string(metadata, type: 'text/csv; charset=utf-8') if metadata
 
   make_auth_listing(prefix: '', depth: d.to_i)
 
-  @listing.batch_csv
+  return_string(@listing.batch_csv, type: 'text/csv; charset=utf-8')
 end
 
 get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
@@ -246,9 +237,7 @@ get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
 
   make_auth_listing(prefix: key, depth: d.to_i)
 
-  status 200
-  content_type 'text/plain'
-  @listing.other_data(file_exists("#{key}/#{MERRITT_METADATA}"))
+  return_string(@listing.other_data(file_exists("#{key}/#{MERRITT_METADATA}")))
 end
 
 get %r[/batch-other.depth(-?\d+).checkm] do |d|
@@ -256,9 +245,7 @@ get %r[/batch-other.depth(-?\d+).checkm] do |d|
 
   make_auth_listing(prefix: '', depth: d.to_i)
 
-  status 200
-  content_type 'text/plain'
-  @listing.other_data(file_exists(MERRITT_METADATA))
+  return_string(@listing.other_data(file_exists(MERRITT_METADATA)))
 end
 
 get '/*/' do

@@ -137,28 +137,16 @@ class Listing
     marr.join("\n")
   end
 
-  def return_string(s)
-    puts "STRING LENGTH: #{s.length}"
-    s = s.encode("UTF-8")
-    puts "ENC STRING LENGTH: #{s.length}"
-
-    s.length >= 1_000_000 ? "TEXT TOO LONG for #{request.url}: #{s.length}" : s
-  end
-
   def object_data
-    return_string(
-      checkm_header + 
-      manifest_urls(@keymap.allkeys, @keymap.url_prefix) + 
-      checkm_footer
-    )
+    checkm_header + 
+    manifest_urls(@keymap.allkeys, @keymap.url_prefix) + 
+    checkm_footer
   end
 
   def batchobject_data(metadata)
-    return_string(
-      batchobject_checkm_header + 
-      batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) + 
-      checkm_footer
-    )
+    batchobject_checkm_header + 
+    batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) + 
+    checkm_footer
   end
 
   def batchobject_csv
@@ -168,15 +156,13 @@ class Listing
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    return_string(csv_string)
+    csv_string
   end
 
   def batch_data(metadata)
-    return_string(
-      batch_checkm_header + 
-      batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) + 
-      checkm_footer
-    )
+    batch_checkm_header + 
+    batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) + 
+    checkm_footer
   end
 
   def batch_csv
@@ -186,15 +172,13 @@ class Listing
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    return_string(csv_string)
+    csv_string
   end
 
   def other_data(metadata)
-    return_string(
-      checkm_header + 
-      manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + 
-      checkm_footer
-    )
+    checkm_header + 
+    manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + 
+    checkm_footer
   end
 
   def component_data
