@@ -5,6 +5,7 @@ require_relative 'keymap.rb'
 # frozen_string_literal: true
 
 class Listing
+  GENERATED_PATH = "ingest-workspace-generated"
   def initialize(
     region: 'us-west-2', 
     bucket: 'na', 
@@ -41,7 +42,9 @@ class Listing
     loop do
       resp = @s3_client.list_objects_v2(opt)
       resp.to_h.fetch(:contents, []).each do |s3obj|
-        @keymap.add_node(s3obj.fetch(:key, ''))
+        key = s3obj.fetch(:key, '')
+        next if key == GENERATED_PATH
+        @keymap.add_node(key)
       end
       break unless resp.is_truncated
       opt[:continuation_token] = resp.next_continuation_token
