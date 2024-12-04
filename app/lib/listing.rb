@@ -137,12 +137,29 @@ class Listing
     marr.join("\n")
   end
 
+  def return_string(s)
+    if s.length >= 6_000_000
+      status 400
+      return "TEXT TOO LONG: #{s.length}"
+    end
+
+    return s.encode("UTF-8")
+  end
+
   def object_data
-    "#{checkm_header}#{manifest_urls(@keymap.allkeys, @keymap.url_prefix)}#{checkm_footer}".encode("UTF-8")
+    return_string(
+      checkm_header + 
+      manifest_urls(@keymap.allkeys, @keymap.url_prefix) + 
+      checkm_footer
+    )
   end
 
   def batchobject_data(metadata)
-    "#{batchobject_checkm_header}#{batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata)}#{checkm_footer}".encode("UTF-8")
+    return_string(
+      batchobject_checkm_header + 
+      batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) + 
+      checkm_footer
+    )
   end
 
   def batchobject_csv
@@ -156,7 +173,11 @@ class Listing
   end
 
   def batch_data(metadata)
-    "#{batch_checkm_header}#{batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata)}#{checkm_footer}".encode("UTF-8")
+    return_string(
+      batch_checkm_header + 
+      batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) + 
+      checkm_footer
+    )
   end
 
   def batch_csv
@@ -170,7 +191,11 @@ class Listing
   end
 
   def other_data(metadata)
-    "#{checkm_header}#{manifest_urls(@keymap.otherkeys, @keymap.url_prefix)}#{checkm_footer}".encode("UTF-8")
+    return_string(
+      checkm_header + 
+      manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + 
+      checkm_footer
+    )
   end
 
   def component_data
