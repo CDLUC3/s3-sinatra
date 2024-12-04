@@ -69,7 +69,7 @@ helpers do
     end
   end
 
-  def generate_file(key, s)
+  def generate_file(key, s, type)
     @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
     @presigner = Aws::S3::Presigner.new(client: @s3_client)
     bucket_name = env.fetch('BUCKET_NAME', nil)
@@ -91,7 +91,8 @@ helpers do
       :get_object, 
       bucket: bucket_name, 
       key: key,
-      response_content_disposition: :inline
+      response_content_disposition: :inline,
+      response_content_type: type
     )
     if url
       response.headers['Location'] = url
@@ -125,7 +126,7 @@ def return_string(s, type: 'text/plain; charset=utf-8')
   s = s.encode("UTF-8")
 
   if s.length >= 1_000_000
-    generate_file("#{Listing::GENERATED_PATH}#{request.path}", s)
+    generate_file("#{Listing::GENERATED_PATH}#{request.path}", s, type)
   else
     content_type type
     headers 'Content-Disposition' => "inline"
