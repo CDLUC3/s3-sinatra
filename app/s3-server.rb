@@ -90,11 +90,10 @@ helpers do
     url, headers = @presigner.presigned_request(
       :get_object, 
       bucket: bucket_name, 
-      key: key,
-      ResponseContentDisposition: "inline"
+      key: key
     )
     if url
-      response.headers['Location'] = url
+      response.headers['Location'] = "#{url}&content-disposition=inline"
       status 303
       "success: redirecting"
     end
