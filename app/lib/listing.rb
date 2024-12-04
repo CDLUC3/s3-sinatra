@@ -147,12 +147,12 @@ class Listing
 
   def batchobject_csv
     csv_string = CSV.generate do |csv|
-      csv << %w[§key primary_id local_id erc_what erc_who erc_when]
+      csv << %w['§key'.encode("UTF-8") primary_id local_id erc_what erc_who erc_when]
       @keymap.allkeys.each do |k|
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string.encode("UTF-8")
+    csv_string
   end
 
   def batch_data(metadata)
@@ -161,12 +161,12 @@ class Listing
 
   def batch_csv
     csv_string = CSV.generate do |csv|
-      csv << %w[§key primary_id local_id erc_what erc_who erc_when]
+      csv << %w['§key'.encode("UTF-8") primary_id local_id erc_what erc_who erc_when]
       @keymap.batchkeys.each do |k|
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string.encode("UTF-8")
+    csv_string
   end
 
   def other_data(metadata)
