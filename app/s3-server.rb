@@ -91,7 +91,7 @@ helpers do
       :get_object, 
       bucket: bucket_name, 
       key: key,
-      response_content_disposition: :inline
+      content_disposition: :inline
     )
     if url
       response.headers['Location'] = url
