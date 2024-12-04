@@ -176,16 +176,15 @@ class Keymap
     }
 
     @other = {}
+    skipOther = @allkeys.length > 40_000
     if @depth == 0
       rpt[:title] = "#{@prefixpath}object.checkm"
       rpt[:recs]["object.checkm"] = @allkeys.length
       rpt[:batchrecs]["#{@prefixpath}object.checkm"] = @allkeys.length
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
-      if @allkeys.length < 20_000
+      unless skipOther
         @other = @allkeys.clone
-      else
-        @other = {tbd: {}}
       end
       @keys.keys.sort.each do |k|
         rec = @keys[k]
@@ -193,11 +192,14 @@ class Keymap
         rpt[:recs]["#{k.to_s}/object.checkm"] = rec[:fkeys].length
         rpt[:batchrecs]["#{@prefixpath}#{k}/object.checkm"] = rec[:fkeys].length
         rec[:fkeys].each do |dk|
-          @other.delete("#{k.to_s}/#{dk}".to_sym)
+          @other.delete("#{k.to_s}/#{dk}".to_sym) unless skipOther
         end
       end
     end
-    unless @other.empty?
+    if skipOther
+      rpt[:recs]["batch-other.depth#{@depth}.checkm"] = 'tbd'
+      rpt[:batchrecs]["#{@prefixpath}batch-other.depth#{@depth}.checkm"] = 'tbd'
+    elsif !@other.empty?
       rpt[:recs]["batch-other.depth#{@depth}.checkm"] = @other.length
       rpt[:batchrecs]["#{@prefixpath}batch-other.depth#{@depth}.checkm"] = @other.length
     end

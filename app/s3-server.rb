@@ -205,7 +205,7 @@ get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
   make_auth_listing(prefix: key, depth: d.to_i)
 
   status 200
-  erb :listing2
+  erb :listing
 end
 
 get %r[/batch.depth(-?\d+)] do |d|
@@ -214,7 +214,7 @@ get %r[/batch.depth(-?\d+)] do |d|
   make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
-  erb :listing2
+  erb :listing
 end
 
 get %r[/batch.depth(-?\d+).checkm] do |d|
