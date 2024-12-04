@@ -182,7 +182,11 @@ class Keymap
       rpt[:batchrecs]["#{@prefixpath}object.checkm"] = @allkeys.length
     else 
       rpt[:title] = "#{@prefix}/batch.depth#{@depth}.checkm"
-      @other = @allkeys.clone
+      if @allkeys.length < 20_000
+        @other = @allkeys.clone
+      else
+        @other = {tbd: {}}
+      end
       @keys.keys.sort.each do |k|
         rec = @keys[k]
         next unless rec[:depth] == @depth || rec[:rdepth] == @depth
