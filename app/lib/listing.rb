@@ -139,8 +139,7 @@ class Listing
 
   def return_string(s)
     puts "STRING LENGTH: #{s.length}"
-    if s.length >= 6_000_000
-      status 400
+    if s.length >= 5_000_000
       return "TEXT TOO LONG: #{s.length}"
     end
 
@@ -165,12 +164,12 @@ class Listing
 
   def batchobject_csv
     csv_string = CSV.generate do |csv|
-      csv << ['§key'.encode("UTF-8"), 'primary_id', 'local_id', 'erc_what', 'erc_who', 'erc_when']
+      csv << ['§key', 'primary_id', 'local_id', 'erc_what', 'erc_who', 'erc_when']
       @keymap.allkeys.each do |k|
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string
+    return_string(csv_string)
   end
 
   def batch_data(metadata)
@@ -183,12 +182,12 @@ class Listing
 
   def batch_csv
     csv_string = CSV.generate do |csv|
-      csv << ['§key'.encode("UTF-8"), 'primary_id', 'local_id', 'erc_what', 'erc_who', 'erc_when']
+      csv << ['§key', 'primary_id', 'local_id', 'erc_what', 'erc_who', 'erc_when']
       @keymap.batchkeys.each do |k|
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string
+    return_string(csv_string)
   end
 
   def other_data(metadata)
