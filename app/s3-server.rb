@@ -69,6 +69,28 @@ helpers do
     end
   end
 
+  def generate_file(key, s)
+    @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
+    @presigner = Aws::S3::Presigner.new(client: @s3_client)
+    bucket_name = env.fetch('BUCKET_NAME', nil)
+    begin
+      @s3_client.put_object({
+        body: s,
+        bucket: bucket_name,
+        key: key
+      })
+      @s3_client.head_object({bucket: bucket_name, key: key})
+    rescue Aws::S3::Errors::NotFound
+      halt 404, "Object \"#{key}\" not found in S3 bucket \"#{bucket_name}\"\n"
+    end
+    url, headers = @presigner.presigned_request(:get_object, bucket: bucket_name, key: key)
+    if url
+      response.headers['Location'] = url
+      status 303
+      "success: redirecting"
+    end
+  end
+
 end
 
 def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
@@ -94,9 +116,7 @@ def return_string(s, type: 'text/plain; charset=utf-8')
   s = s.encode("UTF-8")
 
   if s.length >= 1_000_000
-    content_type 'text/plain'
-    status 400
-    "TEXT TOO LONG for #{request.path}: #{s.length}"
+    generate_file("/ingest-workspace-generated/#{request.path}", s)
   else
     content_type type
     status 400
