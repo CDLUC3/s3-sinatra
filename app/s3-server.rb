@@ -79,6 +79,10 @@ helpers do
         bucket: bucket_name,
         key: key
       })
+    rescue Aws::S3::Errors::NotFound => e
+      halt 404, "Object Put failed for \"#{key}\"  in S3 bucket \"#{bucket_name}\": #{e}\n"
+    end
+    begin
       @s3_client.head_object({bucket: bucket_name, key: key})
     rescue Aws::S3::Errors::NotFound
       halt 404, "Object \"#{key}\" not found in S3 bucket \"#{bucket_name}\"\n"
