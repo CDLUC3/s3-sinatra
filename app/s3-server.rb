@@ -125,7 +125,7 @@ def make_auth_listing(prefix: '', depth: 0, mode: :component)
 end
 
 def return_string(s, type: TYPE_TXT)
-  s = s.encode("UTF-8")
+  s = s.to_s.encode("UTF-8")
 
   if s.length >= 1_000_000
     generate_file("#{Listing::GENERATED_PATH}#{request.path}", s, type)
