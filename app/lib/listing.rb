@@ -106,7 +106,7 @@ class Listing
   def batch_manifest_urls(arr, pre, flatten: true, metadata: nil)
     mm = {}
     if metadata
-      csv  = CSV.parse(metadata.read)
+      csv  = CSV.parse(metadata)
       csv.shift
       csv.each do |row|
         mm[row[0]] = {
