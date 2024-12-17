@@ -48,7 +48,7 @@ helpers do
     bucket_name = env.fetch('BUCKET_NAME', nil)
     begin
       @s3_client.head_object({bucket: bucket_name, key: key})
-      @s3_client.get_object({bucket: bucket_name, key: key}).body
+      @s3_client.get_object({bucket: bucket_name, key: key}).body.read
     rescue Aws::S3::Errors::NotFound
       return nil
     end
@@ -125,7 +125,7 @@ def make_auth_listing(prefix: '', depth: 0, mode: :component)
 end
 
 def return_string(s, type: TYPE_TXT)
-  s = s.to_s.encode("UTF-8")
+  s = s.encode("UTF-8")
 
   if s.length >= 1_000_000
     generate_file("#{Listing::GENERATED_PATH}#{request.path}", s, type)
@@ -175,7 +175,7 @@ get '/*/batchobject.csv' do
   protected!
 
   metadata = file_exists("#{params['splat'][0]}/#{MERRITT_METADATA}")
-  return return_string(metadata, type: 'text/csv; charset=utf-8') if metadata
+  return return_string(metadata, type: TYPE_CSV) if metadata
 
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
