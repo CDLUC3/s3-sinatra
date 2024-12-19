@@ -111,7 +111,7 @@ def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
     bucket: env.fetch('BUCKET_NAME', nil), 
     dns: env.fetch('BASE_URL', nil),
     maxobj: 30,
-    maxpre: 30,
+    maxpre: 250,
     prefix: prefix,
     depth: depth,
     credentials: credentials,
