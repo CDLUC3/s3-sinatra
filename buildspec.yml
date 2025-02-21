@@ -20,6 +20,7 @@ phases:
   post_build:
     on-failure: CONTINUE
     commands:
+    - rm .ruby-version
     - ruby -v
     - bundle install
     - zip -r s3-sinatra-lb.zip vendor app *.rb
