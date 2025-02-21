@@ -4,6 +4,6 @@ require_relative './s3-server'
 
 set :root, File.dirname(__FILE__)
 set :views, Proc.new { File.join(root, "views") }
-set :host_authorization => []
+set :host_authorization => { permitted_hosts: [] }
 
 run Sinatra::Application
