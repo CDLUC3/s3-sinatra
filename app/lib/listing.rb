@@ -1,16 +1,19 @@
+# frozen_string_literal: true
+
 require 'aws-sdk-s3'
 require 'csv'
-require_relative 'keymap.rb'
+require_relative 'keymap'
 
 # frozen_string_literal: true
 
+## List items found in bucket
 class Listing
-  GENERATED_PATH = "ingest-workspace-generated"
+  GENERATED_PATH = 'ingest-workspace-generated'
   def initialize(
-    region: 'us-west-2', 
-    bucket: 'na', 
-    dns: 'http://foo.bar', 
-    maxobj: 20, 
+    region: 'us-west-2',
+    bucket: 'na',
+    dns: 'http://foo.bar',
+    maxobj: 20,
     maxpre: 20,
     prefix: '',
     depth: 0,
@@ -36,62 +39,68 @@ class Listing
 
   def list_keys
     opt = {
-      bucket: @bucket, 
+      bucket: @bucket,
       prefix: @prefix
     }
     loop do
+      puts "List #{@prefix}: #{opt}"
       resp = @s3_client.list_objects_v2(opt)
       resp.to_h.fetch(:contents, []).each do |s3obj|
         key = s3obj.fetch(:key, '')
         next if key.start_with?(GENERATED_PATH)
+
         @keymap.add_node(key)
       end
       break unless resp.is_truncated
+
       opt[:continuation_token] = resp.next_continuation_token
     end
+    puts "List #{@prefix}: #{@keymap.length} keys"
   end
 
   def topobjlist
     return [] if @mode == :component
-    @keymap.topkeys[0..@maxobj-1]
+
+    @keymap.topkeys[0..@maxobj - 1]
   end
 
   def prefixes
     return [] if @mode == :component
-    @keymap.topdirs[0..@maxpre-1]
+
+    @keymap.topdirs[0..@maxpre - 1]
   end
 
   def checkm_header
-%{#%checkm_0.7
+    %(#%checkm_0.7
 #%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-ingest-manifest
 #%prefix | mrt: | http://merritt.cdlib.org/terms#
 #%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
 #%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:mimeType
-}
+)
   end
 
   def batchobject_checkm_header
-%{#%checkm_0.7
+    %(#%checkm_0.7
 #%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-single-file-batch-manifest
 #%prefix | mrt: | http://merritt.cdlib.org/terms#
 #%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
 #%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:primaryIdentifier | mrt:localIdentifier | mrt:creator | mrt:title | mrt:date
-}
+)
   end
-    
+
   def batch_checkm_header
-%{#%checkm_0.7
+    %(#%checkm_0.7
 #%profile | http://uc3.cdlib.org/registry/ingest/manifest/mrt-batch-manifest
 #%prefix | mrt: | http://merritt.cdlib.org/terms#
 #%prefix | nfo: | http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#
 #%fields | nfo:fileUrl | nfo:hashAlgorithm | nfo:hashValue | nfo:fileSize | nfo:fileLastModified | nfo:fileName | mrt:primaryIdentifier | mrt:localIdentifier | mrt:creator | mrt:title | mrt:date
-}
+)
   end
-    
+
   def checkm_footer
-%{
+    %(
 #%eof
-}
+)
   end
 
   def manifest_urls(arr, pre)
@@ -106,7 +115,7 @@ class Listing
   def batch_manifest_urls(arr, pre, flatten: true, metadata: nil)
     mm = {}
     if metadata
-      csv  = CSV.parse(metadata)
+      csv = CSV.parse(metadata)
       csv.shift
       csv.each do |row|
         mm[row[0]] = {
@@ -124,11 +133,11 @@ class Listing
       mrec = mm.fetch(f, {})
       rec = [
         k,
-        '', #hash alg
-        '', #hash val
-        '', #file size
-        '', #file mod
-        flatten ? f.gsub!(/\//, '_') : f,
+        '', # hash alg
+        '', # hash val
+        '', # file size
+        '', # file mod
+        flatten ? f.gsub!('/', '_') : f,
         mrec.fetch(:primary_id, ''),
         mrec.fetch(:local_id, ''),
         mrec.fetch(:erc_what, ''),
@@ -141,47 +150,45 @@ class Listing
   end
 
   def object_data
-    checkm_header + 
-    manifest_urls(@keymap.allkeys, @keymap.url_prefix) + 
-    checkm_footer
+    checkm_header +
+      manifest_urls(@keymap.allkeys, @keymap.url_prefix) +
+      checkm_footer
   end
 
   def batchobject_data(metadata)
-    batchobject_checkm_header + 
-    batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) + 
-    checkm_footer
+    batchobject_checkm_header +
+      batch_manifest_urls(@keymap.allkeys, @keymap.url_prefix, flatten: false, metadata: metadata) +
+      checkm_footer
   end
 
   def batchobject_csv
-    csv_string = CSV.generate do |csv|
+    CSV.generate do |csv|
       csv << ['§key', 'primary_id', 'local_id', 'erc_what', 'erc_who', 'erc_when']
       @keymap.allkeys.each do |k|
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string
   end
 
   def batch_data(metadata)
-    batch_checkm_header + 
-    batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) + 
-    checkm_footer
+    batch_checkm_header +
+      batch_manifest_urls(@keymap.batchkeys, @keymap.url_prefix, metadata: metadata) +
+      checkm_footer
   end
 
   def batch_csv
-    csv_string = CSV.generate do |csv|
+    CSV.generate do |csv|
       csv << ['§key', 'primary_id', 'local_id', 'erc_what', 'erc_who', 'erc_when']
       @keymap.batchkeys.each do |k|
         csv << [k[@keymap.url_prefix.length..], '', '', '', '', '']
       end
     end
-    csv_string
   end
 
-  def other_data(metadata)
-    checkm_header + 
-    manifest_urls(@keymap.otherkeys, @keymap.url_prefix) + 
-    checkm_footer
+  def other_data(_metadata)
+    checkm_header +
+      manifest_urls(@keymap.otherkeys, @keymap.url_prefix) +
+      checkm_footer
   end
 
   def component_data
@@ -191,30 +198,29 @@ class Listing
   def manifest_options
     arr = []
     return arr if @mode == :component
+
     %w[object.checkm].each do |k|
       arr.append({
         url: "#{@prefixpath}#{k}",
-        desc: "#{k}"
+        desc: k.to_s
       })
     end
     %w[batchobject].each do |k|
       arr.append({
-        desc: "#{k}",
+        desc: k.to_s,
         download: "#{@prefixpath}#{k}.checkm",
         csv: "#{@prefixpath}#{k}.csv"
       })
     end
     karr = []
-    for i in 1..@keymap.maxdepth - 1
+    (1..@keymap.maxdepth - 1).each do |i|
       karr.append("batch.depth#{i}")
-    end
-    for i in 1..@keymap.maxdepth - 1
       karr.append("batch.depth-#{i}")
     end
     karr.each do |k|
       arr.append({
         url: "#{@prefixpath}#{k}",
-        desc: "#{k}",
+        desc: k.to_s,
         download: "#{@prefixpath}#{k}.checkm",
         csv: "#{@prefixpath}#{k}.csv"
       })
@@ -225,15 +231,15 @@ class Listing
   def components
     arr = []
     return arr if @mode == :directory
-    @keymap.component_data[:recs].each do |k,v|
+
+    @keymap.component_data[:recs].each do |k, v|
       arr.append(
         {
-          url: "#{k}",
+          url: k.to_s,
           desc: "#{k} (#{v})"
         }
       )
     end
     arr
   end
-
 end

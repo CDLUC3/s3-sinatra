@@ -1,0 +1,74 @@
+Metrics/ClassLength:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/BlockNesting:
+  Enabled: false
+Metrics/ParameterLists:
+  Enabled: false
+
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/FirstArrayElementIndentation:
+  Enabled: true
+Layout/FirstArrayElementLineBreak:
+  Enabled: true
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
+Layout/MultilineArrayBraceLayout:
+  EnforcedStyle: new_line
+
+Layout/FirstHashElementIndentation:
+  Enabled: true
+  EnforcedStyle: consistent
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: true
+Layout/MultilineHashBraceLayout:
+  EnforcedStyle: new_line
+
+Style/HashSyntax:
+  Enabled: false
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/MixinUsage:
+  Enabled: false
+
+# for this app, we are very lenient.  This is not production.
+Metrics/ModuleLength:
+  Enabled: false
+Naming/VariableName:
+  Enabled: false
+Naming/MethodParameterName:
+  Enabled: false
+Style/FormatStringToken:
+  Enabled: false
+Layout/LineLength:
+  Enabled: false
+Lint/Void:
+  Enabled: false
+Naming/FileName:
+  Enabled: false
+Lint/DuplicateBranch:
+  Enabled: false
+Lint/RescueException:
+  Enabled: false

@@ -1,26 +1,27 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/base'
 require 'aws-sdk-s3'
 require 'aws-sdk-ssm'
-require_relative 'lib/listing.rb'
+require_relative 'lib/listing'
 
 MERRITT_METADATA = Keymap.metadata
-TYPE_CSV = "text/plain; charset=utf-8"
-TYPE_TXT = "text/plain; charset=utf-8"
+TYPE_CSV = 'text/plain; charset=utf-8'
+TYPE_TXT = 'text/plain; charset=utf-8'
 
 helpers do
-
   def protected!
-    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-    if not basic_auth_credentials_included?
+    @auth ||= Rack::Auth::Basic::Request.new(request.env)
+    if !basic_auth_credentials_included?
       response['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
-      halt 401, "Unauthorized"
-    elsif not authorized?
+      halt 401, 'Unauthorized'
+    elsif !authorized?
       response['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
-      halt 401, "Unauthorized"
-      #halt 403, "Access denied\n"
+      halt 401, 'Unauthorized'
+      # halt 403, "Access denied\n"
     else
-      return true
+      true
     end
   end
 
@@ -47,10 +48,10 @@ helpers do
     @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
     bucket_name = env.fetch('BUCKET_NAME', nil)
     begin
-      @s3_client.head_object({bucket: bucket_name, key: key})
-      @s3_client.get_object({bucket: bucket_name, key: key}).body.read
+      @s3_client.head_object({ bucket: bucket_name, key: key })
+      @s3_client.get_object({ bucket: bucket_name, key: key }).body.read
     rescue Aws::S3::Errors::NotFound
-      return nil
+      nil
     end
   end
 
@@ -59,16 +60,16 @@ helpers do
     @presigner = Aws::S3::Presigner.new(client: @s3_client)
     bucket_name = env.fetch('BUCKET_NAME', nil)
     begin
-      @s3_client.head_object({bucket: bucket_name, key: key})
+      @s3_client.head_object({ bucket: bucket_name, key: key })
     rescue Aws::S3::Errors::NotFound
       halt 404, "Object \"#{key}\" not found in S3 bucket \"#{bucket_name}\"\n"
     end
-    url, headers = @presigner.presigned_request(:get_object, bucket: bucket_name, key: key)
-    if url
-      response.headers['Location'] = url
-      status 303
-      "success: redirecting"
-    end
+    url, = @presigner.presigned_request(:get_object, bucket: bucket_name, key: key)
+    return unless url
+
+    response.headers['Location'] = url
+    status 303
+    'success: redirecting'
   end
 
   def generate_file(key, s, type)
@@ -85,30 +86,29 @@ helpers do
       halt 404, "Object Put failed for \"#{key}\"  in S3 bucket \"#{bucket_name}\": #{e}\n"
     end
     begin
-      @s3_client.head_object({bucket: bucket_name, key: key})
+      @s3_client.head_object({ bucket: bucket_name, key: key })
     rescue Aws::S3::Errors::NotFound
       halt 404, "Object \"#{key}\" not found in S3 bucket \"#{bucket_name}\"\n"
     end
-    url, headers = @presigner.presigned_url(
-      :get_object, 
-      bucket: bucket_name, 
+    url, = @presigner.presigned_url(
+      :get_object,
+      bucket: bucket_name,
       key: key,
       response_content_disposition: :inline,
       response_content_type: type
     )
-    if url
-      response.headers['Location'] = url
-      status 303
-      "success: redirecting"
-    end
-  end
+    return unless url
 
+    response.headers['Location'] = url
+    status 303
+    'success: redirecting'
+  end
 end
 
 def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
   Listing.new(
-    region: ENV.fetch('AWS_REGION', nil), 
-    bucket: env.fetch('BUCKET_NAME', nil), 
+    region: ENV.fetch('AWS_REGION', nil),
+    bucket: env.fetch('BUCKET_NAME', nil),
     dns: env.fetch('BASE_URL', nil),
     maxobj: 30,
     maxpre: 250,
@@ -125,20 +125,19 @@ def make_auth_listing(prefix: '', depth: 0, mode: :component)
 end
 
 def return_string(s, type: TYPE_TXT)
-  s = s.encode("UTF-8")
+  s = s.encode('UTF-8')
 
   if s.length >= 1_000_000
     generate_file("#{Listing::GENERATED_PATH}#{request.path}", s, type)
   else
     content_type type
-    headers 'Content-Disposition' => "inline"
+    headers 'Content-Disposition' => 'inline'
     status 200
     s
   end
 end
 
-
-get "/" do
+get '/' do
   @listing = listing(mode: :directory, prefix: 'ZZZ')
   @listing.list_keys
 
@@ -146,7 +145,7 @@ get "/" do
   erb :index
 end
 
-get "/listing" do
+get '/listing' do
   protected!
 
   make_auth_listing(mode: :directory)
@@ -195,7 +194,7 @@ get '/batchobject.checkm' do
 
   make_auth_listing(prefix: '', depth: 0)
 
-  return_string(@listing.batchobject_data(file_exists("#{MERRITT_METADATA}")))
+  return_string(@listing.batchobject_data(file_exists(MERRITT_METADATA.to_s)))
 end
 
 get '/batchobject.csv' do
@@ -209,7 +208,7 @@ get '/batchobject.csv' do
   return_string(@listing.batchobject_csv, type: TYPE_CSV)
 end
 
-get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
+get %r{/(.*)/batch.depth(-?\d+).checkm} do |key, d|
   protected!
 
   make_auth_listing(prefix: key, depth: d.to_i)
@@ -217,7 +216,7 @@ get %r[/(.*)/batch.depth(-?\d+).checkm] do |key, d|
   return_string(@listing.batch_data(file_exists("#{key}/#{MERRITT_METADATA}")))
 end
 
-get %r[/(.*)/batch.depth(-?\d+).csv] do |key, d|
+get %r{/(.*)/batch.depth(-?\d+).csv} do |key, d|
   protected!
 
   metadata = file_exists("#{key}/#{MERRITT_METADATA}")
@@ -228,7 +227,7 @@ get %r[/(.*)/batch.depth(-?\d+).csv] do |key, d|
   return_string(@listing.batch_csv, type: TYPE_CSV)
 end
 
-get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
+get %r{/(.*)/batch.depth(-?\d+)} do |key, d|
   protected!
 
   make_auth_listing(prefix: key, depth: d.to_i)
@@ -237,7 +236,7 @@ get %r[/(.*)/batch.depth(-?\d+)] do |key, d|
   erb :listing
 end
 
-get %r[/batch.depth(-?\d+)] do |d|
+get %r{/batch.depth(-?\d+)} do |d|
   protected!
 
   make_auth_listing(prefix: '', depth: d.to_i)
@@ -246,7 +245,7 @@ get %r[/batch.depth(-?\d+)] do |d|
   erb :listing
 end
 
-get %r[/batch.depth(-?\d+).checkm] do |d|
+get %r{/batch.depth(-?\d+).checkm} do |d|
   protected!
 
   make_auth_listing(prefix: '', depth: d.to_i)
@@ -254,7 +253,7 @@ get %r[/batch.depth(-?\d+).checkm] do |d|
   return_string(@listing.batch_data(file_exists(MERRITT_METADATA)))
 end
 
-get %r[/batch.depth(-?\d+).csv] do |d|
+get %r{/batch.depth(-?\d+).csv} do |d|
   protected!
 
   metadata = file_exists(MERRITT_METADATA)
@@ -265,7 +264,7 @@ get %r[/batch.depth(-?\d+).csv] do |d|
   return_string(@listing.batch_csv, type: TYPE_CSV)
 end
 
-get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
+get %r{/(.*)/batch-other.depth(-?\d+).checkm} do |key, d|
   protected!
 
   make_auth_listing(prefix: key, depth: d.to_i)
@@ -273,7 +272,7 @@ get %r[/(.*)/batch-other.depth(-?\d+).checkm] do |key, d|
   return_string(@listing.other_data(file_exists("#{key}/#{MERRITT_METADATA}")))
 end
 
-get %r[/batch-other.depth(-?\d+).checkm] do |d|
+get %r{/batch-other.depth(-?\d+).checkm} do |d|
   protected!
 
   make_auth_listing(prefix: '', depth: d.to_i)

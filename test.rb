@@ -1,4 +1,6 @@
-require_relative 'app/lib/listing.rb'
+# frozen_string_literal: true
+
+require_relative 'app/lib/listing'
 
 prefix = ARGV.length > 1 ? ARGV[1] : ''
 @listing = Listing.new(region: 'us-west-2', bucket: ARGV[0], maxpre: 30, prefix: prefix, mode: :directory, depth: 2)
@@ -13,5 +15,5 @@ puts 'OBJS'
 @listing.topobjlist.each do |k|
   puts "\t#{k[:desc]} (#{k[:url]})"
 end
-#puts 'Other'
-#puts @listing.other_data
+# puts 'Other'
+# puts @listing.other_data
