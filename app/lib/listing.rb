@@ -48,7 +48,7 @@ class Listing
       resp.to_h.fetch(:contents, []).each do |s3obj|
         key = s3obj.fetch(:key, '')
         next if key.start_with?(GENERATED_PATH)
-
+        puts key
         @keymap.add_node(key)
       end
       break unless resp.is_truncated
