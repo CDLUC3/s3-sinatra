@@ -49,6 +49,7 @@ class Listing
         key = s3obj.fetch(:key, '')
         next if key.start_with?(GENERATED_PATH)
         next unless key.start_with?("#{@prefix}/")
+
         @keymap.add_node(key)
       end
       break unless resp.is_truncated
