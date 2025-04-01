@@ -48,7 +48,7 @@ class Listing
       resp.to_h.fetch(:contents, []).each do |s3obj|
         key = s3obj.fetch(:key, '')
         next if key.start_with?(GENERATED_PATH)
-        next unless key.start_with?("#{@prefix}/")
+        next unless key.start_with?("#{@prefix}/") || @prefix.empty?
 
         @keymap.add_node(key)
       end
