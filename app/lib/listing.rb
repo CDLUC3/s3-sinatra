@@ -57,7 +57,6 @@ class Listing
       opt[:continuation_token] = resp.next_continuation_token
     end
     puts "List #{@prefix}: #{@keymap.length} keys"
-    puts "Topdir #{@keymap.topdirs.length} directories"
   end
 
   def topobjlist
