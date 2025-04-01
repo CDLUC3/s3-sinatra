@@ -102,6 +102,7 @@ class Keymap
   end
 
   def add_node(k)
+    puts "Adding key: #{k} #{k =~ %r{^[^/]+/$}}"
     k.strip!
     return if File.basename(k) == Keymap.metadata
     return if k == @prefix
