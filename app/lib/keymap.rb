@@ -107,7 +107,7 @@ class Keymap
     return if k == @prefix
     return unless k.start_with?(@prefix)
 
-    k = k[@prefix.length + 1..] unless @prefix.empty?
+    k = k[(@prefix.length + 1)..] unless @prefix.empty?
     @topdirs[k.chop] = 1 if k =~ %r{^[^/]+/$}
     return if k =~ %r{/$}
     return if k.empty?
@@ -138,7 +138,7 @@ class Keymap
         }
       )
       rec = @keys[p.to_sym]
-      rec[:fkeys].append(k[p.length + 1..])
+      rec[:fkeys].append(k[(p.length + 1)..])
       rec[:mindepth] = [rec[:mindepth], kdepth].min
       rec[:maxdepth] = [rec[:maxdepth], kdepth].max
       break if ['.', @prefix].include?(p)

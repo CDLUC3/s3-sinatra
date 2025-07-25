@@ -62,13 +62,13 @@ class Listing
   def topobjlist
     return [] if @mode == :component
 
-    @keymap.topkeys[0..@maxobj - 1]
+    @keymap.topkeys[0..(@maxobj - 1)]
   end
 
   def prefixes
     return [] if @mode == :component
 
-    @keymap.topdirs[0..@maxpre - 1]
+    @keymap.topdirs[0..(@maxpre - 1)]
   end
 
   def checkm_header
@@ -214,7 +214,7 @@ class Listing
       })
     end
     karr = []
-    (1..@keymap.maxdepth - 1).each do |i|
+    (1..(@keymap.maxdepth - 1)).each do |i|
       karr.append("batch.depth#{i}")
       karr.append("batch.depth-#{i}")
     end
