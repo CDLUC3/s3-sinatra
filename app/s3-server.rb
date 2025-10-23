@@ -49,7 +49,7 @@ helpers do
     bucket_name = env.fetch('BUCKET_NAME', nil)
     begin
       @s3_client.head_object({ bucket: bucket_name, key: key })
-      @s3_client.get_object({ bucket: bucket_name, key: key }).body.read
+      @s3_client.get_object({ bucket: bucket_name, key: key }).body.read.force_encoding('UTF-8')
     rescue Aws::S3::Errors::NotFound
       nil
     end
