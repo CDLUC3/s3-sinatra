@@ -66,25 +66,25 @@ class Keymap
 
   def allkeys
     @allkeys.map do |k|
-      "#{url_prefix}#{k}"
+      "#{url_prefix}#{k.gsub(' ', '%20')}"
     end
   end
 
   def otherkeys
     component_data
     @other.map do |k|
-      "#{url_prefix}#{k}"
+      "#{url_prefix}#{k.gsub(' ', '%20').gsub(' ', '%20')}"
     end
   end
 
   def url_prefix
-    "https://#{@bucket}.s3.us-west-2.amazonaws.com#{@prefixpath.gsub(' ', '%20')}"
+    "https://#{@bucket}.s3.us-west-2.amazonaws.com#{@prefixpath}"
   end
 
   def batchkeys
     arr = []
     component_data[:batchrecs].each_key do |k|
-      url = "https://#{@lambdaurl}#{k}"
+      url = "https://#{@lambdaurl}#{k.gsub(' ', '%20')}"
       arr.append(url)
     end
     arr
