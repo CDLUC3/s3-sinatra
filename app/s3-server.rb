@@ -11,10 +11,6 @@ TYPE_CSV = 'text/plain; charset=utf-8'
 TYPE_TXT = 'text/plain; charset=utf-8'
 
 helpers do
-  def protected!
-    halt 200, "temporary placeholder"
-  end
-
   def file_exists(key)
     @s3_client = Aws::S3::Client.new(region: ENV.fetch('AWS_REGION', nil))
     bucket_name = env.fetch('BUCKET_NAME', nil)
@@ -117,8 +113,6 @@ get '/' do
 end
 
 get '/listing' do
-  protected!
-
   make_auth_listing(mode: :directory)
 
   status 200
@@ -126,24 +120,18 @@ get '/listing' do
 end
 
 get '/*/object.checkm' do
-  protected!
-
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
   return_string(@listing.object_data)
 end
 
 get '/*/batchobject.checkm' do
-  protected!
-
   make_auth_listing(prefix: params['splat'][0], depth: 0)
 
   return_string(@listing.batchobject_data(file_exists("#{params['splat'][0]}/#{MERRITT_METADATA}")))
 end
 
 get '/*/batchobject.csv' do
-  protected!
-
   metadata = file_exists("#{params['splat'][0]}/#{MERRITT_METADATA}")
   return return_string(metadata, type: TYPE_CSV) if metadata
 
@@ -153,24 +141,18 @@ get '/*/batchobject.csv' do
 end
 
 get '/object.checkm' do
-  protected!
-
   make_auth_listing(prefix: '', depth: 0)
 
   return_string(@listing.object_data)
 end
 
 get '/batchobject.checkm' do
-  protected!
-
   make_auth_listing(prefix: '', depth: 0)
 
   return_string(@listing.batchobject_data(file_exists(MERRITT_METADATA.to_s)))
 end
 
 get '/batchobject.csv' do
-  protected!
-
   metadata = file_exists(MERRITT_METADATA)
   return return_string(metadata, type: TYPE_CSV) if metadata
 
@@ -180,16 +162,12 @@ get '/batchobject.csv' do
 end
 
 get %r{/(.*)/batch.depth(-?\d+).checkm} do |key, d|
-  protected!
-
   make_auth_listing(prefix: key, depth: d.to_i)
 
   return_string(@listing.batch_data(file_exists("#{key}/#{MERRITT_METADATA}")))
 end
 
 get %r{/(.*)/batch.depth(-?\d+).csv} do |key, d|
-  protected!
-
   metadata = file_exists("#{key}/#{MERRITT_METADATA}")
   return return_string(metadata, type: TYPE_CSV) if metadata
 
@@ -199,8 +177,6 @@ get %r{/(.*)/batch.depth(-?\d+).csv} do |key, d|
 end
 
 get %r{/(.*)/batch.depth(-?\d+)} do |key, d|
-  protected!
-
   make_auth_listing(prefix: key, depth: d.to_i)
 
   status 200
@@ -208,8 +184,6 @@ get %r{/(.*)/batch.depth(-?\d+)} do |key, d|
 end
 
 get %r{/batch.depth(-?\d+)} do |d|
-  protected!
-
   make_auth_listing(prefix: '', depth: d.to_i)
 
   status 200
@@ -217,16 +191,12 @@ get %r{/batch.depth(-?\d+)} do |d|
 end
 
 get %r{/batch.depth(-?\d+).checkm} do |d|
-  protected!
-
   make_auth_listing(prefix: '', depth: d.to_i)
 
   return_string(@listing.batch_data(file_exists(MERRITT_METADATA)))
 end
 
 get %r{/batch.depth(-?\d+).csv} do |d|
-  protected!
-
   metadata = file_exists(MERRITT_METADATA)
   return return_string(metadata, type: TYPE_CSV) if metadata
 
@@ -236,32 +206,25 @@ get %r{/batch.depth(-?\d+).csv} do |d|
 end
 
 get %r{/(.*)/batch-other.depth(-?\d+).checkm} do |key, d|
-  protected!
-
   make_auth_listing(prefix: key, depth: d.to_i)
 
   return_string(@listing.other_data(file_exists("#{key}/#{MERRITT_METADATA}")))
 end
 
 get %r{/batch-other.depth(-?\d+).checkm} do |d|
-  protected!
-
   make_auth_listing(prefix: '', depth: d.to_i)
 
   return_string(@listing.other_data(file_exists(MERRITT_METADATA)))
 end
 
 get '/*/' do
-  protected!
-
   make_auth_listing(prefix: params['splat'][0], depth: 1, mode: :directory)
 
   status 200
   erb :listing
 end
 
-get '/zz*' do
-  protected!
+get '/*' do
   key = params['splat'][0]
   get_file(key)
 end
