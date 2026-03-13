@@ -2,14 +2,14 @@
 
 ## class to store results of S3 search
 class Keymap
-  def initialize(prefix = '', depth = 0, dns: 'foo.bar')
+  def initialize(prefix = '', depth = 0, dns: 'foo.bar', lambdaurl: 'foo.bar', bucket: 'na')
     @prefix = prefix
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @keys = {}
     @dns = dns
-    @lambdaurl = dns # to be replaced with lambda url when implemented
-    @bucket = env.fetch('BUCKET_NAME', "merritt-not-applicable")
+    @lambdaurl = lambdaurl
+    @bucket = bucket
     @allkeys = []
     @other = {}
     @topkeys = []

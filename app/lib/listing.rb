@@ -28,7 +28,7 @@ class Listing
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @mode = mode
-    @keymap = Keymap.new(@prefix, @depth, dns: @dns)
+    @keymap = Keymap.new(@prefix, @depth, dns: @dns, lambdaurl: @dns, bucket: @bucket)
   end
 
   def parent
