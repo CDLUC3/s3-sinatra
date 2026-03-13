@@ -78,7 +78,7 @@ class Keymap
   end
 
   def url_prefix
-    "https://#{@bucket}.s3.us-west-2.amazonaws.com#{@prefixpath}"
+    "https://#{@bucket}.s3.us-west-2.amazonaws.com#{@prefixpath.gsub(' ', '%20')}"
   end
 
   def batchkeys
