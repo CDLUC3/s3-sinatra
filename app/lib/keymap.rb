@@ -66,14 +66,14 @@ class Keymap
 
   def allkeys
     @allkeys.map do |k|
-      "#{url_prefix}#{k.gsub(' ', '%20')}"
+      "#{url_prefix}#{k.to_s.gsub(' ', '%20')}"
     end
   end
 
   def otherkeys
     component_data
     @other.map do |k|
-      "#{url_prefix}#{k.gsub(' ', '%20').gsub(' ', '%20')}"
+      "#{url_prefix}#{k.to_s.gsub(' ', '%20')}"
     end
   end
 
@@ -84,7 +84,7 @@ class Keymap
   def batchkeys
     arr = []
     component_data[:batchrecs].each_key do |k|
-      url = "https://#{@lambdaurl}#{k.gsub(' ', '%20')}"
+      url = "https://#{@lambdaurl}#{k.to_s.gsub(' ', '%20')}"
       arr.append(url)
     end
     arr
