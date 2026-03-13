@@ -12,36 +12,7 @@ TYPE_TXT = 'text/plain; charset=utf-8'
 
 helpers do
   def protected!
-    @auth ||= Rack::Auth::Basic::Request.new(request.env)
-    if !basic_auth_credentials_included?
-      response['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
-      halt 401, 'Unauthorized'
-    elsif !authorized?
-      response['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
-      halt 401, 'Unauthorized'
-      # halt 403, "Access denied\n"
-    else
-      true
-    end
-  end
-
-  def basic_auth_credentials_included?
-    @auth.provided? and @auth.basic? and @auth.credentials
-  end
-
-  def authorized?
-    user_name = @auth.credentials[0]
-    ssm_credentials = get_credentials_from_parameter_store(user_name)
-    ssm_credentials and @auth.credentials == [user_name, ssm_credentials[:parameter][:value]]
-  end
-
-  def get_credentials_from_parameter_store(user_name)
-    ssm_credentials_path = env.fetch('SSM_CREDENTIALS_PATH', nil)
-    key = "#{ssm_credentials_path}/credentials/#{user_name}"
-    ssm_client = Aws::SSM::Client.new(region: ENV.fetch('AWS_REGION', nil))
-    ssm_client.get_parameter(name: key, with_decryption: true)
-  rescue Aws::SSM::Errors::ParameterNotFound
-    nil
+    halt 200, "temporary placeholder"
   end
 
   def file_exists(key)
