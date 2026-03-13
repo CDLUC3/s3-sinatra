@@ -72,7 +72,7 @@ helpers do
   end
 end
 
-def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
+def listing(prefix: '', depth: 0, mode: :component)
   Listing.new(
     region: ENV.fetch('AWS_REGION', nil),
     bucket: env.fetch('BUCKET_NAME', nil),
@@ -81,13 +81,12 @@ def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
     maxpre: 250,
     prefix: prefix,
     depth: depth,
-    credentials: credentials,
     mode: mode
   )
 end
 
 def make_auth_listing(prefix: '', depth: 0, mode: :component)
-  @listing = listing(prefix: prefix, depth: depth, credentials: nil, mode: mode)
+  @listing = listing(prefix: prefix, depth: depth, mode: mode)
   @listing.list_keys
 end
 

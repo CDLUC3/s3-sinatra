@@ -17,7 +17,6 @@ class Listing
     maxpre: 20,
     prefix: '',
     depth: 0,
-    credentials: nil,
     mode: :component
   )
     @bucket = bucket
@@ -29,7 +28,7 @@ class Listing
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @mode = mode
-    @keymap = Keymap.new(@prefix, @depth, dns: @dns, credentials: credentials)
+    @keymap = Keymap.new(@prefix, @depth, dns: @dns)
   end
 
   def parent

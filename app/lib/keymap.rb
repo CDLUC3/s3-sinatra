@@ -2,13 +2,14 @@
 
 ## class to store results of S3 search
 class Keymap
-  def initialize(prefix = '', depth = 0, dns: 'foo.bar', credentials: nil)
+  def initialize(prefix = '', depth = 0, dns: 'foo.bar')
     @prefix = prefix
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @keys = {}
     @dns = dns
-    @credentials = credentials
+    @lambdaurl = dns # to be replaced with lambda url when implemented
+    @bucket = env.fetch('BUCKET_NAME', "merritt-not-applicable")
     @allkeys = []
     @other = {}
     @topkeys = []
@@ -77,13 +78,13 @@ class Keymap
   end
 
   def url_prefix
-    @credentials.nil? ? "https://#{@dns}#{@prefixpath}" : "https://#{@credentials.join(':')}@#{@dns}#{@prefixpath}"
+    "https://#{@bucket}.s3.us-west-2.amazonaws.com/#{@prefixpath}"
   end
 
   def batchkeys
     arr = []
     component_data[:batchrecs].each_key do |k|
-      url = @credentials.nil? ? "https://#{@dns}#{k}" : "https://#{@credentials.join(':')}@#{@dns}#{k}"
+      url = "https://#{@lambdaurl}#{k}"
       arr.append(url)
     end
     arr
