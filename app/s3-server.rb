@@ -87,7 +87,7 @@ def listing(prefix: '', depth: 0, credentials: nil, mode: :component)
 end
 
 def make_auth_listing(prefix: '', depth: 0, mode: :component)
-  @listing = listing(prefix: prefix, depth: depth, credentials: @auth.credentials, mode: mode)
+  @listing = listing(prefix: prefix, depth: depth, credentials: nil, mode: mode)
   @listing.list_keys
 end
 
