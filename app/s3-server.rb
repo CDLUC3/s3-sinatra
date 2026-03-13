@@ -260,13 +260,15 @@ get '/*/' do
   erb :listing
 end
 
+
+get '/oauth2/idpresponse' do
+  status 200
+  'placeholder for oauth2 idpresponse'
+end
+
 get '/*' do
   protected!
   key = params['splat'][0]
   get_file(key)
 end
 
-get '/oauth2/idpresponse' do
-  status 200
-  'placeholder for oauth2 idpresponse'
-end
