@@ -77,6 +77,7 @@ def listing(prefix: '', depth: 0, mode: :component)
     region: ENV.fetch('AWS_REGION', nil),
     bucket: env.fetch('BUCKET_NAME', nil),
     dns: env.fetch('BASE_URL', nil),
+    lambdaurl: env.fetch('INVOKE_URL', nil),
     maxobj: 30,
     maxpre: 250,
     prefix: prefix,
