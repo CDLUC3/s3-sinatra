@@ -13,6 +13,7 @@ class Listing
     region: 'us-west-2',
     bucket: 'na',
     dns: 'http://foo.bar',
+    lambdaurl: 'http://foo.bar',
     maxobj: 20,
     maxpre: 20,
     prefix: '',
@@ -21,6 +22,7 @@ class Listing
   )
     @bucket = bucket
     @dns = dns
+    @lambdaurl = lambdaurl
     @maxobj = maxobj
     @maxpre = maxpre
     @s3_client = Aws::S3::Client.new(region: region)
@@ -28,7 +30,7 @@ class Listing
     @prefixpath = prefix.empty? ? '/' : "/#{prefix}/"
     @depth = depth
     @mode = mode
-    @keymap = Keymap.new(@prefix, @depth, dns: @dns, lambdaurl: @dns, bucket: @bucket)
+    @keymap = Keymap.new(@prefix, @depth, dns: @dns, lambdaurl: @lambdaurl, bucket: @bucket)
   end
 
   def parent
