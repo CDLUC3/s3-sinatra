@@ -1,25 +1,8 @@
 <h1>Merritt - Ingest Workspace Service</h1>
-<div>
 
-<h2>Sample Object Listing</h2>
-<p><a href='/listing'>Full Listing</a></p>
-<p>This page will display sample objects / top level prefixes to help identify the keys within the bucket.</p>
-
-<% if @listing.topobjlist %>
-  <h3>Top Level Objects</h2>
-  <ul>
-    <% @listing.topobjlist.each do |k| %>
-      <li><%= k[:desc] %></li>
-    <% end %>
-  </ul>
-<% end %>
-
-<% if @listing.prefixes %>
-  <h3>Top Level Prefixes</h2>
-  <ul>
-    <% @listing.prefixes.each do |k| %>
-      <li><%= k[:desc] %></li>
-    <% end %>
-  </ul>
-<% end %>
+<div id="body">
+<div id="menu">
+  <a href="/">Home</a>
+  <span> / <a href="/listing">Main Listing</a></span>
+</div>
 </div>
