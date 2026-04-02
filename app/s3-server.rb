@@ -228,4 +228,3 @@ get '/*' do
   key = params['splat'][0]
   get_file(key)
 end
-

@@ -40,7 +40,7 @@ def handler(event:, context:)
     'BUCKET_NAME' => ENV.fetch('bucket_name', 'na'),
     'SSM_CREDENTIALS_PATH' => ENV.fetch('ssm_credentials_path', 'na'),
     'BASE_URL' => ENV.fetch('base_url', 'na'),
-    'INVOKE_URL' => ENV.fetch('invoke_url', 'na'),
+    'INVOKE_URL' => ENV.fetch('invoke_url', 'na')
   }
 
   # Pass request headers to Rack if they are available
