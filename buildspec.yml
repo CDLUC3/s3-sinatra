@@ -37,3 +37,13 @@ phases:
         --function-name mrt-SinatraLambda-merrittpm \
         --s3-bucket ${S3PRIVBUCKET} \
         --s3-key deploy/s3-sinatra-lb.zip --no-cli-pager
+
+      aws lambda update-function-code \
+        --function-name mrt-SinatraLambda-uci \
+        --s3-bucket ${S3PRIVBUCKET} \
+        --s3-key deploy/s3-sinatra-lb.zip --no-cli-pager
+
+      aws lambda update-function-code \
+        --function-name mrt-SinatraLambda-ucilib \
+        --s3-bucket ${S3PRIVBUCKET} \
+        --s3-key deploy/s3-sinatra-lb.zip --no-cli-pager
