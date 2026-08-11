@@ -25,11 +25,11 @@
       (
         <a href="<%= k[:download] %>">view checkm</a>, 
         <a href="<%= k[:download] %>" 
-          download="<%= k[:key].gsub(/\//, '_') %>.checkm"
+          download="<%= k[:download].gsub(/\//, '_') %>.checkm"
         >download checkm</a>, 
         <a href="<%= k[:csv] %>">viewcsv</a>,
         <a href="<%= k[:csv] %>" 
-          download="<%= k[:key].gsub(/\//, '_') %>.csv"
+          download="<%= k[:csv].gsub(/\//, '_') %>.csv"
         >downloadcsv</a>
       )
       <% end %>
