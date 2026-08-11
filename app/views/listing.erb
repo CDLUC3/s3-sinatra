@@ -9,9 +9,10 @@
   <% end %>
 </div>
 
-<div>
+<div class="instructions">
 Choose the place in the hierarchy from which you want to generate a manifest.
-Place a file named <code>merritt.metadata.csv</code> in that directory in order to add metadata entries to the object listing.
+Place a file named <code>merritt.metadata.csv</code> in that directory in order 
+to add metadata entries to the object listing.
 </div>
 
 <div id="manifest">
@@ -24,7 +25,7 @@ Place a file named <code>merritt.metadata.csv</code> in that directory in order 
       <a href="<%= k[:url] %>">view <%=k[:desc]%></a>
       <a href="<%= k[:url] %>" 
         download="<%= k[:url].gsub(/^\//, '').gsub(/\//, '_') %>"
-      >download <%=k[:desc]%></a>
+      >⬇️</a>
       <% else %>
       <span><%=k[:desc]%></span>
       <% end %>
@@ -33,11 +34,11 @@ Place a file named <code>merritt.metadata.csv</code> in that directory in order 
         <a href="<%= k[:download] %>">view checkm</a>, 
         <a href="<%= k[:download] %>" 
           download="<%= k[:download].gsub(/^\//, '').gsub(/\//, '_') %>"
-        >download checkm</a>, 
+        >⬇️</a>, 
         <a href="<%= k[:csv] %>">view csv</a>,
         <a href="<%= k[:csv] %>" 
           download="<%= k[:csv].gsub(/^\//, '').gsub(/\//, '_') %>"
-        >download csv</a>
+        >⬇️</a>
       )
       <% end %>
     </li>
