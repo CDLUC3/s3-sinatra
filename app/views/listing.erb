@@ -31,6 +31,10 @@
           download="<%= k[:csv].gsub(/^\//, '').gsub(/\//, '_') %>"
         >⬇️</a>
       )
+      <% else %>
+      <a href="<%= k[:url] %>" 
+        download="<%= k[:url].gsub(/^\//, '').gsub(/\//, '_') %>"
+      >⬇️</a>
       <% end %>
     </li>
     <% end %>
