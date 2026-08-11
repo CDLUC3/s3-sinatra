@@ -17,19 +17,16 @@
     <li>
       <% if k.key?(:url) %>
       <a href="<%= k[:url] %>">view <%=k[:desc]%></a>
-      <a href="<%= k[:url] %>" 
-        download="<%= k[:url].gsub(/^\//, '').gsub(/\//, '_') %>"
-      >⬇️</a>
       <% else %>
       <span><%=k[:desc]%></span>
       <% end %>
       <% if k.key?(:download) %>
       (
-        <a href="<%= k[:download] %>">view checkm</a>, 
+        <a href="<%= k[:download] %>">view checkm</a> 
         <a href="<%= k[:download] %>" 
           download="<%= k[:download].gsub(/^\//, '').gsub(/\//, '_') %>"
         >⬇️</a>, 
-        <a href="<%= k[:csv] %>">view csv</a>,
+        <a href="<%= k[:csv] %>">view csv</a>
         <a href="<%= k[:csv] %>" 
           download="<%= k[:csv].gsub(/^\//, '').gsub(/\//, '_') %>"
         >⬇️</a>
