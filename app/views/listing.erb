@@ -8,7 +8,11 @@
   <span> / <a href="/<%= @listing.parent %>/"><%= @listing.parent %></a></span>
   <% end %>
 </div>
-<br>
+
+<div>
+Choose the place in the hierarchy from which you want to generate a manifest.
+Place a file named <code>merritt.metadata.csv</code> in that directory in order to add metadata entries to the object listing.
+</div>
 
 <div id="manifest">
   <% unless @listing.manifest_options.empty? %>
@@ -17,7 +21,10 @@
     <% @listing.manifest_options.each do |k| %>
     <li>
       <% if k.key?(:url) %>
-      <a href="<%= k[:url] %>"><%=k[:desc]%></a>
+      <a href="<%= k[:url] %>">view <%=k[:desc]%></a>
+      <a href="<%= k[:url] %>" 
+        download="<%= k[:url].gsub(/^\//, '').gsub(/\//, '_') %>"
+      >download <%=k[:desc]%></a>
       <% else %>
       <span><%=k[:desc]%></span>
       <% end %>
