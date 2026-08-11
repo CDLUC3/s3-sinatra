@@ -22,12 +22,15 @@
       <span><%=k[:desc]%></span>
       <% end %>
       <% if k.key?(:download) %>
-      (<a href="<%= k[:download] %>" 
-        download="test.checkm"
-       >checkm</a>, 
-       <a href="<%= k[:csv] %>" 
-        download="test.csv"
-        >csv</a>
+      (
+        <a href="<%= k[:download] %>">view checkm</a>, 
+        <a href="<%= k[:download] %>" 
+          download="<%= k[:key].gsub(/\//, '_') %>.checkm"
+        >download checkm</a>, 
+        <a href="<%= k[:csv] %>">viewcsv</a>,
+        <a href="<%= k[:csv] %>" 
+          download="<%= k[:key].gsub(/\//, '_') %>.csv"
+        >downloadcsv</a>
       )
       <% end %>
     </li>
